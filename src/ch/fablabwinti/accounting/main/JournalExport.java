@@ -26,12 +26,12 @@ public class JournalExport {
 
     public static int COLUMN_WIDTH_RATIO                    = 260;
 
-    /* [0]=Post [1]=Kasse [2]=SumUp [3]=Forderungen [4]=Guthaben */
+    /* [0]=Post [1]=Kasse [2]=SumUp [3]=Restkonto [4]=Guthaben */
     public static int[] INPUT_COLUMN_JOURNAL_NR             = { 0, 0, 0, 0, 0};
     public static int[] INPUT_COLUMN_JOURNAL_DATE           = { 1, 3, 1, 1, 3};
-    public static int[] INPUT_COLUMN_JOURNAL_DEBIT_NR       = { 5, 5, 5, 3, 4};
-    public static int[] INPUT_COLUMN_JOURNAL_CREDIT_NR      = { 6, 6, 6, 4, 5};
-    public static int[] INPUT_COLUMN_JOURNAL_VALUE          = { 17, 24, 12, 22, 23};
+    public static int[] INPUT_COLUMN_JOURNAL_DEBIT_NR       = { 5, 5, 5, 5, 4};
+    public static int[] INPUT_COLUMN_JOURNAL_CREDIT_NR      = { 6, 6, 6, 6, 5};
+    public static int[] INPUT_COLUMN_JOURNAL_VALUE          = { 17, 24, 12, 13, 23};
     public static int[] INPUT_COLUMN_JOURNAL_TEXT           = { 9, 11, 9, 9, 10};
 
     public static int OUTPUT_COLUMN_JOURNAL_NR              = 0;
@@ -103,12 +103,12 @@ public class JournalExport {
                         cell = new CustomStringCell(row, INPUT_COLUMN_JOURNAL_TEXT[i]);
                         journalText = cell.getString();
 
-                        if (journalDebitNr != 9999 && journalCreditNr != 9999) {
+                        //if (journalDebitNr != 9999 && journalCreditNr != 9999) {
                             if (filter == null || filter.filter(journalNr, journalDate, journalDebitNr, journalCreditNr, journalValue, journalText)) {
                                 transaction = new Transaction(journalNr, journalDate, journalDebitNr, journalCreditNr, journalValue, journalText);
                                 transactionList.add(transaction);
                             }
-                        }
+                        //}
                     } catch (CustomCellException e) {
                         System.out.println(e.getMessage());
                     }
