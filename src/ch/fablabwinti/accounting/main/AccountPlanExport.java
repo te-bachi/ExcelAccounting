@@ -42,7 +42,11 @@ public class AccountPlanExport {
     private List<Account>   accountList;
 
     public AccountPlanExport() {
+        /* Root list with only root TitleAccounts
+         * Every account could have children. */
         rootList    = new ArrayList<>();
+
+        /* A list of all accounts, not sorted. */
         accountList = new ArrayList<>();
     }
 
@@ -76,6 +80,8 @@ public class AccountPlanExport {
 
             /* First column: Account Text */
             cell = row.getCell(INPUT_COLUMN_ACCOUNT_TEXT);
+
+            /* Only go further if the cell is NOT blank => otherwise skip row */
             if (cell != null && cell.getCellType() != Cell.CELL_TYPE_BLANK) {
                 if (cell.getCellType() != Cell.CELL_TYPE_STRING) {
                     System.out.println(row.getRowNum() + "/" + cell.getColumnIndex() + " is not of type string but " + cell.getCellType() + "!");
@@ -91,14 +97,37 @@ public class AccountPlanExport {
                 }
                 accountNumber = Double.valueOf(cell.getNumericCellValue()).intValue();
 
-                /* Third column: Account Type (Aktiv/Passiv) */
+                /* Third column: Account Type (String of empty [TitleAccount]) */
                 cell = row.getCell(INPUT_COLUMN_ACCOUNT_TYPE);
+
+                /* Check if Account Type is empty/blank => It's a TitleAccount and there are children */
                 if ((cell == null || cell.getCellType() == Cell.CELL_TYPE_BLANK)) {
-                    if (accountNumber < new Double(Math.pow(10, level)).intValue()) {
+                    /**
+                     * Check if the current accountNumber is in range, ex. 34 < 99
+                     * Math.pow(10, 2) - 1 = 100 - 1 = 99
+                     * 'level' is a static parameter of this function
+                     * The user can decide, how many TitleAccounts he want can
+                     * can reduce sub-levels.
+                     **/
+                    if (accountNumber < (new Double(Math.pow(10, level)).intValue() - 1)) {
                         try {
+                            /* The same but using the length of the accountNumber, not the accountNumber itself ?!*/
                             depth = Integer.valueOf(accountNumber).toString().length();
+
+                            /* Is there a parent? */
                             if (parent != null) {
+                                /* Get depth of parent */
                                 parentDepth = Integer.valueOf(parent.getNumber()).toString().length();
+
+                                /**
+                                 * The actual depth is lower than the parent depth.
+                                 * ex.
+                                 * parent:    1234  AccountText1 => parentDepth = 4
+                                 * current:   32    AccountText1 => depth       = 2
+                                 * depthDiff: 4 - 2 + 1 = 3
+                                 *
+                                 * We have to go up 3 levels to get a depth-1 TitleAccount
+                                 **/
                                 if (depth <= parentDepth) {
                                     depthDiff = parentDepth - depth + 1;
                                     do {
@@ -108,14 +137,20 @@ public class AccountPlanExport {
                                         depthDiff--;
                                     } while (depthDiff > 0);
                                 }
+                                /* If there is a parent, use parent to create a new TitleAccount... */
                                 if (parent != null) {
+                                    /* Replace parent with a new TitleAccount.
+                                     * Internally the new TitleAccount is added to the parent */
                                     parent = new TitleAccount(parent, accountNumber, accountText);
                                     accountList.add(parent);
+
+                                /* ... otherwise use a root TitleAccount (no parent) */
                                 } else {
                                     parent = new TitleAccount(accountNumber, accountText);
                                     rootList.add(parent);
                                     accountList.add(parent);
                                 }
+                            /* ... otherwise use a root TitleAccount (no parent) */
                             } else {
                                 parent = new TitleAccount(accountNumber, accountText);
                                 rootList.add(parent);
@@ -125,9 +160,12 @@ public class AccountPlanExport {
                             /* bad account number format: skip journal entry */
                         }
                     }
+
+                /* cell is NOT null and NOT blank => if it's NOT string, skip row */
                 } else if (cell.getCellType() != Cell.CELL_TYPE_STRING) {
                     System.out.println(row.getRowNum() + "/" + cell.getColumnIndex() + " is not of type string but " + cell.getCellType() + "!");
                     continue;
+                /* cell is of type string */
                 } else {
                     if (cell.getStringCellValue().equals(ACCOUNT_TYPE_ASSET)) {
                         account = new AssetAccount(parent, accountNumber, accountText);
@@ -164,10 +202,13 @@ public class AccountPlanExport {
         spreadsheet[0]  = workbook.createSheet("journal");
         spreadsheet[1]  = workbook.createSheet("buha");
 
+        /* Iterate over the two newly created sheets */
         for (i = 0; i < spreadsheet.length; i++) {
             spreadsheet[i].setColumnWidth(OUTPUT_COLUMN_ACCOUNT_TEXT[i], COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_ACCOUNT_TEXT_WIDTH);
             spreadsheet[i].setColumnWidth(OUTPUT_COLUMN_ACCOUNT_NR[i], COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_ACCOUNT_NR_WIDTH);
             spreadsheet[i].setColumnWidth(OUTPUT_COLUMN_ACCOUNT_TYPE[i], COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_ACCOUNT_TYPE_WIDTH);
+
+            /* Iterate over the whole account list (unsorted) */
             for (k = 0, m = 0; k < accountList.size(); k++) {
                 account = accountList.get(k);
 
@@ -207,6 +248,23 @@ public class AccountPlanExport {
         out = new FileOutputStream(outputFile);
         workbook.write(out);
         out.close();
+    }
+
+    public List<Account> getRootList() {
+        return rootList;
+    }
+
+    public List<Account> getAccountList() {
+        return accountList;
+    }
+
+    public Account findAccount(int number) {
+        for (Account account : accountList) {
+            if (account.getNumber() == number) {
+                return account;
+            }
+        }
+        return null;
     }
 
     public static void main(String[] args) throws Exception {

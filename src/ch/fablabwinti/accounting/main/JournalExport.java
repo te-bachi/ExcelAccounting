@@ -1,9 +1,6 @@
 package ch.fablabwinti.accounting.main;
 
-import ch.fablabwinti.accounting.AccountJournalFilter;
-import ch.fablabwinti.accounting.JournalFilter;
-import ch.fablabwinti.accounting.Transaction;
-import ch.fablabwinti.accounting.TransactionComparator;
+import ch.fablabwinti.accounting.*;
 import ch.fablabwinti.accounting.cell.CustomCell;
 import ch.fablabwinti.accounting.cell.CustomCellException;
 import ch.fablabwinti.accounting.cell.CustomIntCell;
@@ -27,12 +24,13 @@ public class JournalExport {
     public static int COLUMN_WIDTH_RATIO                    = 260;
 
     /* [0]=Post [1]=Kasse [2]=SumUp [3]=Restkonto [4]=Guthaben */
-    public static int[] INPUT_COLUMN_JOURNAL_NR             = { 0, 0, 0, 0, 0};
-    public static int[] INPUT_COLUMN_JOURNAL_DATE           = { 1, 3, 1, 1, 3};
-    public static int[] INPUT_COLUMN_JOURNAL_DEBIT_NR       = { 5, 5, 5, 5, 4};
-    public static int[] INPUT_COLUMN_JOURNAL_CREDIT_NR      = { 6, 6, 6, 6, 5};
+                                                            /* [0] [1] [2] [3] [4] */
+    public static int[] INPUT_COLUMN_JOURNAL_NR             = {  0,  0,  0,  0,  0};
+    public static int[] INPUT_COLUMN_JOURNAL_DATE           = {  1,  3,  1,  1,  3};
+    public static int[] INPUT_COLUMN_JOURNAL_DEBIT_NR       = {  5,  5,  5,  5,  4};
+    public static int[] INPUT_COLUMN_JOURNAL_CREDIT_NR      = {  6,  6,  6,  6,  5};
     public static int[] INPUT_COLUMN_JOURNAL_VALUE          = { 17, 24, 12, 13, 23};
-    public static int[] INPUT_COLUMN_JOURNAL_TEXT           = { 9, 11, 9, 9, 10};
+    public static int[] INPUT_COLUMN_JOURNAL_TEXT           = {  9, 11,  9,  9, 10};
 
     public static int OUTPUT_COLUMN_JOURNAL_NR              = 0;
     public static int OUTPUT_COLUMN_JOURNAL_DATE            = 1;
@@ -54,7 +52,7 @@ public class JournalExport {
         transactionList = new ArrayList<>();
     }
 
-    public void parseInput(File inputFile, JournalFilter filter) throws Exception {
+    public void parseInput(File inputFile, JournalFilter filter, AccountList accountList) throws Exception {
         FileInputStream     in;
         XSSFWorkbook        workbook;
         XSSFSheet           spreadsheet;
@@ -73,6 +71,8 @@ public class JournalExport {
         int                 journalCreditNr;
         BigDecimal          journalValue;
         String              journalText;
+        Account             debit;
+        Account             credit;
 
         in          = new FileInputStream(inputFile);
         workbook    = new XSSFWorkbook(in);
@@ -103,12 +103,29 @@ public class JournalExport {
                         cell = new CustomStringCell(row, INPUT_COLUMN_JOURNAL_TEXT[i]);
                         journalText = cell.getString();
 
-                        //if (journalDebitNr != 9999 && journalCreditNr != 9999) {
-                            if (filter == null || filter.filter(journalNr, journalDate, journalDebitNr, journalCreditNr, journalValue, journalText)) {
+                        if (filter == null || filter.filter(journalNr, journalDate, journalDebitNr, journalCreditNr, journalValue, journalText)) {
+                            if (accountList != null) {
+                                debit  = accountList.find(journalDebitNr);
+                                credit = accountList.find(journalCreditNr);
+                                if (debit == null || credit == null) {
+                                    if (debit == null) {
+                                        System.out.println("Can't find account nr " + journalDebitNr + " in account list");
+                                    }
+                                    if (credit == null) {
+                                        System.out.println("Can't find account nr " + journalCreditNr + " in account list");
+                                    }
+                                    continue;
+                                }
+                                /* with two account objects */
+                                transaction = new Transaction(journalNr, journalDate, debit, credit, journalValue, journalText);
+                                debit.addTransaction(transaction);
+                                credit.addTransaction(transaction);
+                            } else {
+                                /* only with account numbers */
                                 transaction = new Transaction(journalNr, journalDate, journalDebitNr, journalCreditNr, journalValue, journalText);
-                                transactionList.add(transaction);
                             }
-                        //}
+                            transactionList.add(transaction);
+                        }
                     } catch (CustomCellException e) {
                         System.out.println(e.getMessage());
                     }
@@ -206,7 +223,7 @@ public class JournalExport {
 
         main = new JournalExport();
 
-        main.parseInput(inputFile, filter);
+        main.parseInput(inputFile, filter, null);
         if ((main.transactionList.size() > 0)) {
             Collections.sort(main.transactionList, new TransactionComparator());
             main.exportOutput(outputFile);

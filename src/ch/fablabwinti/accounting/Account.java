@@ -82,4 +82,31 @@ public abstract class Account {
     public void setTransactionList(List<Transaction> transactionList) {
         this.transactionList = transactionList;
     }
+
+    public void addTotal(BigDecimal amount) {
+        total = total.add(amount);
+        if (parent != null) {
+            parent.addTotal(amount);
+        }
+    }
+    public void subtractTotal(BigDecimal amount) {
+        total = total.subtract(amount);
+        if (parent != null) {
+            parent.subtractTotal(amount);
+        }
+    }
+
+    public void addTransaction(Transaction transaction) {
+        this.transactionList.add(transaction);
+
+        /* Debit */
+        if (transaction.getDebit().getNumber() == number) {
+            addTotal(transaction.getAmount());
+        }
+
+        /* Credit */
+        if (transaction.getCredit().getNumber() == number) {
+            subtractTotal(transaction.getAmount());
+        }
+    }
 }
