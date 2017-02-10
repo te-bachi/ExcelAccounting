@@ -33,10 +33,6 @@ public class AccountList {
         return accountList.isEmpty();
     }
 
-    public Account getNext() {
-        return accountList.get(0);
-    }
-
     public Account removeNext() {
         return accountList.remove(0);
     }

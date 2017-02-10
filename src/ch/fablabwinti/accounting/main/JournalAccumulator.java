@@ -4,8 +4,8 @@ import ch.fablabwinti.accounting.Account;
 import ch.fablabwinti.accounting.AccountList;
 import ch.fablabwinti.accounting.TitleAccount;
 import ch.fablabwinti.accounting.Transaction;
+import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFDataFormat;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -27,7 +27,6 @@ public class JournalAccumulator {
     public static int[] ACCOUNT_INCOME_NR                       = { 3, 7 };
     public static int[] ACCOUNT_EXPENSE_NR                      = { 4, 5, 6, 9 };
 
-    public static int COLUMN_WIDTH_RATIO                        = 260;
                                                                 /* Assets,  Liabilities */
     public static int[] OUTPUT_COLUMN_BALANCE                   = { 0,      5 }; /* offset */
 
@@ -37,12 +36,30 @@ public class JournalAccumulator {
     public static int OUTPUT_COLUMN_BALANCE_AMOUNT              = 3;
     public static int OUTPUT_COLUMN_BALANCE_TOTAL               = 4;
 
+    public static int OUTPUT_COLUMN_TRANSACTION_NR              = 0;
+    public static int OUTPUT_COLUMN_TRANSACTION_DATE            = 1;
+    public static int OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT   = 2;
+    public static int OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT  = 3;
+    public static int OUTPUT_COLUMN_TRANSACTION_TEXT            = 4;
+    public static int OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT    = 5;
+    public static int OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT   = 6;
+    public static int OUTPUT_COLUMN_TRANSACTION_TOTAL           = 7;
+
     /* 7 px per point */
     public static double OUTPUT_COLUMN_BALANCE_TITLE_NR_WIDTH      = 4.7142;    /* 33 px */
     public static double OUTPUT_COLUMN_BALANCE_ACCOUNT_NR_WIDTH    = 9.2857;    /* 65 px */
     public static double OUTPUT_COLUMN_BALANCE_ACCOUNT_WIDTH       = 40.7142;   /* 285 px */
-    public static double OUTPUT_COLUMN_BALANCE_AMOUNT_WIDTH        = 16.7142;   /* 16 px */
-    public static double OUTPUT_COLUMN_BALANCE_TOTAL_WIDTH         = 16.7142;   /* 16 px */
+    public static double OUTPUT_COLUMN_BALANCE_AMOUNT_WIDTH        = 16.7142;   /* 117 px */
+    public static double OUTPUT_COLUMN_BALANCE_TOTAL_WIDTH         = 16.7142;   /* 117 px */
+
+    public static double OUTPUT_COLUMN_TRANSACTION_NR_WIDTH             = 9.2857;    /* 65 px */
+    public static double OUTPUT_COLUMN_TRANSACTION_DATE_WIDTH           = 11.4285;   /* 80 px */
+    public static double OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT_WIDTH  = 9.2857;    /* 65 px */
+    public static double OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT_WIDTH = 9.2857;    /* 65 px */
+    public static double OUTPUT_COLUMN_TRANSACTION_TEXT_WIDTH           = 40.7142;   /* 285 px */
+    public static double OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT_WIDTH   = 16.7142;   /* 117 px */
+    public static double OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT_WIDTH  = 16.7142;   /* 117 px */
+    public static double OUTPUT_COLUMN_TRANSACTION_TOTAL_WIDTH          = 16.7142;   /* 117 px */
 
     private AccountPlanExport   accountPlan;
     private JournalExport       journalExport;
@@ -94,6 +111,7 @@ public class JournalAccumulator {
         List<Account>       expenseList;
         List<Account>       childrenList;
         Transaction         transaction;
+        JournalStyles       styles;
 
         rootList            = new AccountList(accountPlan.getRootList());
         accountList         = new AccountList(accountPlan.getAccountList());
@@ -102,25 +120,13 @@ public class JournalAccumulator {
         childrenList        = new ArrayList<>();
 
         workbook            = new XSSFWorkbook();
+        styles              = new JournalStyles(workbook);
 
         /*** Bilanz **********************************************************/
         spreadsheetBilanz   = workbook.createSheet("Bilanz");
 
         for (columnOffset = 0; columnOffset < OUTPUT_COLUMN_BALANCE.length; columnOffset++) {
             setColumnWidthForBalanceProfitAndLoss(spreadsheetBilanz, columnOffset);
-            /*
-            spreadsheetBilanz.getColumnHelper().setColWidth(OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_TITLE_NR,   OUTPUT_COLUMN_BALANCE_TITLE_NR_WIDTH);
-            spreadsheetBilanz.getColumnHelper().setColWidth(OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR, OUTPUT_COLUMN_BALANCE_ACCOUNT_NR_WIDTH);
-            spreadsheetBilanz.getColumnHelper().setColWidth(OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT,    OUTPUT_COLUMN_BALANCE_ACCOUNT_WIDTH);
-            spreadsheetBilanz.getColumnHelper().setColWidth(OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_AMOUNT,     OUTPUT_COLUMN_BALANCE_AMOUNT_WIDTH);
-            spreadsheetBilanz.getColumnHelper().setColWidth(OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_TOTAL,      OUTPUT_COLUMN_BALANCE_TOTAL_WIDTH);
-
-            spreadsheetBilanz.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_TITLE_NR,   true);
-            spreadsheetBilanz.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR, true);
-            spreadsheetBilanz.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT,    true);
-            spreadsheetBilanz.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_AMOUNT,     true);
-            spreadsheetBilanz.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_TOTAL,      true);
-            */
         }
 
         rootAccount     = null;
@@ -135,7 +141,7 @@ public class JournalAccumulator {
             childrenList.clear();
             collectChildren(childrenList, rootAccount);
 
-            writeCells(workbook, spreadsheetBilanz, childrenList, columnOffset, balanceMaxIdx);
+            writeCellsForBalanceProfitAndLoss(workbook, spreadsheetBilanz, styles, childrenList, columnOffset, balanceMaxIdx);
 
             /* increase max. row number for balance if necessary */
             if (balanceMaxIdx < childrenList.size()) {
@@ -175,7 +181,7 @@ public class JournalAccumulator {
                 collectChildren(childrenList, incomeList);
             }
 
-            writeCells(workbook, spreadsheetErfolg, childrenList, columnOffset, balanceMaxIdx);
+            writeCellsForBalanceProfitAndLoss(workbook, spreadsheetErfolg, styles, childrenList, columnOffset, balanceMaxIdx);
 
             /* increase max. row number for balance if necessary */
             if (balanceMaxIdx < childrenList.size()) {
@@ -185,25 +191,17 @@ public class JournalAccumulator {
 
         /*** Konten **********************************************************/
         spreadsheetKonten   = workbook.createSheet("Konten");
+        setColumnWidthForAccountTransactions(spreadsheetKonten);
+        writeCellsForAccountTransactions(workbook, spreadsheetKonten, styles, accountList);
 
         out = new FileOutputStream(outputFile);
         workbook.write(out);
         out.close();
     }
 
-    private void writeCells(XSSFWorkbook workbook, XSSFSheet sheet, List<Account> childrenList, int columnOffset, int balanceMaxIdx) {
+    private void writeCellsForBalanceProfitAndLoss(XSSFWorkbook workbook, XSSFSheet sheet, JournalStyles styles, List<Account> childrenList, int columnOffset, int balanceMaxIdx) {
         Cell                cell;
         XSSFRow             row;
-        DataFormat          format;
-        CreationHelper      createHelper;
-        CellStyle           normalStyle;
-        CellStyle           boldStyle;
-        CellStyle           dateStyle;
-        CellStyle           numberStyle;
-        CellStyle           boldNumberStyle;
-        CellStyle           totalStyle;
-        Font                normalFont;
-        Font                boldFont;
 
         Account             account;
 
@@ -213,46 +211,6 @@ public class JournalAccumulator {
 
         total           = 0.0;
         writeTotal      = false;
-
-        /* Fonts */
-        normalFont          = workbook.createFont();
-        normalFont.setFontHeightInPoints((short)11);
-        normalFont.setFontName("Arial");
-
-        boldFont            = workbook.createFont();
-        boldFont.setFontHeightInPoints((short)11);
-        boldFont.setFontName("Arial");
-        boldFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
-
-        /* Normal Style */
-        normalStyle         = workbook.createCellStyle();
-        normalStyle.setFont(normalFont);
-
-        /* Bold Style */
-        boldStyle           = workbook.createCellStyle();
-        boldStyle.setFont(boldFont);
-
-        /* Total Style */
-        totalStyle          = workbook.createCellStyle();
-        totalStyle.setFont(boldFont);
-        totalStyle.setBorderBottom(CellStyle.BORDER_THIN);
-        totalStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-        totalStyle.setDataFormat((short) BuiltinFormats.getBuiltinFormat("#,##0.00"));
-
-        /* Date Style */
-        dateStyle           = workbook.createCellStyle();
-        createHelper        = workbook.getCreationHelper();
-        dateStyle.setDataFormat(createHelper.createDataFormat().getFormat("DD.MM.YYYY"));
-
-        /* Number Style */
-        numberStyle         = workbook.createCellStyle();
-        numberStyle.setFont(normalFont);
-        numberStyle.setDataFormat((short) BuiltinFormats.getBuiltinFormat("#,##0.00"));
-
-        /* Bold Number Style */
-        boldNumberStyle     = workbook.createCellStyle();
-        boldNumberStyle.setFont(boldFont);
-        boldNumberStyle.setDataFormat((short) BuiltinFormats.getBuiltinFormat("#,##0.00"));
 
         rowIdx          = 0;
         for (rowIdx = 0; rowIdx < childrenList.size(); rowIdx++) {
@@ -267,11 +225,11 @@ public class JournalAccumulator {
 
                 cell = row.createCell(OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_TITLE_NR);
                 cell.setCellValue(account.getNumber());
-                cell.setCellStyle(boldStyle);
+                cell.setCellStyle(styles.boldStyle);
 
                 cell = row.createCell(OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR);
                 cell.setCellValue(account.getName());
-                cell.setCellStyle(boldStyle);
+                cell.setCellStyle(styles.boldStyle);
 
                 total = account.getTotal().doubleValue();
             } else {
@@ -284,15 +242,15 @@ public class JournalAccumulator {
 
                 cell = row.createCell(OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR);
                 cell.setCellValue(account.getNumber());
-                cell.setCellStyle(normalStyle);
+                cell.setCellStyle(styles.normalStyle);
 
                 cell = row.createCell(OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT);
                 cell.setCellValue(account.getName());
-                cell.setCellStyle(normalStyle);
+                cell.setCellStyle(styles.normalStyle);
 
                 cell = row.createCell(OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_AMOUNT);
                 cell.setCellValue(account.getTotal().doubleValue());
-                cell.setCellStyle(numberStyle);
+                cell.setCellStyle(styles.numberStyle);
 
                     /* peek next account and check if it's a TitleAccount... */
                 if ((rowIdx + 1) < childrenList.size()) {
@@ -310,10 +268,89 @@ public class JournalAccumulator {
                     writeTotal = false;
                     cell = row.createCell(OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_TOTAL);
                     cell.setCellValue(total);
-                    cell.setCellStyle(totalStyle);
+                    cell.setCellStyle(styles.totalStyle);
                 }
             }
 
+        }
+    }
+
+    private void writeCellsForAccountTransactions(XSSFWorkbook workbook, XSSFSheet sheet, JournalStyles styles, AccountList accountList) {
+        Cell                cell;
+        XSSFRow             row;
+        DataFormat          format;
+        CreationHelper      createHelper;
+        CellStyle           normalStyle;
+        CellStyle           boldStyle;
+        CellStyle           dateStyle;
+        CellStyle           numberStyle;
+        CellStyle           boldNumberStyle;
+        CellStyle           totalStyle;
+        Font                normalFont;
+        Font                boldFont;
+
+        Account             account;
+        List<Transaction>   transactionList;
+        Transaction         transaction;
+
+        double              total;
+        boolean             writeTotal;
+        int                 accountIdx;
+        int                 transactionIdx;
+        int                 rowIdx;
+
+        rowIdx = 0;
+        for (accountIdx = 0; accountIdx < accountList.size(); accountIdx++) {
+            account         = accountList.get(accountIdx);
+            if (!(account instanceof TitleAccount)) {
+                transactionList = account.getTransactionList();
+
+                row = sheet.createRow(rowIdx++);
+
+                cell = row.createCell(0);
+                cell.setCellValue(account.getNumber());
+
+                cell = row.createCell(1);
+                cell.setCellValue(account.getName());
+
+                total = 0.0;
+                for (transactionIdx = 0; transactionIdx < transactionList.size(); transactionIdx++) {
+                    transaction = transactionList.get(transactionIdx);
+                    row = sheet.createRow(rowIdx++);
+
+                    cell = row.createCell(OUTPUT_COLUMN_TRANSACTION_NR);
+                    cell.setCellValue(transaction.getNr());
+
+                    cell = row.createCell(OUTPUT_COLUMN_TRANSACTION_DATE);
+                    cell.setCellValue(transaction.getDate());
+                    cell.setCellStyle(styles.dateStyle);
+
+                    cell = row.createCell(OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT);
+                    cell.setCellValue(transaction.getDebit().getNumber());
+
+                    cell = row.createCell(OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT);
+                    cell.setCellValue(transaction.getCredit().getNumber());
+
+                    cell = row.createCell(OUTPUT_COLUMN_TRANSACTION_TEXT);
+                    cell.setCellValue(transaction.getText());
+
+                    if (account.getNumber() == transaction.getDebit().getNumber()) {
+                        cell = row.createCell(OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT);
+                        total += transaction.getAmount().doubleValue();
+                    } else {
+                        cell = row.createCell(OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT);
+                        total -= transaction.getAmount().doubleValue();
+                    }
+                    cell.setCellValue(transaction.getAmount().doubleValue());
+                    cell.setCellStyle(styles.numberStyle);
+
+                    cell = row.createCell(OUTPUT_COLUMN_TRANSACTION_TOTAL);
+                    cell.setCellValue(total);
+                    cell.setCellStyle(styles.numberStyle);
+                }
+                rowIdx++;
+                rowIdx++;
+            }
         }
     }
 
@@ -329,6 +366,26 @@ public class JournalAccumulator {
         sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_ACCOUNT,    true);
         sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_AMOUNT,     true);
         sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_TOTAL,      true);
+    }
+
+    public static void setColumnWidthForAccountTransactions(XSSFSheet sheet) {
+        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_TRANSACTION_NR,               OUTPUT_COLUMN_TRANSACTION_NR_WIDTH);
+        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_TRANSACTION_DATE,             OUTPUT_COLUMN_TRANSACTION_DATE_WIDTH);
+        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT,    OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT_WIDTH);
+        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT,   OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT_WIDTH);
+        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_TRANSACTION_TEXT,             OUTPUT_COLUMN_TRANSACTION_TEXT_WIDTH);
+        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT,     OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT_WIDTH);
+        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT,    OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT_WIDTH);
+        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_TRANSACTION_TOTAL,            OUTPUT_COLUMN_TRANSACTION_TOTAL_WIDTH);
+
+        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_TRANSACTION_NR,            true);
+        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_TRANSACTION_DATE,          true);
+        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT, true);
+        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT,true);
+        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_TRANSACTION_TEXT,          true);
+        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT,  true);
+        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT, true);
+        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_TRANSACTION_TOTAL,         true);
     }
 
     public static boolean checkArray(int[] array, int value) {

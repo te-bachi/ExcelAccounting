@@ -2,6 +2,7 @@ package ch.fablabwinti.accounting;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -98,6 +99,20 @@ public abstract class Account {
 
     public void addTransaction(Transaction transaction) {
         this.transactionList.add(transaction);
+        this.transactionList.sort(new Comparator<Transaction>() {
+            @Override
+            public int compare(Transaction o1, Transaction o2) {
+                int a = o1.getDate().compareTo(o2.getDate());
+                if (a == 0) {
+                    if (o1.getNr() > o2.getNr()) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                }
+                return a;
+            }
+        });
 
         /* Debit */
         if (transaction.getDebit().getNumber() == number) {
