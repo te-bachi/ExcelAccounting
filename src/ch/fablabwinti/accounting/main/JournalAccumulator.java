@@ -6,13 +6,16 @@ import ch.fablabwinti.accounting.TitleAccount;
 import ch.fablabwinti.accounting.Transaction;
 import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,7 +28,7 @@ public class JournalAccumulator {
     public static int ACCOUNT_ASSET_NR                          = 1;
     public static int ACCOUNT_LIABILITY_NR                      = 2;
     public static int[] ACCOUNT_INCOME_NR                       = { 3, 7 };
-    public static int[] ACCOUNT_EXPENSE_NR                      = { 4, 5, 6, 9 };
+    public static int[] ACCOUNT_EXPENSE_NR                      = { 4, 5, 6, 8, 9 };
 
                                                                 /* Assets,  Liabilities */
     public static int[] OUTPUT_COLUMN_BALANCE                   = { 0,      5 }; /* offset */
@@ -278,23 +281,12 @@ public class JournalAccumulator {
     private void writeCellsForAccountTransactions(XSSFWorkbook workbook, XSSFSheet sheet, JournalStyles styles, AccountList accountList) {
         Cell                cell;
         XSSFRow             row;
-        DataFormat          format;
-        CreationHelper      createHelper;
-        CellStyle           normalStyle;
-        CellStyle           boldStyle;
-        CellStyle           dateStyle;
-        CellStyle           numberStyle;
-        CellStyle           boldNumberStyle;
-        CellStyle           totalStyle;
-        Font                normalFont;
-        Font                boldFont;
 
         Account             account;
         List<Transaction>   transactionList;
         Transaction         transaction;
 
         double              total;
-        boolean             writeTotal;
         int                 accountIdx;
         int                 transactionIdx;
         int                 rowIdx;
@@ -305,53 +297,108 @@ public class JournalAccumulator {
             if (!(account instanceof TitleAccount)) {
                 transactionList = account.getTransactionList();
 
+                /* Account Title */
                 row = sheet.createRow(rowIdx++);
 
-                cell = row.createCell(0);
-                cell.setCellValue(account.getNumber());
+                /* Account Nr */
+                createCell(row, OUTPUT_COLUMN_TRANSACTION_NR, account.getNumber(), styles.accountTitleStyle);
 
-                cell = row.createCell(1);
-                cell.setCellValue(account.getName());
+                /* Account Name */
+                createCell(row, OUTPUT_COLUMN_TRANSACTION_DATE, account.getName(), styles.accountTitleStyle);
+
+                /* Blank */
+                createCell(row, OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT,    "", styles.accountTitleStyle);
+                createCell(row, OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT,   "", styles.accountTitleStyle);
+                createCell(row, OUTPUT_COLUMN_TRANSACTION_TEXT,             "", styles.accountTitleStyle);
+                createCell(row, OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT,     "", styles.accountTitleStyle);
+                createCell(row, OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT,    "", styles.accountTitleStyle);
+                createCell(row, OUTPUT_COLUMN_TRANSACTION_TOTAL,            "", styles.accountTitleStyle);
+
+                sheet.addMergedRegion(
+                        new CellRangeAddress(
+                                row.getRowNum(),
+                                row.getRowNum(),
+                                OUTPUT_COLUMN_TRANSACTION_DATE,
+                                OUTPUT_COLUMN_TRANSACTION_TOTAL
+                        )
+                );
+
+                /* Account Header */
+                row = sheet.createRow(rowIdx++);
+
+                createCell(row, OUTPUT_COLUMN_TRANSACTION_NR,               "Nr.",       styles.accountHeaderStyle);
+                createCell(row, OUTPUT_COLUMN_TRANSACTION_DATE,             "Datum",     styles.accountHeaderStyle);
+                createCell(row, OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT,    "Soll Nr.",  styles.accountHeaderStyle);
+                createCell(row, OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT,   "Haben Nr.", styles.accountHeaderStyle);
+                createCell(row, OUTPUT_COLUMN_TRANSACTION_TEXT,             "Text",      styles.accountHeaderStyle);
+                createCell(row, OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT,     "Soll",      styles.accountHeaderStyle);
+                createCell(row, OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT,    "Haben",     styles.accountHeaderStyle);
+                createCell(row, OUTPUT_COLUMN_TRANSACTION_TOTAL,            "Total",     styles.accountHeaderStyle);
 
                 total = 0.0;
                 for (transactionIdx = 0; transactionIdx < transactionList.size(); transactionIdx++) {
                     transaction = transactionList.get(transactionIdx);
                     row = sheet.createRow(rowIdx++);
 
-                    cell = row.createCell(OUTPUT_COLUMN_TRANSACTION_NR);
-                    cell.setCellValue(transaction.getNr());
-
-                    cell = row.createCell(OUTPUT_COLUMN_TRANSACTION_DATE);
-                    cell.setCellValue(transaction.getDate());
-                    cell.setCellStyle(styles.dateStyle);
-
-                    cell = row.createCell(OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT);
-                    cell.setCellValue(transaction.getDebit().getNumber());
-
-                    cell = row.createCell(OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT);
-                    cell.setCellValue(transaction.getCredit().getNumber());
-
-                    cell = row.createCell(OUTPUT_COLUMN_TRANSACTION_TEXT);
-                    cell.setCellValue(transaction.getText());
+                    createCell(row, OUTPUT_COLUMN_TRANSACTION_NR,               transaction.getNr(),                    styles.normalStyle);
+                    createCell(row, OUTPUT_COLUMN_TRANSACTION_DATE,             transaction.getDate(),                  styles.dateStyle);
+                    createCell(row, OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT,    transaction.getDebit().getNumber(),     styles.normalStyle);
+                    createCell(row, OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT,   transaction.getCredit().getNumber(),    styles.normalStyle);
+                    createCell(row, OUTPUT_COLUMN_TRANSACTION_TEXT,             transaction.getText(),                  styles.normalStyle);
 
                     if (account.getNumber() == transaction.getDebit().getNumber()) {
-                        cell = row.createCell(OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT);
+                        createCell(row, OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT,  transaction.getAmount().doubleValue(), styles.numberStyle);
                         total += transaction.getAmount().doubleValue();
                     } else {
-                        cell = row.createCell(OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT);
+                        createCell(row, OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT, transaction.getAmount().doubleValue(), styles.numberStyle);
                         total -= transaction.getAmount().doubleValue();
                     }
-                    cell.setCellValue(transaction.getAmount().doubleValue());
-                    cell.setCellStyle(styles.numberStyle);
 
                     cell = row.createCell(OUTPUT_COLUMN_TRANSACTION_TOTAL);
                     cell.setCellValue(total);
-                    cell.setCellStyle(styles.numberStyle);
+                    if ((transactionIdx + 1) < transactionList.size()) {
+                        cell.setCellStyle(styles.numberStyle);
+                    } else {
+                        cell.setCellStyle(styles.accountTotalStyle);
+                    }
                 }
                 rowIdx++;
                 rowIdx++;
             }
         }
+    }
+
+    private Cell createCell(XSSFRow row, int columnIndex, String value, CellStyle cellStyle) {
+        Cell cell;
+        cell = row.createCell(columnIndex);
+        cell.setCellValue(value);
+        cell.setCellStyle(cellStyle);
+        return cell;
+    }
+
+    private Cell createCell(XSSFRow row, int columnIndex, int value, CellStyle cellStyle) {
+        Cell cell;
+        cell = row.createCell(columnIndex);
+        cell.setCellValue(value);
+        cell.setCellStyle(cellStyle);
+        return cell;
+    }
+
+    private Cell createCell(XSSFRow row, int columnIndex, double value, CellStyle cellStyle) {
+        Cell cell;
+        cell = row.createCell(columnIndex);
+        cell.setCellValue(value);
+        cell.setCellStyle(cellStyle);
+        return cell;
+    }
+
+
+    private Cell createCell(XSSFRow row, int columnIndex, Date value, CellStyle cellStyle) {
+        Cell cell;
+        cell = row.createCell(columnIndex);
+        cell.setCellValue(value);
+        cell.setCellStyle(cellStyle);
+        return cell;
     }
 
     public static void setColumnWidthForBalanceProfitAndLoss(XSSFSheet sheet, int idx) {

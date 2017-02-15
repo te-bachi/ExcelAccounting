@@ -8,6 +8,7 @@ import org.apache.poi.ss.usermodel.*;
 public class JournalStyles {
     public Font             normalFont;
     public Font             boldFont;
+    public Font             smallFont;
 
     public CreationHelper   createHelper;
     public CellStyle        normalStyle;
@@ -16,6 +17,9 @@ public class JournalStyles {
     public CellStyle        numberStyle;
     public CellStyle        boldNumberStyle;
     public CellStyle        totalStyle;
+    public CellStyle        accountTitleStyle;
+    public CellStyle        accountHeaderStyle;
+    public CellStyle        accountTotalStyle;
 
     public JournalStyles(Workbook workbook) {
 
@@ -29,6 +33,10 @@ public class JournalStyles {
         boldFont.setFontHeightInPoints((short)11);
         boldFont.setFontName("Arial");
         boldFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+
+        smallFont            = workbook.createFont();
+        smallFont.setFontHeightInPoints((short)8);
+        smallFont.setFontName("Arial");
 
         /* Normal Style */
         normalStyle         = workbook.createCellStyle();
@@ -48,6 +56,7 @@ public class JournalStyles {
         /* Date Style */
         dateStyle           = workbook.createCellStyle();
         createHelper        = workbook.getCreationHelper();
+        dateStyle.setFont(normalFont);
         dateStyle.setDataFormat(createHelper.createDataFormat().getFormat("DD.MM.YYYY"));
 
         /* Number Style */
@@ -59,5 +68,24 @@ public class JournalStyles {
         boldNumberStyle     = workbook.createCellStyle();
         boldNumberStyle.setFont(boldFont);
         boldNumberStyle.setDataFormat((short) BuiltinFormats.getBuiltinFormat("#,##0.00"));
+
+        /* Account Title Style */
+        accountTitleStyle   = workbook.createCellStyle();
+        accountTitleStyle.setFont(boldFont);
+        accountTitleStyle.setBorderBottom(CellStyle.BORDER_THIN);
+        accountTitleStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+
+        /* Account Header Style */
+        accountHeaderStyle   = workbook.createCellStyle();
+        accountHeaderStyle.setFont(smallFont);
+        accountHeaderStyle.setBorderBottom(CellStyle.BORDER_THIN);
+        accountHeaderStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+
+        /* Account Total Style */
+        accountTotalStyle   = workbook.createCellStyle();
+        accountTotalStyle.setFont(boldFont);
+        accountTotalStyle.setBorderBottom(CellStyle.BORDER_DOUBLE);
+        accountTotalStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        accountTotalStyle.setDataFormat((short) BuiltinFormats.getBuiltinFormat("#,##0.00"));
     }
 }
