@@ -19,14 +19,24 @@ import java.util.List;
  */
 public class JournalAccumulator {
 
+    private static String OUTPUT_SHEET_BALANCE_STR                       = "Bilanz";
+    private static String OUTPUT_SHEET_PROFIT_LOSS_STR                   = "Erfolgsrechnung";
+    private static String OUTPUT_SHEET_ACCOUNTS                          = "Konten";
+
     private static int ACCOUNT_NUM_COLUMNS                               = 2;
 
+    /* Account Numbers */
     private static int ACCOUNT_ASSET_NR                                  = 1;
     private static int ACCOUNT_LIABILITY_NR                              = 2;
     private static int[] ACCOUNT_EXPENSE_NR                              = { 4, 5, 6, 8, 9 };
     private static int[] ACCOUNT_INCOME_NR                               = { 3, 7 };
+    private static int ACCOUNT_BALANCE_PROFIT_TAXABLE                    = 2978;
+    private static int ACCOUNT_BALANCE_PROFIT_TAXLESS                    = 2979;
+    private static int ACCOUNT_PROFIT_LOSS_PROFIT_TAXABLE                = 9200;
+    private static int ACCOUNT_PROFIT_LOSS_PROFIT_TAXLESS                = 9201;
+    private static int ACCOUNT_INITIAL                                   = 9999;
 
-                                                                        /* Assets,  Liabilities */
+    /* */                                                                /* Assets,  Liabilities */
     private static int[] OUTPUT_COLUMN_BALANCE                           = { 0,      5 }; /* offset */
 
     private static int OUTPUT_COLUMN_BALANCE_TITLE_NR                    = 0;
@@ -43,6 +53,15 @@ public class JournalAccumulator {
     private static int OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT            = 5;
     private static int OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT           = 6;
     private static int OUTPUT_COLUMN_TRANSACTION_TOTAL                   = 7;
+
+    private static String OUTPUT_COLUMN_TRANSACTION_NR_STR               = "Nr.";
+    private static String OUTPUT_COLUMN_TRANSACTION_DATE_STR             = "Datum";
+    private static String OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT_STR    = "Soll Nr.";
+    private static String OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT_STR   = "Haben Nr.";
+    private static String OUTPUT_COLUMN_TRANSACTION_TEXT_STR             = "Text";
+    private static String OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT_STR     = "Soll";
+    private static String OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT_STR    = "Haben";
+    private static String OUTPUT_COLUMN_TRANSACTION_TOTAL_STR            = "Total";
 
     /* 7 px per point */
     private static double OUTPUT_COLUMN_BALANCE_TITLE_NR_WIDTH           = 4.7142;    /* 33 px */
@@ -109,10 +128,16 @@ public class JournalAccumulator {
         AccountList         rootList;
         AccountList         accountList;
         Account             rootAccount;
+        Account             assetAccount;
+        Account             liabilityAccount;
         List<Account>       incomeList;
         List<Account>       expenseList;
         List<Account>       childrenList;
         JournalStyles       styles;
+        double              neg;
+
+        assetAccount        = null;
+        liabilityAccount    = null;
 
         /* All accounts in a tree structure */
         rootList            = new AccountList(accountPlan.getRootList());
@@ -128,60 +153,13 @@ public class JournalAccumulator {
         workbook            = new XSSFWorkbook();
         styles              = new JournalStyles(workbook);
 
-        /*** Bilanz **********************************************************/
-        spreadsheetBilanz   = workbook.createSheet("Bilanz");
 
-        /* Set sheet width => splitted in asset and liability section */
-        for (columnOffset = 0; columnOffset < OUTPUT_COLUMN_BALANCE.length; columnOffset++) {
-            setColumnWidthForBalanceProfitAndLoss(spreadsheetBilanz, columnOffset);
-        }
-
-        rootAccount     = null;
-        balanceMaxIdx   = 0;
-
-        /* Remove the asset and the liability account from the root list,
-         * collect all children and write it to the sheet */
-        for (columnOffset = 0; columnOffset < ACCOUNT_NUM_COLUMNS; columnOffset++) {
-            /* remove the asset account */
-            if (columnOffset == 0) {
-                rootAccount = rootList.remove(ACCOUNT_ASSET_NR);
-
-            /* remove the liability account  */
-            } else if (columnOffset == 1) {
-                rootAccount = rootList.remove(ACCOUNT_LIABILITY_NR);
-            }
-
-            /* Clear children list */
-            childrenList.clear();
-
-            /* collect all children from account */
-            collectChildren(childrenList, rootAccount);
-
-            /* Write child-accounts to the sheet
-             * rowIdx >= balanceMaxIdx --> create new row, otherwise re-use old row */
-            writeCellsForBalanceProfitAndLoss(spreadsheetBilanz, styles, childrenList, columnOffset, balanceMaxIdx);
-
-            /**
-             * Create new row or re-use old row?
-             * What row is the total row?
-             * increase max. row number for balance if necessary.
-             *
-             *  Asset    | Liability
-             * __________|__________
-             * A1        | L1
-             * A2        |
-             * __________|__________
-             * Total     | Total
-             * __________|__________
-             **/
-            if (balanceMaxIdx < childrenList.size()) {
-                balanceMaxIdx = childrenList.size();
-            }
-        }
-
+        /*** Create Sheets ***************************************************/
+        spreadsheetBilanz   = workbook.createSheet(OUTPUT_SHEET_BALANCE_STR);
+        spreadsheetErfolg   = workbook.createSheet(OUTPUT_SHEET_PROFIT_LOSS_STR);
+        spreadsheetKonten   = workbook.createSheet(OUTPUT_SHEET_ACCOUNTS);
 
         /*** Erfolgsrechnung *************************************************/
-        spreadsheetErfolg           = workbook.createSheet("Erfolgsrechnung");
 
         /* Set sheet width => splitted in expense and income section */
         for (columnOffset = 0; columnOffset < OUTPUT_COLUMN_BALANCE.length; columnOffset++) {
@@ -205,11 +183,18 @@ public class JournalAccumulator {
 
             /* warning if it's neither an expense nor an income account */
             } else {
-                System.out.println(rootAccount.getNumber() + " \"" + rootAccount.getName() + "\" is neither an income nor an expense account");
+                if (rootAccount.getNumber() == ACCOUNT_ASSET_NR) {
+                    assetAccount = rootAccount;
+                } else if (rootAccount.getNumber() == ACCOUNT_LIABILITY_NR) {
+                    liabilityAccount = rootAccount;
+                } else {
+                    System.out.println(rootAccount.getNumber() + " \"" + rootAccount.getName() + "\" is neither an income nor an expense account");
+                }
             }
         }
 
         balanceMaxIdx   = 0;
+        neg             = 1.0;
 
         /* Collect all children from all expense or income accounts and write it to the sheet */
         for (columnOffset = 0; columnOffset < ACCOUNT_NUM_COLUMNS; columnOffset++) {
@@ -221,6 +206,7 @@ public class JournalAccumulator {
             if (columnOffset == 0) {
                 childrenList.clear();
                 collectChildren(childrenList, expenseList);
+                neg = 1.0;
 
             /* income list =
              *   3 operating revenue
@@ -229,11 +215,12 @@ public class JournalAccumulator {
             } else if (columnOffset == 1) {
                 childrenList.clear();
                 collectChildren(childrenList, incomeList);
+                neg = -1.0;
             }
 
             /* Write child-accounts to the sheet.
              * rowIdx >= balanceMaxIdx --> create new row, otherwise re-use old row */
-            writeCellsForBalanceProfitAndLoss(spreadsheetErfolg, styles, childrenList, columnOffset, balanceMaxIdx);
+            writeCellsForBalanceProfitAndLoss(spreadsheetErfolg, styles, childrenList, columnOffset, balanceMaxIdx, neg);
 
             /*
              * Create new row or re-use old row?
@@ -253,8 +240,59 @@ public class JournalAccumulator {
             }
         }
 
+        /*** Bilanz **********************************************************/
+
+        /* Set sheet width => splitted in asset and liability section */
+        for (columnOffset = 0; columnOffset < OUTPUT_COLUMN_BALANCE.length; columnOffset++) {
+            setColumnWidthForBalanceProfitAndLoss(spreadsheetBilanz, columnOffset);
+        }
+
+        rootAccount     = null;
+        balanceMaxIdx   = 0;
+
+        /* Remove the asset and the liability account from the root list,
+         * collect all children and write it to the sheet */
+        for (columnOffset = 0; columnOffset < ACCOUNT_NUM_COLUMNS; columnOffset++) {
+            /* asset */
+            if (columnOffset == 0) {
+                rootAccount = assetAccount;
+                neg         = 1.0;
+
+            /* liability */
+            } else if (columnOffset == 1) {
+                rootAccount = liabilityAccount;
+                neg         = -1.0;
+            }
+
+            /* Clear children list */
+            childrenList.clear();
+
+            /* collect all children from account */
+            collectChildren(childrenList, rootAccount);
+
+            /* Write child-accounts to the sheet
+             * rowIdx >= balanceMaxIdx --> create new row, otherwise re-use old row */
+            writeCellsForBalanceProfitAndLoss(spreadsheetBilanz, styles, childrenList, columnOffset, balanceMaxIdx, neg);
+
+            /**
+             * Create new row or re-use old row?
+             * What row is the total row?
+             * increase max. row number for balance if necessary.
+             *
+             *  Asset    | Liability
+             * __________|__________
+             * A1        | L1
+             * A2        |
+             * __________|__________
+             * Total     | Total
+             * __________|__________
+             **/
+            if (balanceMaxIdx < childrenList.size()) {
+                balanceMaxIdx = childrenList.size();
+            }
+        }
+
         /*** Konten **********************************************************/
-        spreadsheetKonten   = workbook.createSheet("Konten");
         setColumnWidthForAccountTransactions(spreadsheetKonten);
         writeCellsForAccountTransactions(spreadsheetKonten, styles, accountList);
 
@@ -273,7 +311,7 @@ public class JournalAccumulator {
      * @param columnOffset
      * @param balanceMaxIdx
      */
-    private void writeCellsForBalanceProfitAndLoss(XSSFSheet sheet, JournalStyles styles, List<Account> childrenList, int columnOffset, int balanceMaxIdx) {
+    private void writeCellsForBalanceProfitAndLoss(XSSFSheet sheet, JournalStyles styles, List<Account> childrenList, int columnOffset, int balanceMaxIdx, double neg) {
         XSSFRow             row;
 
         Account             account;
@@ -288,6 +326,11 @@ public class JournalAccumulator {
         /* Iterate over the whole children list (list of accounts) */
         for (rowIdx = 0; rowIdx < childrenList.size(); rowIdx++) {
             account = childrenList.get(rowIdx);
+
+            /* bypass initial account */
+            if (account.getNumber() == ACCOUNT_INITIAL) {
+                continue;
+            }
 
             /* create or re-use row */
             if (rowIdx >= balanceMaxIdx) {
@@ -317,9 +360,9 @@ public class JournalAccumulator {
                 new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT,       styles.normalStyle).createCell(account.getName());
 
                 /* Account Total (Calculated in TODO)*/
-                new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_AMOUNT,        styles.numberStyle).createCell(account.getTotal().doubleValue());
+                new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_AMOUNT,        styles.numberStyle).createCell(neg * account.getTotal().doubleValue());
 
-                /* Curremt account is NOT the last in the list ... */
+                /* Current account is NOT the last in the list ... */
                 if ((rowIdx + 1) < childrenList.size()) {
                     /* peek next account and check if it's a TitleAccount... */
                     account = childrenList.get(rowIdx + 1);
@@ -335,7 +378,7 @@ public class JournalAccumulator {
                 /* Write total to sheet */
                 if (writeTotal) {
                     writeTotal = false;
-                    new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_TOTAL,     styles.totalStyle).createCell(total);
+                    new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_TOTAL,     styles.totalStyle).createCell(neg * total);
                 }
             }
 
@@ -407,14 +450,14 @@ public class JournalAccumulator {
                 /* Account Header */
                 row = sheet.createRow(rowIdx++);
 
-                new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_NR,              styles.accountHeaderStyle).createCell("Nr.");
-                new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_DATE,            styles.accountHeaderStyle).createCell("Datum");
-                new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT,   styles.accountHeaderStyle).createCell("Soll Nr.");
-                new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT,  styles.accountHeaderStyle).createCell("Haben Nr.");
-                new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_TEXT,            styles.accountHeaderStyle).createCell("Text");
-                new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT,    styles.accountHeaderStyle).createCell("Soll");
-                new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT,   styles.accountHeaderStyle).createCell("Haben");
-                new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_TOTAL,           styles.accountHeaderStyle).createCell("Total");
+                new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_NR,              styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_TRANSACTION_NR_STR);
+                new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_DATE,            styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_TRANSACTION_DATE_STR);
+                new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT,   styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT_STR);
+                new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT,  styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT_STR);
+                new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_TEXT,            styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_TRANSACTION_TEXT_STR);
+                new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT,    styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT_STR);
+                new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT,   styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT_STR);
+                new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_TOTAL,           styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_TRANSACTION_TOTAL_STR);
 
                 total = 0.0;
 
