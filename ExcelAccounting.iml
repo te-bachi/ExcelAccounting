@@ -16,5 +16,9 @@
     <orderEntry type="library" name="poi-ooxml-schemas-3.14-20160307" level="project" />
     <orderEntry type="library" name="curvesapi-1.03" level="project" />
     <orderEntry type="library" name="xmlbeans-2.6.0" level="project" />
+    <orderEntry type="library" name="commons-lang3-3.6" level="project" />
+    <orderEntry type="library" name="commons-beanutils-1.9.3" level="project" />
+    <orderEntry type="library" name="commons-text-1.1" level="project" />
+    <orderEntry type="library" name="opencsv-4.1-SNAPSHOT" level="project" />
   </component>
 </module>

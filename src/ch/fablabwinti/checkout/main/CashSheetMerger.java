@@ -41,17 +41,23 @@ public class CashSheetMerger {
         int                 idx = 0;
         SimpleDateFormat    dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         try {
+            /* creates a folder class from the argument */
             folder = new File(args[0]);
             if (!folder.exists()) {
                 System.out.println("file does not exist!");
                 System.exit(-2);
             }
+
+            /* if the argument is a file, use the folder of the file */
             if (folder.isFile()) {
                 folder = folder.getParentFile();
             } else {
                 folder = folder;
             }
+
+            /* iterate over the folder */
             for (File file : folder.listFiles()) {
+                /* if there are subfolders, ignore it */
                 if (file.isDirectory()) {
                     continue;
                 }

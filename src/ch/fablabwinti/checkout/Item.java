@@ -1,5 +1,8 @@
 package ch.fablabwinti.checkout;
 
+import com.opencsv.bean.CsvBindByPosition;
+import com.opencsv.bean.CsvDate;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -7,11 +10,23 @@ import java.util.Date;
  *
  */
 public class Item {
+    @CsvBindByPosition(position = 0)
+    @CsvDate("dd.MM.yyyy")
     private Date        date;
-    private String      machine;
+
+    @CsvBindByPosition(position = 1)
+    private String position;
+
+    @CsvBindByPosition(position = 2)
     private String      member;
+
+    @CsvBindByPosition(position = 3)
     private String      text;
+
+    @CsvBindByPosition(position = 4)
     private int         duration;
+
+    @CsvBindByPosition(position = 5)
     private BigDecimal  amount;
 
     public Date getDate() {
@@ -22,12 +37,12 @@ public class Item {
         this.date = date;
     }
 
-    public String getMachine() {
-        return machine;
+    public String getPosition() {
+        return position;
     }
 
-    public void setMachine(String machine) {
-        this.machine = machine;
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     public String getMember() {

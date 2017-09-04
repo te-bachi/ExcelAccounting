@@ -84,12 +84,21 @@ public abstract class Account {
         this.transactionList = transactionList;
     }
 
+    /**
+     * Add total to Account and all parent TitleAccounts
+     * @param amount
+     */
     public void addTotal(BigDecimal amount) {
         total = total.add(amount);
         if (parent != null) {
             parent.addTotal(amount);
         }
     }
+
+    /**
+     * Subtract total from Account and all parent TitleAccounts
+     * @param amount
+     */
     public void subtractTotal(BigDecimal amount) {
         total = total.subtract(amount);
         if (parent != null) {

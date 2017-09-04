@@ -117,6 +117,11 @@ public class JournalAccumulator {
         }
     }
 
+    private void calculateAccounts() {
+
+    }
+
+
     public void exportOutput() throws Exception {
         FileOutputStream    out;
         XSSFWorkbook        workbook;
@@ -196,8 +201,16 @@ public class JournalAccumulator {
         balanceMaxIdx   = 0;
         neg             = 1.0;
 
-        /* Collect all children from all expense or income accounts and write it to the sheet */
+
+
+        /* Es wird zuerst über die ExpenseList, danach über die IncomeList iteriert.
+         * Dabei werden alle Kinder- und Kindes-Kinder-Konten in eine Liste getan: die ChildrenList
+         * Diese ChildrenList ist gleich wie in der Ausgabedatei im Excel
+         *
+         * Collect all children from all expense or income accounts and write it to the sheet
+         */
         for (columnOffset = 0; columnOffset < ACCOUNT_NUM_COLUMNS; columnOffset++) {
+
             /* expense list =
              *   4 material expenses
              *   5 staff expenses
