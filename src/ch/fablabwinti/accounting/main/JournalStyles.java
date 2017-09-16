@@ -21,6 +21,8 @@ public class JournalStyles {
     public CellStyle        accountHeaderStyle;
     public CellStyle        accountTotalStyle;
 
+    public CellStyle        balanceStyle;
+
     public JournalStyles(Workbook workbook) {
 
 
@@ -87,5 +89,15 @@ public class JournalStyles {
         accountTotalStyle.setBorderBottom(CellStyle.BORDER_DOUBLE);
         accountTotalStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
         accountTotalStyle.setDataFormat((short) BuiltinFormats.getBuiltinFormat("#,##0.00"));
+
+
+        /* Account Total Style */
+        balanceStyle        = workbook.createCellStyle();
+        balanceStyle.setFont(boldFont);
+        balanceStyle.setBorderTop(CellStyle.BORDER_THIN);
+        balanceStyle.setBorderBottom(CellStyle.BORDER_DOUBLE);
+        balanceStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        balanceStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        balanceStyle.setDataFormat((short) BuiltinFormats.getBuiltinFormat("#,##0.00"));
     }
 }

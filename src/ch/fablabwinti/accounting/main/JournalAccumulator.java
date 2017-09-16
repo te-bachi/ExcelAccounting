@@ -1,9 +1,6 @@
 package ch.fablabwinti.accounting.main;
 
-import ch.fablabwinti.accounting.Account;
-import ch.fablabwinti.accounting.AccountList;
-import ch.fablabwinti.accounting.TitleAccount;
-import ch.fablabwinti.accounting.Transaction;
+import ch.fablabwinti.accounting.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -11,6 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,11 +28,16 @@ public class JournalAccumulator {
     private static int ACCOUNT_LIABILITY_NR                              = 2;
     private static int[] ACCOUNT_EXPENSE_NR                              = { 4, 5, 6, 8, 9 };
     private static int[] ACCOUNT_INCOME_NR                               = { 3, 7 };
+
+    private static int[] ACCOUNT_PROFIT_LOSS_EXPENSE_TAXABLE_NR          = { 4, 5, 6, 8 };
+    private static int[] ACCOUNT_PROFIT_LOSS_EXPENSE_TAXLESS_NR          = { };
+    private static int[] ACCOUNT_PROFIT_LOSS_INCOME_TAXABLE_NR           = { 3 };
+    private static int[] ACCOUNT_PROFIT_LOSS_INCOME_TAXLESS_NR           = { 7 };
     private static int ACCOUNT_BALANCE_PROFIT_TAXABLE                    = 2978;
     private static int ACCOUNT_BALANCE_PROFIT_TAXLESS                    = 2979;
     private static int ACCOUNT_PROFIT_LOSS_PROFIT_TAXABLE                = 9200;
     private static int ACCOUNT_PROFIT_LOSS_PROFIT_TAXLESS                = 9201;
-    private static int ACCOUNT_INITIAL                                   = 9999;
+    private static int[] ACCOUNT_INITIAL                                   = { 99, 9999 };
 
     /* */                                                                /* Assets,  Liabilities */
     private static int[] OUTPUT_COLUMN_BALANCE                           = { 0,      5 }; /* offset */
@@ -90,7 +93,20 @@ public class JournalAccumulator {
         accountPlan = new AccountPlanExport();
         accountPlan.parseInput(accountPlanFile, 6);
 
-        /* Journal */
+        /**
+         * Journal
+         *
+         * parse journal and accumulate accounting records of any account
+         * ex. 1000 Kasse
+         *     transaction list:
+         *         1000 2000 100.- inflow
+         *         1000 3000 200.- inflow
+         *         4000 1000  50.- outflow
+         *         =======================
+         *         total     250.-
+         *
+         *  and sumup every parent TitleAccount!
+         */
         journalExport = new JournalExport();
         journalExport.parseInput(journalExportFile, null, new AccountList(accountPlan.getAccountList()));
 
@@ -117,8 +133,39 @@ public class JournalAccumulator {
         }
     }
 
-    private void calculateAccounts() {
+    private void calculateFinancialStatements(AccountList rootList, AccountList accountList) {
 
+        BigDecimal neg     = new BigDecimal(-1.0);
+        BigDecimal taxable = new BigDecimal(0.0);
+        BigDecimal taxless = new BigDecimal(0.0);;
+
+        for (Account account : rootList) {
+            /* Expense Taxable */
+            if (checkArray(ACCOUNT_PROFIT_LOSS_EXPENSE_TAXABLE_NR, account.getNumber())) {
+                taxable = taxable.add(account.getTotal().abs());
+
+            /* Expense Taxless */
+            } else if (checkArray(ACCOUNT_PROFIT_LOSS_EXPENSE_TAXLESS_NR, account.getNumber())) {
+                taxless = taxless.add(account.getTotal().abs());
+
+            /* Income Taxable */
+            } else if (checkArray(ACCOUNT_PROFIT_LOSS_INCOME_TAXABLE_NR, account.getNumber())) {
+                taxable = taxable.subtract(account.getTotal().abs());
+
+            /* Income Taxless */
+            } else if (checkArray(ACCOUNT_PROFIT_LOSS_INCOME_TAXLESS_NR, account.getNumber())) {
+                taxless = taxless.subtract(account.getTotal().abs());
+            }
+        }
+
+        try {
+            accountList.find(ACCOUNT_BALANCE_PROFIT_TAXABLE).addTotal(taxable);
+            accountList.find(ACCOUNT_BALANCE_PROFIT_TAXLESS).addTotal(taxless);
+            accountList.find(ACCOUNT_PROFIT_LOSS_PROFIT_TAXABLE).addTotal(taxable.multiply(neg));
+            accountList.find(ACCOUNT_PROFIT_LOSS_PROFIT_TAXLESS).addTotal(taxless.multiply(neg));
+        } catch (AccountNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 
@@ -145,6 +192,21 @@ public class JournalAccumulator {
         liabilityAccount    = null;
 
         /* All accounts in a tree structure */
+        /*
+         * 1 Aktiven (= ASSET)
+         *   10 Umlaufvermögen
+         *   14 Anlagevermögen
+         * 2 Passiven (= LIABILITY)
+         *   20 Kurz Fremdkapital
+         *   24 Lang Fremdkapital
+         *   28 Eigenkapital
+         * 3 Betrieblicher Ertrag (= INCOME)
+         *   ..
+         * 4 Aufwand für Material und Dienstleistungen (= EXPENSE)
+         *   ..
+         * 5 Personalaufwand (= EXPENSE)
+         *   ..
+         */
         rootList            = new AccountList(accountPlan.getRootList());
 
         /* All accounts in a flat structure */
@@ -158,6 +220,8 @@ public class JournalAccumulator {
         workbook            = new XSSFWorkbook();
         styles              = new JournalStyles(workbook);
 
+        /* Abschluss mit Steuerbarem + Steuerfreiem Gewinn */
+        calculateFinancialStatements(rootList, accountList);
 
         /*** Create Sheets ***************************************************/
         spreadsheetBilanz   = workbook.createSheet(OUTPUT_SHEET_BALANCE_STR);
@@ -171,17 +235,17 @@ public class JournalAccumulator {
             setColumnWidthForBalanceProfitAndLoss(spreadsheetErfolg, columnOffset);
         }
 
-        /* Split root list into expense- and income list */
+        /* Split root list into expense- and income list (+ one asset + liability)*/
         while (!rootList.isEmpty()) {
             /* Remove an account from the list */
             rootAccount = rootList.removeNext();
 
-            /* check if is an expense account ... */
+            /* check if is an expense account (compare account number!) ... */
             if (checkArray(ACCOUNT_EXPENSE_NR, rootAccount.getNumber())) {
                 /* add to expense list */
                 expenseList.add(rootAccount);
 
-            /* ... or an income account */
+            /* ... or an income account (compare account number!) */
             } else if (checkArray(ACCOUNT_INCOME_NR, rootAccount.getNumber())) {
                 /* add to income list */
                 incomeList.add(rootAccount);
@@ -201,13 +265,16 @@ public class JournalAccumulator {
         balanceMaxIdx   = 0;
         neg             = 1.0;
 
-
-
-        /* Es wird zuerst über die ExpenseList, danach über die IncomeList iteriert.
+        /* Immer noch Erfolgsrechnung:
+         *
+         * Es wird zuerst über die ExpenseList, danach über die IncomeList iteriert.
          * Dabei werden alle Kinder- und Kindes-Kinder-Konten in eine Liste getan: die ChildrenList
          * Diese ChildrenList ist gleich wie in der Ausgabedatei im Excel
          *
          * Collect all children from all expense or income accounts and write it to the sheet
+         * columnOffset:
+         *   0 = expense
+         *   1 = income
          */
         for (columnOffset = 0; columnOffset < ACCOUNT_NUM_COLUMNS; columnOffset++) {
 
@@ -218,6 +285,7 @@ public class JournalAccumulator {
              **/
             if (columnOffset == 0) {
                 childrenList.clear();
+                /* recursively add children from tree-like expenseList to flat childrenList */
                 collectChildren(childrenList, expenseList);
                 neg = 1.0;
 
@@ -227,11 +295,12 @@ public class JournalAccumulator {
              **/
             } else if (columnOffset == 1) {
                 childrenList.clear();
+                 /* recursively add children from tree-like incomeList to flat childrenList  */
                 collectChildren(childrenList, incomeList);
                 neg = -1.0;
             }
 
-            /* Write child-accounts to the sheet.
+            /* Populate accounts in output file: write child-accounts to the sheet.
              * rowIdx >= balanceMaxIdx --> create new row, otherwise re-use old row */
             writeCellsForBalanceProfitAndLoss(spreadsheetErfolg, styles, childrenList, columnOffset, balanceMaxIdx, neg);
 
@@ -251,6 +320,21 @@ public class JournalAccumulator {
             if (balanceMaxIdx < childrenList.size()) {
                 balanceMaxIdx = childrenList.size();
             }
+        }
+        /* Balance */
+        for (columnOffset = 0; columnOffset < ACCOUNT_NUM_COLUMNS; columnOffset++) {
+            /* asset */
+            if (columnOffset == 0) {
+                childrenList = expenseList;
+                neg         = 1.0;
+
+            /* liability */
+            } else if (columnOffset == 1) {
+                childrenList = incomeList;
+                neg         = -1.0;
+            }
+
+            writeBalance(spreadsheetErfolg, styles, childrenList, columnOffset, balanceMaxIdx, neg);
         }
 
         /*** Bilanz **********************************************************/
@@ -304,12 +388,27 @@ public class JournalAccumulator {
                 balanceMaxIdx = childrenList.size();
             }
         }
+        /* Balance */
+        for (columnOffset = 0; columnOffset < ACCOUNT_NUM_COLUMNS; columnOffset++) {
+            /* asset */
+            if (columnOffset == 0) {
+                rootAccount = assetAccount;
+                neg         = 1.0;
+
+            /* liability */
+            } else if (columnOffset == 1) {
+                rootAccount = liabilityAccount;
+                neg         = -1.0;
+            }
+
+            writeBalance(spreadsheetBilanz, styles, rootAccount.getChildList(), columnOffset, balanceMaxIdx, neg);
+        }
 
         /*** Konten **********************************************************/
         setColumnWidthForAccountTransactions(spreadsheetKonten);
         writeCellsForAccountTransactions(spreadsheetKonten, styles, accountList);
 
-        out = new FileOutputStream(outputFile);
+            out = new FileOutputStream(outputFile);
         workbook.write(out);
         out.close();
     }
@@ -341,7 +440,7 @@ public class JournalAccumulator {
             account = childrenList.get(rowIdx);
 
             /* bypass initial account */
-            if (account.getNumber() == ACCOUNT_INITIAL) {
+            if (checkArray(ACCOUNT_INITIAL, account.getNumber())) {
                 continue;
             }
 
@@ -396,6 +495,27 @@ public class JournalAccumulator {
             }
 
         }
+    }
+
+    private void writeBalance(XSSFSheet sheet, JournalStyles styles, List<Account> childrenList, int columnOffset, int balanceMaxIdx, double neg) {
+        XSSFRow             row;
+        double              total = 0.0;
+
+        for (Account account: childrenList) {
+            total = total + account.getTotal().doubleValue();
+        }
+
+        if (columnOffset == 0) {
+            row = sheet.createRow(balanceMaxIdx);
+        } else {
+            row = sheet.getRow(balanceMaxIdx);
+        }
+
+        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_TITLE_NR, styles.balanceStyle);
+        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR, styles.balanceStyle);
+        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT, styles.balanceStyle);
+        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_AMOUNT, styles.balanceStyle);
+        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_TOTAL, styles.balanceStyle).createCell(neg * total);
     }
 
     /**

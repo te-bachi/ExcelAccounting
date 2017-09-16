@@ -1,12 +1,15 @@
 package ch.fablabwinti.accounting;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 /**
  *
  */
-public class AccountList {
+public class AccountList implements Iterable<Account> {
     private List<Account> accountList;
 
     public AccountList() {
@@ -37,7 +40,14 @@ public class AccountList {
         return accountList.remove(0);
     }
 
-    public Account find(int accountNr) {
+    /**
+     * Find account number only in the first layer, not in the deeper layers
+     *
+     * @param accountNr
+     * @return
+     * @throws AccountNotFoundException
+     */
+    public Account find(int accountNr) throws AccountNotFoundException {
         Account match = null;
         for (Account account : accountList) {
             if (account.getNumber() == accountNr) {
@@ -45,6 +55,11 @@ public class AccountList {
                 break;
             }
         }
+
+        if (match == null) {
+            throw new AccountNotFoundException(accountNr);
+        }
+
         return match;
     }
 
@@ -63,4 +78,8 @@ public class AccountList {
         return match;
     }
 
+    @Override
+    public Iterator<Account> iterator() {
+        return accountList.iterator();
+    }
 }

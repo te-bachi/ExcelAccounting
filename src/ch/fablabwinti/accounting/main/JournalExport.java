@@ -52,6 +52,13 @@ public class JournalExport {
         transactionList = new ArrayList<>();
     }
 
+    /**
+     *
+     * @param inputFile
+     * @param filter
+     * @param accountList flatten account list from "Kontenplan"
+     * @throws Exception
+     */
     public void parseInput(File inputFile, JournalFilter filter, AccountList accountList) throws Exception {
         FileInputStream     in;
         XSSFWorkbook        workbook;
@@ -103,8 +110,12 @@ public class JournalExport {
                         cell = new CustomStringCell(row, INPUT_COLUMN_JOURNAL_TEXT[i]);
                         journalText = cell.getString();
 
+                        /* if there is no filter (normal) or a filter is attached and returns true */
                         if (filter == null || filter.filter(journalNr, journalDate, journalDebitNr, journalCreditNr, journalValue, journalText)) {
+                            /* flatten account list from "Kontenplan", if available */
                             if (accountList != null) {
+                                /* debit  = Account object -> find with account number from journal
+                                 * credit = Account object -> find with account number from journal */
                                 debit  = accountList.find(journalDebitNr);
                                 credit = accountList.find(journalCreditNr);
                                 if (debit == null || credit == null) {
@@ -118,6 +129,8 @@ public class JournalExport {
                                 }
                                 /* with two account objects */
                                 transaction = new Transaction(journalNr, journalDate, debit, credit, journalValue, journalText);
+
+                                /* === book transaction (add/remove money from an account) === */
                                 debit.addTransaction(transaction);
                                 credit.addTransaction(transaction);
                             } else {
