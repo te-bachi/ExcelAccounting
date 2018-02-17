@@ -18,6 +18,16 @@ public class CustomCell {
         this.cell   = row.getCell(columnIndex);
     }
 
+    protected String cellTypeToString(int cellType) {
+        if (cellType == Cell.CELL_TYPE_NUMERIC) return "NUMERIC";
+        if (cellType == Cell.CELL_TYPE_STRING)  return "STRING";
+        if (cellType == Cell.CELL_TYPE_FORMULA) return "FORMULA";
+        if (cellType == Cell.CELL_TYPE_BLANK)   return "BLANK";
+        if (cellType == Cell.CELL_TYPE_BOOLEAN) return "BOOLEAN";
+        if (cellType == Cell.CELL_TYPE_ERROR)   return "ERROR";
+        return "UNKNOW";
+    }
+
     public int getInt() {
         return Double.valueOf(cell.getNumericCellValue()).intValue();
     }

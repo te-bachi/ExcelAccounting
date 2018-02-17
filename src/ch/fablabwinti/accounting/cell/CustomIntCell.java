@@ -24,7 +24,7 @@ public class CustomIntCell extends CustomCell {
             }
             //System.out.println(row.getRowNum() + "/" + cell.getColumnIndex() + ": formula value = " + cell.getNumericCellValue());
         } else if (cell.getCellType() == Cell.CELL_TYPE_BLANK || cell.getCellType() != Cell.CELL_TYPE_NUMERIC) {
-            throw new CustomCellException(row.getRowNum() + "/" + cell.getColumnIndex() + " is not of type number but " + cell.getCellType() + "!");
+            throw new CustomCellException(row.getRowNum() + "/" + cell.getColumnIndex() + " is not of type number but " + cellTypeToString(cell.getCellType()) + "!");
         }
     }
 }

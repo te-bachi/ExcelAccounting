@@ -14,7 +14,7 @@ public class CustomStringCell extends CustomCell {
         if (cell == null) {
 
         } else if (cell.getCellType() != Cell.CELL_TYPE_STRING && cell.getCellType() != Cell.CELL_TYPE_BLANK) {
-            throw new CustomCellException(row.getRowNum() + "/" + cell.getColumnIndex() + " is not of type string (or blank) but " + cell.getCellType() + "!");
+            throw new CustomCellException(row.getRowNum() + "/" + cell.getColumnIndex() + " is not of type string (or blank) but " + cellTypeToString(cell.getCellType()) + "!");
         }
     }
 }
