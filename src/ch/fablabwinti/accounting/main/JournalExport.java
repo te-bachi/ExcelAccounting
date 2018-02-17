@@ -92,21 +92,27 @@ public class JournalExport {
                 row = (XSSFRow) rowIterator.next();
                 if (row.getRowNum() > 0) {
                     try {
+                        /* try to fetch cell as INTEGER or die with exception */
                         cell = new CustomIntCell(row, INPUT_COLUMN_JOURNAL_NR[i]);
                         journalNr = cell.getInt();
 
+                        /* try to fetch cell as INTEGER or die with exception */
                         cell = new CustomIntCell(row, INPUT_COLUMN_JOURNAL_DATE[i]);
                         journalDate = cell.getDate();
 
+                        /* try to fetch cell as INTEGER or die with exception */
                         cell = new CustomIntCell(row, INPUT_COLUMN_JOURNAL_DEBIT_NR[i], evaluator);
                         journalDebitNr = cell.getInt();
 
+                        /* try to fetch cell as INTEGER or die with exception */
                         cell = new CustomIntCell(row, INPUT_COLUMN_JOURNAL_CREDIT_NR[i], evaluator);
                         journalCreditNr = cell.getInt();
 
+                        /* try to fetch cell as INTEGER or die with exception */
                         cell = new CustomIntCell(row, INPUT_COLUMN_JOURNAL_VALUE[i], evaluator);
                         journalValue = cell.getBigDecimal();
 
+                        /* try to fetch cell as STRING or die with exception */
                         cell = new CustomStringCell(row, INPUT_COLUMN_JOURNAL_TEXT[i]);
                         journalText = cell.getString();
 
@@ -141,6 +147,9 @@ public class JournalExport {
                         }
                     } catch (CustomCellException e) {
                         System.out.println(e.getMessage());
+                    } catch (IllegalStateException e) {
+                        System.out.println("row " + row.getRowNum() + " has illegal cells");
+                        throw e;
                     }
                 }
             }
