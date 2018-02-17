@@ -10,12 +10,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
  */
 public class JournalAccumulator {
+
+    private static int    ACCOUNT_NR_LEVEL                              = 6;
 
     private static String OUTPUT_SHEET_BALANCE_STR                       = "Bilanz";
     private static String OUTPUT_SHEET_PROFIT_LOSS_STR                   = "Erfolgsrechnung";
@@ -82,16 +86,29 @@ public class JournalAccumulator {
     private static double OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT_WIDTH  = 16.7142;   /* 117 px */
     private static double OUTPUT_COLUMN_TRANSACTION_TOTAL_WIDTH          = 16.7142;   /* 117 px */
 
+    enum Type {
+        COMPACT,
+        FULL
+    };
+
+    private Type                type;
     private AccountPlanExport   accountPlan;
     private JournalExport       journalExport;
     private File                outputFile;
+    private File                balanceOutputFile;
+    private File                profitLossOutputFile;
+    private Map<Account, File>  outputFileMap;
 
-    public JournalAccumulator(File accountPlanFile, File journalExportFile) throws Exception {
-        String path = journalExportFile.getPath();
+    public JournalAccumulator(Type type, File accountPlanFile, File journalExportFile) throws Exception {
+        String path         = journalExportFile.getPath();
+        String filename     = path.substring(0, path.lastIndexOf('.'));
+        String extension    = path.substring(path.lastIndexOf('.'), path.length());
+
+        this.type   = type;
 
         /* Account plan */
         accountPlan = new AccountPlanExport();
-        accountPlan.parseInput(accountPlanFile, 6);
+        accountPlan.parseInput(accountPlanFile, ACCOUNT_NR_LEVEL);
 
         /**
          * Journal
@@ -112,9 +129,32 @@ public class JournalAccumulator {
 
         /* Create output file */
         for (int i = 0; i < 1024; i++) {
-            outputFile = new File(path.substring(0, path.lastIndexOf('.')) + "_output_" + i + path.substring(path.lastIndexOf('.'), path.length()));
-            if (!outputFile.exists()) {
-                break;
+            if (type == Type.COMPACT) {
+                outputFile = new File(filename + "_output_" + i + extension);
+
+                if (!outputFile.exists()) {
+                    break;
+                }
+            } else if (type == Type.FULL) {
+                outputFileMap = new HashMap<>(this.accountPlan.getAccountList().size());
+
+                /* As directory... */
+                outputFile = new File(filename + "_output_" + i);
+
+                if (!outputFile.exists()) {
+                    String prefix = filename + "_output_" + i + File.separator;
+                    outputFile.mkdirs();
+
+                    balanceOutputFile       = new File(prefix + "0000_Bilanz" + extension);
+                    profitLossOutputFile    = new File(prefix + "0000_Erfolgsrechnung" + extension);
+
+                    for (Account account : this.accountPlan.getAccountList()) {
+                        if (!(account instanceof TitleAccount)) {
+                            outputFileMap.put(account, new File(prefix + account.getNumber() + "_" + account.getName() + extension));
+                        }
+                    }
+                    break;
+                }
             }
         }
     }
@@ -219,14 +259,21 @@ public class JournalAccumulator {
 
         workbook            = new XSSFWorkbook();
         styles              = new JournalStyles(workbook);
+        spreadsheetBilanz   = null;
+        spreadsheetErfolg   = null;
+        spreadsheetKonten   = null;
 
         /* Abschluss mit Steuerbarem + Steuerfreiem Gewinn */
         calculateFinancialStatements(rootList, accountList);
 
-        /*** Create Sheets ***************************************************/
-        spreadsheetBilanz   = workbook.createSheet(OUTPUT_SHEET_BALANCE_STR);
-        spreadsheetErfolg   = workbook.createSheet(OUTPUT_SHEET_PROFIT_LOSS_STR);
-        spreadsheetKonten   = workbook.createSheet(OUTPUT_SHEET_ACCOUNTS);
+        if (type == Type.COMPACT) {
+            /*** Create Sheets ***************************************************/
+            spreadsheetBilanz = workbook.createSheet(OUTPUT_SHEET_BALANCE_STR);
+            spreadsheetErfolg = workbook.createSheet(OUTPUT_SHEET_PROFIT_LOSS_STR);
+            spreadsheetKonten = workbook.createSheet(OUTPUT_SHEET_ACCOUNTS);
+        } else if (type == Type.FULL) {
+            spreadsheetErfolg = workbook.createSheet(OUTPUT_SHEET_PROFIT_LOSS_STR);
+        }
 
         /*** Erfolgsrechnung *************************************************/
 
@@ -337,6 +384,17 @@ public class JournalAccumulator {
             writeBalance(spreadsheetErfolg, styles, childrenList, columnOffset, balanceMaxIdx, neg);
         }
 
+        if (type == Type.FULL) {
+            out                 = new FileOutputStream(profitLossOutputFile);
+            workbook.write(out);
+            out.close();
+
+            workbook            = new XSSFWorkbook();
+            styles              = new JournalStyles(workbook);
+
+            spreadsheetBilanz   = workbook.createSheet(OUTPUT_SHEET_BALANCE_STR);
+        }
+
         /*** Bilanz **********************************************************/
 
         /* Set sheet width => splitted in asset and liability section */
@@ -404,13 +462,24 @@ public class JournalAccumulator {
             writeBalance(spreadsheetBilanz, styles, rootAccount.getChildList(), columnOffset, balanceMaxIdx, neg);
         }
 
+        if (type == Type.FULL) {
+            out                 = new FileOutputStream(balanceOutputFile);
+            workbook.write(out);
+            out.close();
+        }
+
         /*** Konten **********************************************************/
-        setColumnWidthForAccountTransactions(spreadsheetKonten);
+        if (type == Type.COMPACT) {
+            setColumnWidthForAccountTransactions(spreadsheetKonten);
+        }
         writeCellsForAccountTransactions(spreadsheetKonten, styles, accountList);
 
+
+        if (type == Type.COMPACT) {
             out = new FileOutputStream(outputFile);
-        workbook.write(out);
-        out.close();
+            workbook.write(out);
+            out.close();
+        }
     }
 
     /**
@@ -527,6 +596,8 @@ public class JournalAccumulator {
      * @param accountList
      */
     private void writeCellsForAccountTransactions(XSSFSheet sheet, JournalStyles styles, AccountList accountList) {
+
+        XSSFWorkbook        workbook = null;
         XSSFRow             row;
 
         Account             account;
@@ -537,6 +608,7 @@ public class JournalAccumulator {
         int                 accountIdx;
         int                 transactionIdx;
         int                 rowIdx;
+        File                file = null;
 
         rowIdx = 0;
 
@@ -546,6 +618,20 @@ public class JournalAccumulator {
 
             /* Only write accounts that are NOT TitleAccounts */
             if (!(account instanceof TitleAccount)) {
+                if (type == Type.FULL) {
+                    file = outputFileMap.get(account);
+                    if (file == null) {
+                        System.out.println("No file for account " + account.getNumber() + " " + account.getName());
+                        continue;
+                    }
+                    workbook    = new XSSFWorkbook();
+                    styles      = new JournalStyles(workbook);
+
+                    sheet       = workbook.createSheet(account.getNumber() + "_" + account.getName());
+                    setColumnWidthForAccountTransactions(sheet);
+
+                    rowIdx      = 0;
+                }
 
                 /*** Write to sheet:
                  *
@@ -631,6 +717,17 @@ public class JournalAccumulator {
                 }
                 rowIdx++;
                 rowIdx++;
+
+                if (type == Type.FULL) {
+                    try {
+                        FileOutputStream out = new FileOutputStream(file);
+                        workbook.write(out);
+                        out.close();
+                    } catch (Exception e) {
+                        System.out.println("Exception writing to file " + file.getPath());
+                        System.out.println(e.getClass().getName() + ": " + e.getMessage());
+                    }
+                }
             }
         }
     }
@@ -680,12 +777,22 @@ public class JournalAccumulator {
 
     public static void main(String[] args) throws Exception {
         JournalAccumulator journalAccumulator;
+        Type type = Type.COMPACT;
 
-        if (args.length < 2) {
-            System.out.println("<account plan> <journal>");
+        if (args.length < 3) {
+            System.out.println("(\"compact\" | \"full\") <account plan> <journal>");
         }
 
-        journalAccumulator = new JournalAccumulator(new File(args[0]), new File(args[1]));
+        if (args[0].equals("compact")) {
+            type = Type.COMPACT;
+        } else if (args[0].equals("full")) {
+            type = Type.FULL;
+        } else {
+            System.out.println("Type doesn't match \"compact\" or \"full\"");
+            return;
+        }
+
+        journalAccumulator = new JournalAccumulator(type, new File(args[1]), new File(args[2]));
         journalAccumulator.exportOutput();
 
         System.out.println("done");

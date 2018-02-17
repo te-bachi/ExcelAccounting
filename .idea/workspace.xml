@@ -48,6 +48,12 @@
       <find>prof</find>
       <find>transactionList</find>
       <find>neg</find>
+      <find>or b</find>
+      <find>is not</find>
+      <find>is not defined</find>
+      <find>is neither an income nor an expense account</find>
+      <find>spreadsheetBilanz</find>
+      <find>workbook</find>
     </findStrings>
     <replaceStrings>
       <replace>TRANSACTION</replace>
@@ -84,12 +90,8 @@
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/test/Readsheet.java" />
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/JournalExport2014.java" />
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomCellException.java" />
-        <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomDateCell.java" />
-        <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomIntCell.java" />
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/test/ReadsheetPost.java" />
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/TransactionComparator.java" />
-        <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomStringCell.java" />
-        <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomCell.java" />
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/JournalExport.java" />
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/TitleAccount.java" />
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/AccountExportMain.java" />
@@ -100,7 +102,6 @@
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/crm/main/MailExport.java" />
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/CsvConvertor.java" />
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/checkout/Items.java" />
-        <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/AccountPlanExport.java" />
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/CellCreator.java" />
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/Account.java" />
         <option value="C:/Program Files/Java/jdk1.8.0_144/jre/lib/rt.jar!/sun/misc/JarIndex.class" />
@@ -110,11 +111,16 @@
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/checkout/EmptyFilter.java" />
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/checkout/main/CashSheetMerger.java" />
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/checkout/Item.java" />
-        <option value="$PROJECT_DIR$/src/ch/fablabwinti/checkout/main/CsvConvertor.java" />
-        <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalExport.java" />
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/AccountNotFoundException.java" />
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/AccountList.java" />
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalStyles.java" />
+        <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalExport.java" />
+        <option value="$PROJECT_DIR$/src/ch/fablabwinti/checkout/main/CsvConvertor.java" />
+        <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomCell.java" />
+        <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomStringCell.java" />
+        <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomIntCell.java" />
+        <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomDateCell.java" />
+        <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/AccountPlanExport.java" />
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalAccumulator.java" />
       </list>
     </option>
@@ -403,7 +409,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -438,31 +444,7 @@
               <item name="ExcelAccounting" type="b2602c69:ProjectViewProjectNode" />
               <item name="ExcelAccounting" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ExcelAccounting" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ExcelAccounting" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="checkout" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ExcelAccounting" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ExcelAccounting" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ExcelAccounting" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ExcelAccounting" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="crm" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ExcelAccounting" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ExcelAccounting" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ExcelAccounting" type="b2602c69:ProjectViewProjectNode" />
@@ -473,13 +455,13 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/opencsv-4.1-SNAPSHOT-javadoc.jar!/" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="recentsLimit" value="5" />
@@ -508,7 +490,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.JournalAccumulator 2016">
+  <component name="RunManager" selected="Application.JournalAccumulator 2017">
     <configuration name="AccountExport 2016" type="Application" factoryName="Application">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.AccountPlanExport" />
@@ -555,7 +537,7 @@
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.checkout.main.CsvConvertor" />
       <option name="VM_PARAMETERS" value="" />
-      <option name="PROGRAM_PARAMETERS" value="C:\Users\bachman0\Documents\FabLab\Buchhaltung\2017\KassenblattAblage-20170903T071453Z-001\KassenblattAblage\CSV" />
+      <option name="PROGRAM_PARAMETERS" value="&quot;C:\Users\bachman0\Documents\FabLab\Buchhaltung\2017\KassenblattAblage-20180128\CSV&quot;" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -598,6 +580,20 @@
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.JournalAccumulator" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PROGRAM_PARAMETERS" value="C:\Users\bachman0\Documents\FabLab\Buchhaltung\2016\20151231_kontenplan_e.xlsx C:\Users\bachman0\Documents\FabLab\Buchhaltung\2016\2016_12_31_post_e.xlsx" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="ExcelAccounting" />
+      <envs />
+    </configuration>
+    <configuration name="JournalAccumulator 2017" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.JournalAccumulator" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="full C:\Users\bachman0\Documents\FabLab\Buchhaltung\2017\2017_12_31_kontenplan_b.xlsx C:\Users\bachman0\Documents\FabLab\Buchhaltung\2017\2017_12_31_konten_g.xlsx" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -1222,7 +1218,7 @@
     <configuration default="true" type="osgi.bnd.run" factoryName="Test Launcher (JUnit)">
       <method />
     </configuration>
-    <list size="23">
+    <list size="24">
       <item index="0" class="java.lang.String" itemvalue="Application.Test1" />
       <item index="1" class="java.lang.String" itemvalue="Application.Test2" />
       <item index="2" class="java.lang.String" itemvalue="Application.Writesheet" />
@@ -1234,18 +1230,19 @@
       <item index="8" class="java.lang.String" itemvalue="Application.JournalAccumulator 2014" />
       <item index="9" class="java.lang.String" itemvalue="Application.JournalAccumulator 2015" />
       <item index="10" class="java.lang.String" itemvalue="Application.JournalAccumulator 2016" />
-      <item index="11" class="java.lang.String" itemvalue="Application.KassenblattImport" />
-      <item index="12" class="java.lang.String" itemvalue="Application.KassenblattImport 2" />
-      <item index="13" class="java.lang.String" itemvalue="Application.JournalExport 2014" />
-      <item index="14" class="java.lang.String" itemvalue="Application.JournalExport 2014 Post" />
-      <item index="15" class="java.lang.String" itemvalue="Application.JournalExport 2014 SumUp" />
-      <item index="16" class="java.lang.String" itemvalue="Application.JournalExport 2015" />
-      <item index="17" class="java.lang.String" itemvalue="Application.JournalExport 2016" />
-      <item index="18" class="java.lang.String" itemvalue="Application.MailExport" />
-      <item index="19" class="java.lang.String" itemvalue="Application.CsvConvert" />
-      <item index="20" class="java.lang.String" itemvalue="Application.CashSheetMerger" />
-      <item index="21" class="java.lang.String" itemvalue="Application.JournalExport 2015 SumUp" />
-      <item index="22" class="java.lang.String" itemvalue="Application.JournalExport 2015 Forderungen Postüberweisung" />
+      <item index="11" class="java.lang.String" itemvalue="Application.JournalAccumulator 2017" />
+      <item index="12" class="java.lang.String" itemvalue="Application.KassenblattImport" />
+      <item index="13" class="java.lang.String" itemvalue="Application.KassenblattImport 2" />
+      <item index="14" class="java.lang.String" itemvalue="Application.JournalExport 2014" />
+      <item index="15" class="java.lang.String" itemvalue="Application.JournalExport 2014 Post" />
+      <item index="16" class="java.lang.String" itemvalue="Application.JournalExport 2014 SumUp" />
+      <item index="17" class="java.lang.String" itemvalue="Application.JournalExport 2015" />
+      <item index="18" class="java.lang.String" itemvalue="Application.JournalExport 2016" />
+      <item index="19" class="java.lang.String" itemvalue="Application.MailExport" />
+      <item index="20" class="java.lang.String" itemvalue="Application.CsvConvert" />
+      <item index="21" class="java.lang.String" itemvalue="Application.CashSheetMerger" />
+      <item index="22" class="java.lang.String" itemvalue="Application.JournalExport 2015 SumUp" />
+      <item index="23" class="java.lang.String" itemvalue="Application.JournalExport 2015 Forderungen Postüberweisung" />
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
@@ -1294,37 +1291,37 @@
     <option name="totallyTimeSpent" value="94985000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-14" y="-14" width="3868" height="2098" extended-state="6" />
+    <frame x="-6" y="-6" width="1933" height="1053" extended-state="6" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.4969743" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32827735" sideWeight="0.4969743" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5030257" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4958904" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.6873977" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4951246" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.4969743" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2304" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24906667" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37041095" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38136512" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -1368,22 +1365,28 @@
           <option name="timeStamp" value="61" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/ch/fablabwinti/checkout/main/CsvConvertor.java</url>
-          <line>109</line>
+          <url>file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomStringCell.java</url>
+          <line>16</line>
           <properties />
-          <option name="timeStamp" value="63" />
+          <option name="timeStamp" value="73" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalAccumulator.java</url>
-          <line>226</line>
+          <url>file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomIntCell.java</url>
+          <line>17</line>
           <properties />
-          <option name="timeStamp" value="69" />
+          <option name="timeStamp" value="77" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomIntCell.java</url>
+          <line>26</line>
+          <properties />
+          <option name="timeStamp" value="78" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="71" />
+      <option name="time" value="86" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1392,13 +1395,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/test/Test1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="45" column="37" lean-forward="false" selection-start-line="45" selection-start-column="26" selection-end-line="45" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/test/Test3.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1413,38 +1409,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/test/Writesheet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="43" column="43" lean-forward="false" selection-start-line="43" selection-start-column="43" selection-end-line="44" selection-end-column="81" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/lib/poi-3.14-20160307.jar!/org/apache/poi/ss/usermodel/CellValue.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="10" column="26" lean-forward="false" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/test/Readsheet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="19" column="34" lean-forward="false" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/test/ReadsheetPost.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="22" column="23" lean-forward="false" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomCellException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="5" column="32" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="32" />
         </state>
       </provider>
     </entry>
@@ -1469,13 +1437,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomDateCell.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="12" column="89" lean-forward="false" selection-start-line="12" selection-start-column="42" selection-end-line="12" selection-end-column="89" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/crm/AddressComparator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -1487,13 +1448,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="7" column="21" lean-forward="false" selection-start-line="7" selection-start-column="21" selection-end-line="7" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/crm/main/MailExport.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1734">
-          <caret line="104" column="72" lean-forward="false" selection-start-line="104" selection-start-column="72" selection-end-line="104" selection-end-column="72" />
         </state>
       </provider>
     </entry>
@@ -1511,13 +1465,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomStringCell.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/AssetAccount.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -1532,39 +1479,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/poi-3.14-20160307.jar!/org/apache/poi/ss/usermodel/Cell.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="43" column="9" lean-forward="false" selection-start-line="43" selection-start-column="9" selection-end-line="43" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/LiabilityAccount.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="14" column="0" lean-forward="true" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/TitleAccount.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="5" lean-forward="false" selection-start-line="8" selection-start-column="5" selection-end-line="8" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomCell.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomIntCell.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="19" column="17" lean-forward="false" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1603,14 +1521,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/AccountJournalFilter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/checkout/CheckoutEntry.java" />
     <entry file="jar://$PROJECT_DIR$/lib/opencsv-4.1-SNAPSHOT-sources.jar!/com/opencsv/bean/HeaderColumnNameMappingStrategy.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -1620,80 +1530,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/Transaction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="629">
-          <caret line="18" column="5" lean-forward="true" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
-          <folding>
-            <element signature="e#1506#1507#0" expanded="false" />
-            <element signature="e#1535#1536#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/TransactionComparator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="407">
-          <caret line="11" column="1" lean-forward="false" selection-start-line="11" selection-start-column="1" selection-end-line="14" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/checkout/main/BlaTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="666">
-          <caret line="18" column="32" lean-forward="false" selection-start-line="18" selection-start-column="32" selection-end-line="18" selection-end-column="32" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/checkout/main/CashSheetMerger.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="801">
-          <caret line="58" column="50" lean-forward="false" selection-start-line="58" selection-start-column="50" selection-end-line="62" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/checkout/Item.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="629">
-          <caret line="17" column="27" lean-forward="false" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/checkout/main/CsvConvertor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="970">
-          <caret line="87" column="9" lean-forward="true" selection-start-line="66" selection-start-column="45" selection-end-line="87" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/checkout/main/Bla2Test.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="888">
-          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/checkout/EmptyFilter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="185">
           <caret line="5" column="51" lean-forward="false" selection-start-line="5" selection-start-column="36" selection-end-line="5" selection-end-column="51" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1701,25 +1541,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="771">
           <caret line="67" column="35" lean-forward="false" selection-start-line="67" selection-start-column="35" selection-end-line="67" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalExport.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="699">
-          <caret line="133" column="46" lean-forward="false" selection-start-line="133" selection-start-column="46" selection-end-line="133" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalAccumulator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13468">
-          <caret line="364" column="28" lean-forward="true" selection-start-line="364" selection-start-column="28" selection-end-line="364" selection-end-column="28" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1727,7 +1548,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1171">
           <caret line="94" column="20" lean-forward="false" selection-start-line="94" selection-start-column="8" selection-end-line="94" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1735,7 +1555,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="962">
           <caret line="32" column="39" lean-forward="true" selection-start-line="20" selection-start-column="15" selection-end-line="32" selection-end-column="39" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1743,29 +1562,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="444">
           <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/AccountPlanExport.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2723">
-          <caret line="252" column="25" lean-forward="false" selection-start-line="252" selection-start-column="25" selection-end-line="252" selection-end-column="25" />
-          <folding>
-            <element signature="e#12184#12185#0" expanded="true" />
-            <element signature="e#12215#12216#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/AccountList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="851">
-          <caret line="44" column="6" lean-forward="false" selection-start-line="44" selection-start-column="6" selection-end-line="44" selection-end-column="6" />
-          <folding>
-            <element signature="e#1877#1878#0" expanded="true" />
-            <element signature="e#1922#1923#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1773,21 +1569,199 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="407">
           <caret line="11" column="49" lean-forward="false" selection-start-line="11" selection-start-column="49" selection-end-line="11" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/TransactionComparator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="555">
+          <caret line="15" column="1" lean-forward="true" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/Transaction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-97">
+          <caret line="16" column="26" lean-forward="true" selection-start-line="16" selection-start-column="26" selection-end-line="16" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/AccountList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-615">
+          <caret line="44" column="6" lean-forward="false" selection-start-line="44" selection-start-column="6" selection-end-line="44" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/AccountJournalFilter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="555">
+          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/checkout/main/Bla2Test.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
           <folding>
-            <element signature="e#133#134#0" expanded="true" />
-            <element signature="e#156#157#0" expanded="true" />
-            <element signature="e#212#213#0" expanded="true" />
-            <element signature="e#242#243#0" expanded="true" />
-            <element signature="e#296#297#0" expanded="true" />
-            <element signature="e#367#368#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/crm/main/MailExport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1105">
+          <caret line="83" column="9" lean-forward="true" selection-start-line="80" selection-start-column="48" selection-end-line="83" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/test/Writesheet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="31" column="44" lean-forward="true" selection-start-line="31" selection-start-column="44" selection-end-line="31" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/test/ReadsheetPost.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="22" column="23" lean-forward="false" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/test/Readsheet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="19" column="34" lean-forward="false" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/checkout/main/BlaTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/checkout/main/CsvConvertor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="228" column="20" lean-forward="true" selection-start-line="228" selection-start-column="20" selection-end-line="228" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/checkout/main/CashSheetMerger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="35" column="40" lean-forward="false" selection-start-line="35" selection-start-column="40" selection-end-line="35" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/checkout/Item.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="277">
+          <caret line="26" column="33" lean-forward="false" selection-start-line="26" selection-start-column="33" selection-end-line="26" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/poi-ooxml-schemas-3.14-20160307.jar!/com/microsoft/schemas/office/visio/x2012/main/CellType.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="35" column="0" lean-forward="true" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/poi-3.14-20160307.jar!/org/apache/poi/ss/usermodel/Cell.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="19" column="23" lean-forward="false" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomCellException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="32" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomIntCell.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="21" column="42" lean-forward="false" selection-start-line="21" selection-start-column="42" selection-end-line="21" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomDateCell.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="12" column="156" lean-forward="false" selection-start-line="12" selection-start-column="156" selection-end-line="12" selection-end-column="156" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/AccountPlanExport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="263" column="0" lean-forward="false" selection-start-line="263" selection-start-column="0" selection-end-line="263" selection-end-column="0" />
+          <folding>
+            <element signature="e#12367#12368#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalAccumulator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="521">
+          <caret line="149" column="0" lean-forward="true" selection-start-line="149" selection-start-column="0" selection-end-line="149" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalExport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="121" column="53" lean-forward="false" selection-start-line="121" selection-start-column="53" selection-end-line="121" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomCell.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#985#986#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomStringCell.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="16" column="168" lean-forward="false" selection-start-line="16" selection-start-column="168" selection-end-line="16" selection-end-column="168" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/TitleAccount.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="35" lean-forward="false" selection-start-line="5" selection-start-column="35" selection-end-line="5" selection-end-column="35" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/Account.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-814">
-          <caret line="26" column="49" lean-forward="false" selection-start-line="26" selection-start-column="49" selection-end-line="26" selection-end-column="49" />
+        <state relative-caret-position="357">
+          <caret line="24" column="29" lean-forward="false" selection-start-line="24" selection-start-column="29" selection-end-line="24" selection-end-column="29" />
           <folding />
         </state>
       </provider>

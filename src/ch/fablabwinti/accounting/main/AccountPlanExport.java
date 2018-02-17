@@ -41,6 +41,12 @@ public class AccountPlanExport {
     private List<Account>   rootList;
     private List<Account>   accountList;
 
+    /* not used */
+    enum Type {
+        COMPACT,
+        FULL
+    };
+
     public AccountPlanExport() {
         /* Root list with only root TitleAccounts
          * Every account could have children. */
@@ -270,29 +276,54 @@ public class AccountPlanExport {
     public static void main(String[] args) throws Exception {
         File                inputFile;
         File                outputFile;
+        Type                type;           /* not used */
         int                 level;
         AccountPlanExport   main;
 
-        /* 1 = input  [0]
-           2 = level  [1]
-           3 = output [2]
+        /* 1 = "compact" | "full"   [0]
+           2 = input                [1]
+           3 = level                [2]
+           4 = output               [3]
          */
-        if (args.length < 1 || args.length > 3) {
-            System.out.println("<input> [<level> [<output>]]");
+        String              argType;
+        String              argInput;
+        String              argLevel;
+        String              argOutput;
+        int                 argTypeIdx      = 0;
+        int                 argInputIdx     = 1;
+        int                 argLevelIdx     = 2;
+        int                 argOutputIdx    = 3;
+
+        if (args.length < 2 || args.length > 4) {
+            System.out.println("(\"compact\" | \"full\") <input> [<level> [<output>]]");
             return;
         }
-        inputFile = new File(args[0]);
 
-        if (args.length > 1) {
-            level = Integer.valueOf(args[1]).intValue();
+        /* argType */
+        argType = args[argTypeIdx];
+        if (argType.equals("compact")) {
+            type = Type.COMPACT;
+        } else if (argType.equals("full")) {
+            type = Type.FULL;
+        }
+
+        /* argInput */
+        argInput = args[argInputIdx];
+        inputFile = new File(argInput);
+
+        if (args.length > argLevelIdx) {
+            argLevel = args[argLevelIdx];
+            level  = Integer.valueOf(argLevel).intValue();
         } else {
             level = 2;
         }
 
-        if (args.length < 3) {
-            outputFile = new File(args[0].substring(0, args[0].lastIndexOf('.'))  + "_output" + args[0].substring(args[0].lastIndexOf('.'), args[0].length()));
+        if (args.length < argOutputIdx) {
+
+            outputFile = new File(argInput.substring(0, argInput.lastIndexOf('.'))  + "_output" + argInput.substring(argInput.lastIndexOf('.'), argInput.length()));
         } else {
-            outputFile = new File(args[2]);
+            argOutput = args[argOutputIdx];
+            outputFile = new File(argOutput);
         }
 
         if (!inputFile.exists()) {
