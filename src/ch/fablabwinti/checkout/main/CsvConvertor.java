@@ -21,25 +21,31 @@ import java.util.List;
  *
  */
 public class CsvConvertor {
+    public static int OUTPUT_ROW_OFFSET                             = 1;
+
     public static int COLUMN_WIDTH_RATIO                            = 260;
 
     /* Only for "Kasse" */
     public static int OUTPUT_COLUMN_JOURNAL_NR                      = 0;
     public static int OUTPUT_COLUMN_JOURNAL_DATE                    = 1;
-    public static int OUTPUT_COLUMN_JOURNAL_TEXT                    = 2;
-    public static int OUTPUT_COLUMN_JOURNAL_FIRSTNAME               = 3;
-    public static int OUTPUT_COLUMN_JOURNAL_LASTNAME                = 4;
-    public static int OUTPUT_COLUMN_JOURNAL_MACHINE_3D              = 5;
-    public static int OUTPUT_COLUMN_JOURNAL_MACHINE_LATHE           = 6;
-    public static int OUTPUT_COLUMN_JOURNAL_MACHINE_LASER           = 7;
-    public static int OUTPUT_COLUMN_JOURNAL_DRINKS                  = 8;
-    public static int OUTPUT_COLUMN_JOURNAL_OTHER                   = 9;
-    public static int OUTPUT_COLUMN_JOURNAL_WORKSHOP                = 10;
-    public static int OUTPUT_COLUMN_JOURNAL_MEMBERSHIP_FEE          = 11;
-    public static int OUTPUT_COLUMN_JOURNAL_PURCHASE                = 12;
+    public static int OUTPUT_COLUMN_JOURNAL_SOLL                    = 2;
+    public static int OUTPUT_COLUMN_JOURNAL_HABEN                   = 3;
+    public static int OUTPUT_COLUMN_JOURNAL_TEXT                    = 4;
+    public static int OUTPUT_COLUMN_JOURNAL_FIRSTNAME               = 5;
+    public static int OUTPUT_COLUMN_JOURNAL_LASTNAME                = 6;
+    public static int OUTPUT_COLUMN_JOURNAL_MACHINE_3D              = 7;
+    public static int OUTPUT_COLUMN_JOURNAL_MACHINE_LATHE           = 8;
+    public static int OUTPUT_COLUMN_JOURNAL_MACHINE_LASER           = 9;
+    public static int OUTPUT_COLUMN_JOURNAL_DRINKS                  = 10;
+    public static int OUTPUT_COLUMN_JOURNAL_OTHER                   = 11;
+    public static int OUTPUT_COLUMN_JOURNAL_WORKSHOP                = 12;
+    public static int OUTPUT_COLUMN_JOURNAL_MEMBERSHIP_FEE          = 13;
+    public static int OUTPUT_COLUMN_JOURNAL_PURCHASE                = 14;
 
     public static int OUTPUT_COLUMN_JOURNAL_NR_WIDTH                = 6;
     public static int OUTPUT_COLUMN_JOURNAL_DATE_WIDTH              = 14;
+    public static int OUTPUT_COLUMN_JOURNAL_SOLL_WIDTH              = 10;
+    public static int OUTPUT_COLUMN_JOURNAL_HABEN_WIDTH             = 10;
     public static int OUTPUT_COLUMN_JOURNAL_TEXT_WIDTH              = 50;
     public static int OUTPUT_COLUMN_JOURNAL_FIRSTNAME_WIDTH         = 20;
     public static int OUTPUT_COLUMN_JOURNAL_LASTNAME_WIDTH          = 20;
@@ -65,7 +71,8 @@ public class CsvConvertor {
 
         /* iterate over the folder */
         for (File file : folder.listFiles()) {
-                /* if there are subfolders, ignore it */
+
+            /* if there are subfolders, ignore it */
             if (file.isDirectory()) {
                 continue;
             }
@@ -77,14 +84,19 @@ public class CsvConvertor {
 
             System.out.println("Processing " + file.getName());
 
-                /* parse CSV file */
-            list.addAll(new CsvToBeanBuilder(new InputStreamReader(new FileInputStream(file), "Cp1252"))
-                    .withSeparator(cvsSplitBy)
-                    .withIgnoreQuotations(true)
-                    .withType(klass)
-                    .withFilter(filter)
-                    .build()
-                    .parse());
+            /* parse CSV file */
+            try {
+                list.addAll(new CsvToBeanBuilder(new InputStreamReader(new FileInputStream(file), "Cp1252"))
+                        .withSeparator(cvsSplitBy)
+                        .withIgnoreQuotations(true)
+                        .withType(klass)
+                        .withFilter(filter)
+                        .build()
+                        .parse());
+            } catch (Exception e) {
+                System.err.println("=== Exception in file " + file.getName());
+                throw e;
+            }
         }
         Collections.sort(list, new Comparator<Item>() {
             @Override
@@ -106,6 +118,7 @@ public class CsvConvertor {
         Item                item;
         int                 k;
         int                 positionIdx;
+        String              habenStr = null;
 
         workbook        = new XSSFWorkbook();
         spreadsheet     = workbook.createSheet("cash");
@@ -115,6 +128,8 @@ public class CsvConvertor {
 
         spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_NR,            COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_NR_WIDTH);
         spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_DATE,          COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_DATE_WIDTH);
+        spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_SOLL,          COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_SOLL_WIDTH);
+        spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_HABEN,         COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_HABEN_WIDTH);
         spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_TEXT,          COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_TEXT_WIDTH);
         spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_FIRSTNAME,     COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_FIRSTNAME_WIDTH);
         spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_LASTNAME,      COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_LASTNAME_WIDTH);
@@ -127,9 +142,27 @@ public class CsvConvertor {
         spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_MEMBERSHIP_FEE,COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_MEMBERSHIP_FEE_WIDTH);
         spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_PURCHASE,      COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_PURCHASE_WIDTH);
 
+        /* header */
+        row = spreadsheet.createRow(0);
+        row.createCell(OUTPUT_COLUMN_JOURNAL_NR).setCellValue("nr");
+        row.createCell(OUTPUT_COLUMN_JOURNAL_DATE).setCellValue("date");
+        row.createCell(OUTPUT_COLUMN_JOURNAL_SOLL).setCellValue("soll");
+        row.createCell(OUTPUT_COLUMN_JOURNAL_HABEN).setCellValue("haben");
+        row.createCell(OUTPUT_COLUMN_JOURNAL_TEXT).setCellValue("text");
+        row.createCell(OUTPUT_COLUMN_JOURNAL_FIRSTNAME).setCellValue("firstname");
+        row.createCell(OUTPUT_COLUMN_JOURNAL_LASTNAME).setCellValue("lastname");
+        row.createCell(OUTPUT_COLUMN_JOURNAL_MACHINE_3D).setCellValue("3d drucker");
+        row.createCell(OUTPUT_COLUMN_JOURNAL_MACHINE_LATHE).setCellValue("drehbank");
+        row.createCell(OUTPUT_COLUMN_JOURNAL_MACHINE_LASER).setCellValue("laser-cutter");
+        row.createCell(OUTPUT_COLUMN_JOURNAL_DRINKS).setCellValue("getränke");
+        row.createCell(OUTPUT_COLUMN_JOURNAL_OTHER).setCellValue("sonstige");
+        row.createCell(OUTPUT_COLUMN_JOURNAL_WORKSHOP).setCellValue("workshops");
+        row.createCell(OUTPUT_COLUMN_JOURNAL_MEMBERSHIP_FEE).setCellValue("mitglied");
+        row.createCell(OUTPUT_COLUMN_JOURNAL_PURCHASE).setCellValue("kauf");
+
         for (k = 0; k < list.size(); k++) {
             item = list.get(k);
-            row = spreadsheet.createRow(k);
+            row = spreadsheet.createRow(k + OUTPUT_ROW_OFFSET);
 
             cell = row.createCell(OUTPUT_COLUMN_JOURNAL_NR);
             cell.setCellValue(0);
@@ -162,19 +195,32 @@ public class CsvConvertor {
             if (item.getPosition() == null) {
                 positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
             } else if (item.getPosition().equals("Lasercutter")) {
+                habenStr = "Lasercutter";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_MACHINE_LASER;
             } else if (item.getPosition().equals("3D Drucker")) {
+                habenStr = "3D Drucker";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_MACHINE_3D;
             } else if (item.getPosition().equals("Fräsmaschine")) {
+                habenStr = "Fräsmaschine";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
             } else if (item.getPosition().equals("Drehbank")) {
+                habenStr = "Drehbank";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_MACHINE_LATHE;
             } else if (item.getPosition().equals("Getränke/Food")) {
+                habenStr = "Getränkeertrag";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_DRINKS;
             } else if (item.getPosition().equals("Mitgliederbeitrag")) {
-                positionIdx = OUTPUT_COLUMN_JOURNAL_MACHINE_LASER;
+                habenStr = "Mitgliederbeitrag";
+                positionIdx = OUTPUT_COLUMN_JOURNAL_MEMBERSHIP_FEE;
             } else {
                 positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
+            }
+
+            /* Only for "Kasse" */
+
+            if ((positionIdx < OUTPUT_COLUMN_JOURNAL_OTHER || positionIdx > OUTPUT_COLUMN_JOURNAL_OTHER) && positionIdx < OUTPUT_COLUMN_JOURNAL_PURCHASE) {
+                row.createCell(OUTPUT_COLUMN_JOURNAL_SOLL).setCellValue("Kasse");
+                row.createCell(OUTPUT_COLUMN_JOURNAL_HABEN).setCellValue(habenStr);
             }
 
             cell = row.createCell(positionIdx);
@@ -216,7 +262,9 @@ public class CsvConvertor {
             }
 
             convertor = new CsvConvertor();
+            System.out.println("=== Parse input ===");
             convertor.parseInput(folder);
+            System.out.println("=== Export output ===");
             convertor.exportOutput(new File(folder.getPath() + "/output.xlsx"));
 
         } catch (IOException e) {
