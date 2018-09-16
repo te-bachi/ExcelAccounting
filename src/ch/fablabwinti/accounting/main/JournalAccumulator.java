@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class JournalAccumulator {
 
-    private static int    ACCOUNT_NR_LEVEL                              = 6;
+    private static int    ACCOUNT_NR_LEVEL                              = 4;
 
     private static String OUTPUT_SHEET_BALANCE_STR                       = "Bilanz";
     private static String OUTPUT_SHEET_PROFIT_LOSS_STR                   = "Erfolgsrechnung";
@@ -125,7 +125,7 @@ public class JournalAccumulator {
          *  and sumup every parent TitleAccount!
          */
         journalExport = new JournalExport();
-        journalExport.parseInput(journalExportFile, null, new AccountList(accountPlan.getAccountList()));
+        journalExport.parseInput(journalExportFile, null, new AccountList(accountPlan.getAccountList(), false));
 
         /* Create output file */
         for (int i = 0; i < 1024; i++) {
@@ -247,10 +247,10 @@ public class JournalAccumulator {
          * 5 Personalaufwand (= EXPENSE)
          *   ..
          */
-        rootList            = new AccountList(accountPlan.getRootList());
+        rootList            = new AccountList(accountPlan.getRootList(), false);
 
         /* All accounts in a flat structure */
-        accountList         = new AccountList(accountPlan.getAccountList());
+        accountList         = new AccountList(accountPlan.getAccountList(), false);
 
         /* Empty lists */
         incomeList          = new ArrayList<>();

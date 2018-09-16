@@ -106,19 +106,21 @@ public class AccountPlanExport {
                 /* Third column: Account Type (String of empty [TitleAccount]) */
                 cell = row.getCell(INPUT_COLUMN_ACCOUNT_TYPE);
 
-                /* Check if Account Type is empty/blank => It's a TitleAccount and there are children */
-                if ((cell == null || cell.getCellType() == Cell.CELL_TYPE_BLANK)) {
+
+                try {
                     /**
-                     * Check if the current accountNumber is in range, ex. 34 < 99
-                     * Math.pow(10, 2) - 1 = 100 - 1 = 99
-                     * 'level' is a static parameter of this function
-                     * The user can decide, how many TitleAccounts he want can
-                     * can reduce sub-levels.
-                     **/
-                    if (accountNumber < (new Double(Math.pow(10, level)).intValue() - 1)) {
-                        try {
-                            /* The same but using the length of the accountNumber, not the accountNumber itself ?!*/
-                            depth = Integer.valueOf(accountNumber).toString().length();
+                     * Check if the current accountNumber is in range.
+                     * 'level' is a static parameter of this function.
+                     * The user can decide, how many Accounts he want
+                     * to reduce sub-levels.
+                     */
+                    depth = Integer.valueOf(accountNumber).toString().length();
+
+                    if (depth <= level) {
+
+                        /* Check if Account Type is empty/blank => It's a TitleAccount and there are children */
+                        /*                                                ============                        */
+                        if ((cell == null || cell.getCellType() == Cell.CELL_TYPE_BLANK)) {
 
                             /* Is there a parent? */
                             if (parent != null) {
@@ -143,6 +145,7 @@ public class AccountPlanExport {
                                         depthDiff--;
                                     } while (depthDiff > 0);
                                 }
+
                                 /* If there is a parent, use parent to create a new TitleAccount... */
                                 if (parent != null) {
                                     /* Replace parent with a new TitleAccount.
@@ -156,36 +159,39 @@ public class AccountPlanExport {
                                     rootList.add(parent);
                                     accountList.add(parent);
                                 }
+
                             /* ... otherwise use a root TitleAccount (no parent) */
                             } else {
                                 parent = new TitleAccount(accountNumber, accountText);
                                 rootList.add(parent);
                                 accountList.add(parent);
                             }
-                        } catch (NumberFormatException e) {
-                            /* bad account number format: skip journal entry */
+
+                        /* cell is NOT null and NOT blank => if it's NOT string, skip row */
+                        } else if (cell.getCellType() != Cell.CELL_TYPE_STRING) {
+                            System.out.println(row.getRowNum() + "/" + cell.getColumnIndex() + " is not of type string but " + cell.getCellType() + "!");
+                            continue;
+
+                        /* cell is of type string */
+                        } else {
+                            if (cell.getStringCellValue().equals(ACCOUNT_TYPE_ASSET)) {
+                                account = new AssetAccount(parent, accountNumber, accountText);
+                            } else if (cell.getStringCellValue().equals(ACCOUNT_TYPE_LIABILITY)) {
+                                account = new LiabilityAccount(parent, accountNumber, accountText);
+                            } else if (cell.getStringCellValue().equals(ACCOUNT_TYPE_INCOME)) {
+                                account = new IncomeAccount(parent, accountNumber, accountText);
+                            } else if (cell.getStringCellValue().equals(ACCOUNT_TYPE_EXPENSE)) {
+                                account = new ExpenseAccount(parent, accountNumber, accountText);
+                            } else {
+                                System.out.println(row.getRowNum() + "/" + cell.getColumnIndex() + " is not a defined type: \"" + cell.getStringCellValue() + "\"!");
+                                continue;
+                            }
+                            accountList.add(account);
                         }
                     }
-
-                /* cell is NOT null and NOT blank => if it's NOT string, skip row */
-                } else if (cell.getCellType() != Cell.CELL_TYPE_STRING) {
-                    System.out.println(row.getRowNum() + "/" + cell.getColumnIndex() + " is not of type string but " + cell.getCellType() + "!");
-                    continue;
-                /* cell is of type string */
-                } else {
-                    if (cell.getStringCellValue().equals(ACCOUNT_TYPE_ASSET)) {
-                        account = new AssetAccount(parent, accountNumber, accountText);
-                    } else if (cell.getStringCellValue().equals(ACCOUNT_TYPE_LIABILITY)) {
-                        account = new LiabilityAccount(parent, accountNumber, accountText);
-                    } else if (cell.getStringCellValue().equals(ACCOUNT_TYPE_INCOME)) {
-                        account = new IncomeAccount(parent, accountNumber, accountText);
-                    } else if (cell.getStringCellValue().equals(ACCOUNT_TYPE_EXPENSE)) {
-                        account = new ExpenseAccount(parent, accountNumber, accountText);
-                    } else {
-                        System.out.println(row.getRowNum() + "/" + cell.getColumnIndex() + " is not a defined type: \"" + cell.getStringCellValue() + "\"!");
-                        continue;
-                    }
-                    accountList.add(account);
+                } catch (NumberFormatException e) {
+                    /* bad account number format: skip journal entry */
+                    System.out.println("Account plan " + row.getRowNum() + "/" + cell.getColumnIndex() + ": bad account number format");
                 }
             }
         }
@@ -262,15 +268,6 @@ public class AccountPlanExport {
 
     public List<Account> getAccountList() {
         return accountList;
-    }
-
-    public Account findAccount(int number) {
-        for (Account account : accountList) {
-            if (account.getNumber() == number) {
-                return account;
-            }
-        }
-        return null;
     }
 
     public static void main(String[] args) throws Exception {

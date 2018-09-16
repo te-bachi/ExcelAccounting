@@ -11,14 +11,21 @@ import java.util.function.Consumer;
  */
 public class AccountList implements Iterable<Account> {
     private List<Account> accountList;
+    private boolean       matchExact;
 
     public AccountList() {
-        this.accountList = new ArrayList();
+        this(new ArrayList(), true);
     }
 
     public AccountList(List<Account> accountList) {
-        this.accountList = accountList;
+        this(accountList, true);
     }
+
+    public AccountList(List<Account> accountList, boolean matchExact) {
+        this.accountList = accountList;
+        this.matchExact  = matchExact;
+    }
+
 
     public void add(Account account) {
         accountList.add(account);
@@ -49,10 +56,40 @@ public class AccountList implements Iterable<Account> {
      */
     public Account find(int accountNr) throws AccountNotFoundException {
         Account match = null;
-        for (Account account : accountList) {
-            if (account.getNumber() == accountNr) {
-                match = account;
-                break;
+
+        /* Find *ONLY* exact account */
+        if (matchExact) {
+            for (Account account : accountList) {
+                if (account.getNumber() == accountNr) {
+                    match = account;
+                    break;
+                }
+            }
+
+        /* Find exact or parent account */
+        } else {
+            /* Calculate depth */
+            try {
+                int     depth;
+                int     firstDepth;
+                int     reducedAccountNr;
+                boolean finish = false;
+
+                depth       = Integer.valueOf(accountNr).toString().length();
+                firstDepth  = depth;
+                do {
+                    reducedAccountNr = accountNr / new Double(Math.pow(10, firstDepth - depth)).intValue();
+                    for (Account account : accountList) {
+                        if (account.getNumber() == reducedAccountNr) {
+                            match = account;
+                            finish = true;
+                            break;
+                        }
+                    }
+                    depth--;
+                } while (depth > 0 && !finish);
+            } catch (NumberFormatException e) {
+                //
             }
         }
 
