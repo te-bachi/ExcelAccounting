@@ -2,10 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d4fc6244-97cf-49f6-8eba-1cba3b93ed3d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/markdown-navigator/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ch/fablabwinti/accounting/AccountSummary.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ch/fablabwinti/accounting/AccountSummaryList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/AccountSummaryExport.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ch/fablabwinti/accounting/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ch/fablabwinti/accounting/Account.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ch/fablabwinti/accounting/AccountList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ch/fablabwinti/accounting/AccountList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/AccountPlanExport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/AccountPlanExport.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalAccumulator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalAccumulator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalExport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalExport.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,43 +26,64 @@
     <session id="1040726657">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="10" />
+          <entry key="project.open.time.0" value="1" />
+          <entry key="project.open.time.10" value="2" />
+          <entry key="project.open.time.11" value="1" />
+          <entry key="project.open.time.14" value="1" />
+          <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.6" value="1" />
           <entry key="project.open.time.7" value="1" />
+          <entry key="project.open.time.8" value="1" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="4" />
+          <entry key="project.opened" value="11" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="7" />
+          <entry key="#Untitled-1#" value="1" />
+          <entry key="java" value="25" />
+          <entry key="xml" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="7" />
+          <entry key="JAVA" value="25" />
+          <entry key="PLAIN_TEXT" value="1" />
+          <entry key="XML" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="200" />
+          <entry key="java" value="2533" />
+          <entry key="txt" value="87" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="200" />
+          <entry key="JAVA" value="2533" />
+          <entry key="PLAIN_TEXT" value="87" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalAccumulator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="136" column="17" lean-forward="true" selection-start-line="136" selection-start-column="17" selection-end-line="136" selection-end-column="17" />
+            <state relative-caret-position="289">
+              <caret line="29" column="25" selection-start-line="29" selection-start-column="25" selection-end-line="31" selection-end-column="77" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/Transaction.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="8" column="18" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -65,54 +91,82 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalExport.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="397">
-              <caret line="140" selection-start-line="140" selection-end-line="140" />
+            <state relative-caret-position="136">
+              <caret line="22" selection-start-line="22" selection-end-line="23" selection-end-column="66" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/AccountList.java">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/AccountSummaryExport.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="83" selection-start-line="83" selection-end-line="83" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/Account.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="440">
-              <caret line="134" selection-start-line="134" selection-end-line="134" />
+            <state relative-caret-position="445">
+              <caret line="160" lean-forward="true" selection-start-line="160" selection-end-line="160" />
               <folding>
-                <element signature="e#1385#1386#0" expanded="true" />
-                <element signature="e#1414#1415#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/AccountPlanExport.java">
+        <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/AccountSummary.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-527">
-              <caret line="58" column="21" lean-forward="true" selection-start-line="58" selection-start-column="21" selection-end-line="58" selection-end-column="21" />
+            <state relative-caret-position="612">
+              <caret line="39" column="18" selection-start-line="39" selection-start-column="18" selection-end-line="39" selection-end-column="18" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/AccountSummaryList.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="663">
+              <caret line="51" column="5" selection-start-line="51" selection-start-column="5" selection-end-line="51" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>index</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Andreas Bachmann &lt;bachi@te-clan.ch&gt;" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalAccumulator.java" />
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/AccountPlanExport.java" />
+        <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/Account.java" />
         <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/AccountList.java" />
+        <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalExport.java" />
+        <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalAccumulator.java" />
+        <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/AccountSummary.java" />
+        <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/AccountSummaryList.java" />
+        <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/AccountSummary.java" />
+        <option value="$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/AccountSummaryExport.java" />
       </list>
     </option>
   </component>
@@ -160,17 +214,13 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="ExcelAccounting" type="b2602c69:ProjectViewProjectNode" />
               <item name="ExcelAccounting" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ExcelAccounting" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ExcelAccounting" type="462c0819:PsiDirectoryNode" />
-              <item name=".idea" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ExcelAccounting" type="b2602c69:ProjectViewProjectNode" />
@@ -187,11 +237,13 @@
               <item name="ExcelAccounting" type="b2602c69:ProjectViewProjectNode" />
               <item name="ExcelAccounting" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="cell" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ExcelAccounting" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="ExcelAccounting" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -199,12 +251,11 @@
       </pane>
       <pane id="PackagesPane" />
       <pane id="AndroidView" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1537116727409" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/xmlbeans-2.6.0.jar!/" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1548082080615" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ExcelAccountingFamily" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -222,7 +273,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.JournalAccumulator 2018">
+  <component name="RunManager" selected="Application.JournalAccumulator 2015">
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
       <module name="" />
       <option name="ACTIVITY_CLASS" value="" />
@@ -456,175 +507,210 @@
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.AccountPlanExport" />
       <module name="ExcelAccounting" />
       <option name="PROGRAM_PARAMETERS" value="C:\Users\bachman0\Documents\FabLab\2016_10_23_Buchhaltung\Kontenplan\20151231_kontenplan_e.xlsx" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="AccountExport" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.AccountPlanExport" />
       <module name="ExcelAccounting" />
       <option name="PROGRAM_PARAMETERS" value="D:\FabLab\Buchhaltung\Kontenplan\20151231_kontenplan_e.xlsx" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AccountSummaryExport 2019" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.AccountSummaryExport" />
+      <module name="ExcelAccounting" />
+      <option name="PROGRAM_PARAMETERS" value="C:\Users\bachman0\Documents\FabLab\postkonto_2019_01_21_summary.xlsx" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="CashSheetMerger" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.checkout.main.CashSheetMerger" />
       <module name="ExcelAccounting" />
       <option name="PROGRAM_PARAMETERS" value="C:\Users\bachman0\Documents\FabLab\KassenblattAblage-20170204T172154Z\KassenblattAblage" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="CsvConvert 2017" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.checkout.main.CsvConvertor" />
       <module name="ExcelAccounting" />
       <option name="PROGRAM_PARAMETERS" value="&quot;C:\Users\bachman0\Documents\FabLab\Buchhaltung\2017\KassenblattAblage-20180128\CSV&quot;" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="CsvConvert 2018" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.checkout.main.CsvConvertor" />
       <module name="ExcelAccounting" />
-      <option name="PROGRAM_PARAMETERS" value="&quot;C:\Users\bachman0\Documents\FabLab\Buchhaltung\2018\2018-20180225T193627Z-001\2018&quot;" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <option name="PROGRAM_PARAMETERS" value="&quot;C:\Users\bachman0\Documents\FabLab\Buchhaltung\2018\2018-20181009_Klassenblaetter&quot;" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="JournalAccumulator 2014" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.JournalAccumulator" />
       <module name="ExcelAccounting" />
       <option name="PROGRAM_PARAMETERS" value="C:\Users\bachman0\Documents\FabLab\Buchhaltung\2014\20151231_kontenplan_e.xlsx C:\Users\bachman0\Documents\FabLab\Buchhaltung\2014\20141231_post_c.xlsx" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="JournalAccumulator 2015" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.JournalAccumulator" />
       <module name="ExcelAccounting" />
       <option name="PROGRAM_PARAMETERS" value="compact C:\Users\bachman0\Documents\FabLab\Buchhaltung\2015\20151231_kontenplan_e.xlsx C:\Users\bachman0\Documents\FabLab\Buchhaltung\2015\20151231_post_f.xlsx" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="JournalAccumulator 2016" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.JournalAccumulator" />
       <module name="ExcelAccounting" />
       <option name="PROGRAM_PARAMETERS" value="C:\Users\bachman0\Documents\FabLab\Buchhaltung\2016\20151231_kontenplan_e.xlsx C:\Users\bachman0\Documents\FabLab\Buchhaltung\2016\2016_12_31_post_e.xlsx" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="JournalAccumulator 2017" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.JournalAccumulator" />
       <module name="ExcelAccounting" />
       <option name="PROGRAM_PARAMETERS" value="full C:\Users\bachman0\Documents\FabLab\Buchhaltung\2017\2017_12_31_kontenplan_b.xlsx C:\Users\bachman0\Documents\FabLab\Buchhaltung\2017\2017_12_31_konten_g.xlsx" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="JournalAccumulator 2018" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.JournalAccumulator" />
       <module name="ExcelAccounting" />
-      <option name="PROGRAM_PARAMETERS" value="full C:\Users\bachman0\Documents\FabLab\Buchhaltung\2018\2018_12_31_kontenplan_a.xlsx C:\Users\bachman0\Documents\FabLab\Buchhaltung\2018\2018_12_31_konten_a.xlsx" />
-      <method v="2" />
+      <option name="PROGRAM_PARAMETERS" value="full C:\Users\bachman0\Documents\FabLab\Buchhaltung\2018\2018_12_31_kontenplan_a.xlsx C:\Users\bachman0\Documents\FabLab\Buchhaltung\2018\2018_12_31_konten_b.xlsx" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="JournalAccumulator Test" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.JournalAccumulator" />
       <module name="ExcelAccounting" />
       <option name="PROGRAM_PARAMETERS" value="C:\Users\bachman0\Documents\FabLab\2016_10_23_Buchhaltung\Kontenplan\20161231_kontenplan_test_a.xlsx C:\Users\bachman0\Documents\FabLab\2016_10_23_Buchhaltung\2016_12_31_test_post_a.xlsx" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="JournalExport 2014 Post" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.JournalExport" />
       <module name="ExcelAccounting" />
       <option name="PROGRAM_PARAMETERS" value="C:\Users\AndreasB\Documents\FabLab\Finanzen\Buchhaltung\20141231_post_c.xlsx 1010" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="JournalExport 2014 SumUp" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.JournalExport" />
       <module name="ExcelAccounting" />
       <option name="PROGRAM_PARAMETERS" value="C:\Users\AndreasB\Documents\FabLab\Finanzen\Buchhaltung\20141231_post_b.xlsx 1030" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="JournalExport 2014" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.JournalExport" />
       <module name="ExcelAccounting" />
       <option name="PROGRAM_PARAMETERS" value="C:\Users\AndreasB\Documents\FabLab\Finanzen\Buchhaltung\20141231_post_c.xlsx" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="JournalExport 2015 Forderungen Postüberweisung" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.JournalExport" />
       <module name="ExcelAccounting" />
       <option name="PROGRAM_PARAMETERS" value="C:\Users\AndreasB\Documents\FabLab\Finanzen\Buchhaltung\20151231_post_e.xlsx 1102" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="JournalExport 2015 SumUp" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.JournalExport" />
       <module name="ExcelAccounting" />
       <option name="PROGRAM_PARAMETERS" value="C:\Users\AndreasB\Documents\FabLab\Finanzen\Buchhaltung\20151231_post_e.xlsx 1030" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="JournalExport 2015" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.JournalExport" />
       <module name="ExcelAccounting" />
       <option name="PROGRAM_PARAMETERS" value="C:\Users\AndreasB\Documents\FabLab\Finanzen\Buchhaltung\20151231_post_e.xlsx" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="JournalExport 2016" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.JournalExport" />
       <module name="ExcelAccounting" />
       <option name="PROGRAM_PARAMETERS" value="C:\Users\bachman0\Documents\FabLab\2016_10_23_Buchhaltung\Kontenplan\20151231_post_e.xlsx" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="KassenblattImport 2" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.checkout.main.Bla2Test" />
       <module name="ExcelAccounting" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="KassenblattImport" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.checkout.main.BlaTest" />
       <module name="ExcelAccounting" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="MailExport" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.crm.main.MailExport" />
       <module name="ExcelAccounting" />
       <option name="PROGRAM_PARAMETERS" value="C:\Users\AndreasB\Documents\FabLab\FabLab_Members.xlsx" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="Readsheet" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.test.Readsheet" />
       <module name="ExcelAccounting" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="ReadsheetPost" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.test.ReadsheetPost" />
       <module name="ExcelAccounting" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="Test1" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.test.Test1" />
       <module name="ExcelAccounting" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="Test2" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.test.Test2" />
       <module name="ExcelAccounting" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="Writesheet" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.test.Writesheet" />
       <module name="ExcelAccounting" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
@@ -690,6 +776,7 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.AccountSummaryExport 2019" />
       <item itemvalue="Application.Test1" />
       <item itemvalue="Application.Test2" />
       <item itemvalue="Application.Writesheet" />
@@ -729,13 +816,20 @@
       <option name="presentableId" value="Default" />
       <updated>1537090961115</updated>
     </task>
+    <task id="LOCAL-00001" summary="change JournalAccumulator so that it can handle a reduced range of account levels">
+      <created>1537117009055</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1537117009055</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-6" y="-6" width="1933" height="1053" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2576" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2768" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -743,17 +837,17 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.329718" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.329718" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.39045554" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49973333" weight="0.329718" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3991323" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5002667" side_tool="true" weight="0.329718" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Messages" order="10" />
-      <window_info anchor="bottom" id="Problems" order="11" />
+      <window_info anchor="bottom" id="Problems" order="11" weight="0.329718" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -767,6 +861,24 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="change JournalAccumulator so that it can handle a reduced range of account levels" />
+    <option name="LAST_COMMIT_MESSAGE" value="change JournalAccumulator so that it can handle a reduced range of account levels" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalExport.java</url>
+          <line>138</line>
+          <properties />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="debuggerHistoryManager">
     <expressions id="breakpointCondition">
       <expression>
@@ -777,45 +889,100 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/.idea/#Untitled-1#" />
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/AccountPlanExport.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-527">
-          <caret line="58" column="21" lean-forward="true" selection-start-line="58" selection-start-column="21" selection-end-line="58" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/Account.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="134" selection-start-line="134" selection-end-line="134" />
-          <folding>
-            <element signature="e#1385#1386#0" expanded="true" />
-            <element signature="e#1414#1415#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalExport.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="397">
-          <caret line="140" selection-start-line="140" selection-end-line="140" />
+        <state relative-caret-position="272">
+          <caret line="16" column="51" lean-forward="true" selection-start-line="16" selection-start-column="51" selection-end-line="16" selection-end-column="51" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/AccountList.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="83" selection-start-line="83" selection-end-line="83" />
+        <state relative-caret-position="1129">
+          <caret line="108" column="42" lean-forward="true" selection-start-line="108" selection-start-column="42" selection-end-line="108" selection-end-column="42" />
+          <folding>
+            <element signature="method#AccountList#2;class#AccountList#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/AccountPlanExport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="840">
+          <caret line="92" column="54" selection-start-line="92" selection-start-column="39" selection-end-line="92" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/Account.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="27" column="39" lean-forward="true" selection-start-line="27" selection-start-column="39" selection-end-line="27" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomCell.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/cell/CustomIntCell.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="16" column="27" lean-forward="true" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalAccumulator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="136" column="17" lean-forward="true" selection-start-line="136" selection-start-column="17" selection-end-line="136" selection-end-column="17" />
+        <state relative-caret-position="289">
+          <caret line="29" column="25" selection-start-line="29" selection-start-column="25" selection-end-line="31" selection-end-column="77" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/Transaction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="8" column="18" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/JournalExport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="22" selection-start-line="22" selection-end-line="23" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/AccountSummary.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="39" column="18" selection-start-line="39" selection-start-column="18" selection-end-line="39" selection-end-column="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/AccountSummaryList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="663">
+          <caret line="51" column="5" selection-start-line="51" selection-start-column="5" selection-end-line="51" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/fablabwinti/accounting/main/AccountSummaryExport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="445">
+          <caret line="160" lean-forward="true" selection-start-line="160" selection-end-line="160" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

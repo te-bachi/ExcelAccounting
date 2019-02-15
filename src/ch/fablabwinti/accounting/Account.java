@@ -14,10 +14,12 @@ public abstract class Account {
     private int                 number;
     private String              name;
     private BigDecimal          total;
+    private List<String>        keywordList;
     private List<Transaction>   transactionList;
 
-    public Account(Account parent, int number, String name) {
+    public Account(Account parent, int number, String name, List<String> keywordList) {
         this.parent             = parent;
+        this.keywordList        = keywordList;
         this.childList          = new ArrayList<>();
         if (parent != null) {
             parent.addChild(this);
@@ -28,8 +30,12 @@ public abstract class Account {
         this.transactionList    = new ArrayList<>();
     }
 
+    public Account (Account parent, int number, String name) {
+        this(parent, number, name, null);
+    }
+
     public Account (int number, String name) {
-        this(null, number, name);
+        this(null, number, name, null);
     }
 
     public Account getParent() {
@@ -74,6 +80,14 @@ public abstract class Account {
 
     public void setTotal(BigDecimal total) {
         this.total = total;
+    }
+
+    public List<String> getKeywordList() {
+        return keywordList;
+    }
+
+    public void setKeywordList(List<String> keywordList) {
+        this.keywordList = keywordList;
     }
 
     public List<Transaction> getTransactionList() {

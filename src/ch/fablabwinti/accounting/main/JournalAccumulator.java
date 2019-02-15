@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class JournalAccumulator {
 
-    private static int    ACCOUNT_NR_LEVEL                              = 4;
+    private static int    ACCOUNT_NR_LEVEL                              = 6;
 
     private static String OUTPUT_SHEET_BALANCE_STR                       = "Bilanz";
     private static String OUTPUT_SHEET_PROFIT_LOSS_STR                   = "Erfolgsrechnung";

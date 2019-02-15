@@ -133,6 +133,13 @@ public class JournalExport {
                                     }
                                     continue;
                                 }
+
+                                /* debit == credit */
+                                if (debit.getNumber() == credit.getNumber()) {
+                                    System.out.println(row.getRowNum() + ": debit and credit are the same, skipping");
+                                    continue;
+                                }
+
                                 /* with two account objects */
                                 transaction = new Transaction(journalNr, journalDate, debit, credit, journalValue, journalText);
 

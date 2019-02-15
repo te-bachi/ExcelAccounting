@@ -1,5 +1,6 @@
 package ch.fablabwinti.accounting;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -26,7 +27,6 @@ public class AccountList implements Iterable<Account> {
         this.matchExact  = matchExact;
     }
 
-
     public void add(Account account) {
         accountList.add(account);
     }
@@ -45,6 +45,12 @@ public class AccountList implements Iterable<Account> {
 
     public Account removeNext() {
         return accountList.remove(0);
+    }
+
+    public void clear() {
+        for (Account account : accountList) {
+            account.setTotal(new BigDecimal(0.0));
+        }
     }
 
     /**
