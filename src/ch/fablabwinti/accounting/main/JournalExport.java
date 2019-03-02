@@ -21,30 +21,45 @@ import java.util.*;
  */
 public class JournalExport {
 
-    public static int COLUMN_WIDTH_RATIO                    = 260;
+    private static int COLUMN_WIDTH_RATIO                    = 260;
 
     /* [0]=Post [1]=Kasse [2]=SumUp [3]=Restkonto [4]=Guthaben */
                                                             /* [0] [1] [2] [3] [4] */
-    public static int[] INPUT_COLUMN_JOURNAL_NR             = {  0,  0,  0,  0,  0};
-    public static int[] INPUT_COLUMN_JOURNAL_DATE           = {  1,  3,  1,  1,  3};
-    public static int[] INPUT_COLUMN_JOURNAL_DEBIT_NR       = {  5,  5,  5,  5,  4};
-    public static int[] INPUT_COLUMN_JOURNAL_CREDIT_NR      = {  6,  6,  6,  6,  5};
-    public static int[] INPUT_COLUMN_JOURNAL_VALUE          = { 17, 24, 12, 13, 23};
-    public static int[] INPUT_COLUMN_JOURNAL_TEXT           = {  9, 11,  9,  9, 10};
+    private static int[] INPUT_COLUMN_JOURNAL_NR                = {  0,  0,  0,  0,  0};
+    private static int[] INPUT_COLUMN_JOURNAL_DATE              = {  1,  3,  1,  1,  3};
+    private static int[] INPUT_COLUMN_JOURNAL_DEBIT_NR          = {  5,  5,  5,  5,  4};
+    private static int[] INPUT_COLUMN_JOURNAL_CREDIT_NR         = {  6,  6,  6,  6,  5};
+    private static int[] INPUT_COLUMN_JOURNAL_VALUE             = { 17, 24, 12, 13, 23};
+    private static int[] INPUT_COLUMN_JOURNAL_TEXT              = {  9, 11,  9,  9, 10};
+    private static int[] INPUT_COLUMN_JOURNAL_LASTNAME          = { 11, 13, 10, 11, 12};
+    private static int[] INPUT_COLUMN_JOURNAL_FIRSTNAME         = { 12, 12, 11, 12, 11};
 
-    public static int OUTPUT_COLUMN_JOURNAL_NR              = 0;
-    public static int OUTPUT_COLUMN_JOURNAL_DATE            = 1;
-    public static int OUTPUT_COLUMN_JOURNAL_DEBIT_NR        = 2;
-    public static int OUTPUT_COLUMN_JOURNAL_CREDIT_NR       = 3;
-    public static int OUTPUT_COLUMN_JOURNAL_VALUE           = 5;
-    public static int OUTPUT_COLUMN_JOURNAL_TEXT            = 6;
+    private static int OUTPUT_COLUMN_JOURNAL_NR                 = 0;
+    private static int OUTPUT_COLUMN_JOURNAL_DATE               = 1;
+    private static int OUTPUT_COLUMN_JOURNAL_DEBIT_NR           = 2;
+    private static int OUTPUT_COLUMN_JOURNAL_CREDIT_NR          = 3;
+    private static int OUTPUT_COLUMN_JOURNAL_VALUE              = 4;
+    private static int OUTPUT_COLUMN_JOURNAL_TEXT               = 5;
+    private static int OUTPUT_COLUMN_JOURNAL_LASTNAME           = 6;
+    private static int OUTPUT_COLUMN_JOURNAL_FIRSTNAME          = 7;
 
-    public static int OUTPUT_COLUMN_JOURNAL_NR_WIDTH        = 6;
-    public static int OUTPUT_COLUMN_JOURNAL_DATE_WIDTH      = 14;
-    public static int OUTPUT_COLUMN_JOURNAL_DEBIT_NR_WIDTH  = 6;
-    public static int OUTPUT_COLUMN_JOURNAL_CREDIT_NR_WIDTH = 6;
-    public static int OUTPUT_COLUMN_JOURNAL_VALUE_WIDTH     = 10;
-    public static int OUTPUT_COLUMN_JOURNAL_TEXT_WIDTH      = 50;
+    private static int OUTPUT_COLUMN_JOURNAL_NR_WIDTH           = 6;
+    private static int OUTPUT_COLUMN_JOURNAL_DATE_WIDTH         = 14;
+    private static int OUTPUT_COLUMN_JOURNAL_DEBIT_NR_WIDTH     = 8;
+    private static int OUTPUT_COLUMN_JOURNAL_CREDIT_NR_WIDTH    = 8;
+    private static int OUTPUT_COLUMN_JOURNAL_VALUE_WIDTH        = 10;
+    private static int OUTPUT_COLUMN_JOURNAL_TEXT_WIDTH         = 50;
+    private static int OUTPUT_COLUMN_JOURNAL_LASTNAME_WIDTH     = 15;
+    private static int OUTPUT_COLUMN_JOURNAL_FIRSTNAME_WIDTH    = 15;
+
+    private static String OUTPUT_COLUMN_JOURNAL_NR_STR          = "Nr.";
+    private static String OUTPUT_COLUMN_JOURNAL_DATE_STR        = "Datum";
+    private static String OUTPUT_COLUMN_JOURNAL_DEBIT_NR_STR    = "Soll Nr.";
+    private static String OUTPUT_COLUMN_JOURNAL_CREDIT_NR_STR   = "Haben Nr.";
+    private static String OUTPUT_COLUMN_JOURNAL_VALUE_STR       = "Betrag";
+    private static String OUTPUT_COLUMN_JOURNAL_TEXT_STR        = "Text";
+    private static String OUTPUT_COLUMN_JOURNAL_LASTNAME_STR    = "Nachname";
+    private static String OUTPUT_COLUMN_JOURNAL_FIRSTNAME_STR   = "Vorname";
 
     private List<Transaction> transactionList;
 
@@ -78,6 +93,8 @@ public class JournalExport {
         int                 journalCreditNr;
         BigDecimal          journalValue;
         String              journalText;
+        String              journalLastname;
+        String              journalFirstname;
         Account             debit;
         Account             credit;
 
@@ -116,6 +133,14 @@ public class JournalExport {
                         cell = new CustomStringCell(row, INPUT_COLUMN_JOURNAL_TEXT[i]);
                         journalText = cell.getString();
 
+                        /* try to fetch cell as STRING or die with exception */
+                        cell = new CustomStringCell(row, INPUT_COLUMN_JOURNAL_LASTNAME[i]);
+                        journalLastname = cell.getString();
+
+                        /* try to fetch cell as STRING or die with exception */
+                        cell = new CustomStringCell(row, INPUT_COLUMN_JOURNAL_FIRSTNAME[i]);
+                        journalFirstname = cell.getString();
+
                         /* if there is no filter (normal) or a filter is attached and returns true */
                         if (filter == null || filter.filter(journalNr, journalDate, journalDebitNr, journalCreditNr, journalValue, journalText)) {
                             /* flatten account list from "Kontenplan", if available */
@@ -141,14 +166,14 @@ public class JournalExport {
                                 }
 
                                 /* with two account objects */
-                                transaction = new Transaction(journalNr, journalDate, debit, credit, journalValue, journalText);
+                                transaction = new Transaction(journalNr, journalDate, debit, credit, journalValue, journalText, journalLastname, journalFirstname);
 
                                 /* === book transaction (add/remove money from an account) === */
                                 debit.addTransaction(transaction);
                                 credit.addTransaction(transaction);
                             } else {
                                 /* only with account numbers */
-                                transaction = new Transaction(journalNr, journalDate, journalDebitNr, journalCreditNr, journalValue, journalText);
+                                transaction = new Transaction(journalNr, journalDate, journalDebitNr, journalCreditNr, journalValue, journalText, journalLastname, journalFirstname);
                             }
                             transactionList.add(transaction);
                         }
@@ -174,9 +199,11 @@ public class JournalExport {
         CreationHelper      createHelper;
         int                 i;
         int                 k;
+        JournalStyles       styles;
         Transaction         transaction;
 
         workbook        = new XSSFWorkbook();
+        styles          = new JournalStyles(workbook);
         spreadsheet     = workbook.createSheet("journal");
         dateStyle       = workbook.createCellStyle();
         createHelper    = workbook.getCreationHelper();
@@ -188,11 +215,34 @@ public class JournalExport {
         spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_CREDIT_NR, COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_CREDIT_NR_WIDTH);
         spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_VALUE,     COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_VALUE_WIDTH);
         spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_TEXT,      COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_TEXT_WIDTH);
+        spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_LASTNAME,  COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_LASTNAME_WIDTH);
+        spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_FIRSTNAME, COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_FIRSTNAME_WIDTH);
+
+        /* header */
+        row = spreadsheet.createRow(0);
+        new CellCreator(row, OUTPUT_COLUMN_JOURNAL_NR,              styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_JOURNAL_NR_STR);
+        new CellCreator(row, OUTPUT_COLUMN_JOURNAL_DATE,            styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_JOURNAL_DATE_STR);
+        new CellCreator(row, OUTPUT_COLUMN_JOURNAL_DEBIT_NR,        styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_JOURNAL_DEBIT_NR_STR);
+        new CellCreator(row, OUTPUT_COLUMN_JOURNAL_CREDIT_NR,       styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_JOURNAL_CREDIT_NR_STR);
+        new CellCreator(row, OUTPUT_COLUMN_JOURNAL_VALUE,           styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_JOURNAL_VALUE_STR);
+        new CellCreator(row, OUTPUT_COLUMN_JOURNAL_TEXT,            styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_JOURNAL_TEXT_STR);
+        new CellCreator(row, OUTPUT_COLUMN_JOURNAL_LASTNAME,        styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_JOURNAL_LASTNAME_STR);
+        new CellCreator(row, OUTPUT_COLUMN_JOURNAL_FIRSTNAME,       styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_JOURNAL_FIRSTNAME_STR);
 
         for (k = 0; k < transactionList.size(); k++) {
             transaction = transactionList.get(k);
-            row = spreadsheet.createRow(k);
+            row = spreadsheet.createRow(k + 1); // + 1 for header
 
+            new CellCreator(row, OUTPUT_COLUMN_JOURNAL_NR,              styles.normalStyle).createCell(transaction.getNr());
+            new CellCreator(row, OUTPUT_COLUMN_JOURNAL_DATE,            styles.dateStyle  ).createCell(transaction.getDate());
+            new CellCreator(row, OUTPUT_COLUMN_JOURNAL_DEBIT_NR,        styles.normalStyle).createCell(transaction.getDebit().getNumber());
+            new CellCreator(row, OUTPUT_COLUMN_JOURNAL_CREDIT_NR,       styles.normalStyle).createCell(transaction.getCredit().getNumber());
+            new CellCreator(row, OUTPUT_COLUMN_JOURNAL_VALUE,           styles.numberStyle).createCell(transaction.getAmount().doubleValue());
+            new CellCreator(row, OUTPUT_COLUMN_JOURNAL_TEXT,            styles.normalStyle).createCell(transaction.getText());
+            new CellCreator(row, OUTPUT_COLUMN_JOURNAL_LASTNAME,        styles.normalStyle).createCell(transaction.getLastname());
+            new CellCreator(row, OUTPUT_COLUMN_JOURNAL_FIRSTNAME,       styles.normalStyle).createCell(transaction.getFirstname());
+
+            /*
             cell = row.createCell(OUTPUT_COLUMN_JOURNAL_NR);
             cell.setCellValue(transaction.getNr());
 
@@ -211,6 +261,7 @@ public class JournalExport {
 
             cell = row.createCell(OUTPUT_COLUMN_JOURNAL_TEXT);
             cell.setCellValue(transaction.getText());
+            */
         }
         out = new FileOutputStream(outputFile);
         workbook.write(out);

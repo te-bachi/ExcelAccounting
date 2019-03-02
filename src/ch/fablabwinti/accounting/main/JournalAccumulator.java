@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Uses classes AccountPlanExport and JournalExport!
  */
 public class JournalAccumulator {
 
@@ -57,15 +57,19 @@ public class JournalAccumulator {
     private static int OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT           = 2;
     private static int OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT          = 3;
     private static int OUTPUT_COLUMN_TRANSACTION_TEXT                    = 4;
-    private static int OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT            = 5;
-    private static int OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT           = 6;
-    private static int OUTPUT_COLUMN_TRANSACTION_TOTAL                   = 7;
+    private static int OUTPUT_COLUMN_TRANSACTION_LASTNAME                = 5;
+    private static int OUTPUT_COLUMN_TRANSACTION_FIRSTNAME               = 6;
+    private static int OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT            = 7;
+    private static int OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT           = 8;
+    private static int OUTPUT_COLUMN_TRANSACTION_TOTAL                   = 9;
 
     private static String OUTPUT_COLUMN_TRANSACTION_NR_STR               = "Nr.";
     private static String OUTPUT_COLUMN_TRANSACTION_DATE_STR             = "Datum";
     private static String OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT_STR    = "Soll Nr.";
     private static String OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT_STR   = "Haben Nr.";
     private static String OUTPUT_COLUMN_TRANSACTION_TEXT_STR             = "Text";
+    private static String OUTPUT_COLUMN_TRANSACTION_LASTNAME_STR         = "Nachname";
+    private static String OUTPUT_COLUMN_TRANSACTION_FIRSTNAME_STR        = "Vorname";
     private static String OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT_STR     = "Soll";
     private static String OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT_STR    = "Haben";
     private static String OUTPUT_COLUMN_TRANSACTION_TOTAL_STR            = "Total";
@@ -82,6 +86,8 @@ public class JournalAccumulator {
     private static double OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT_WIDTH  = 9.2857;    /* 65 px */
     private static double OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT_WIDTH = 9.2857;    /* 65 px */
     private static double OUTPUT_COLUMN_TRANSACTION_TEXT_WIDTH           = 40.7142;   /* 285 px */
+    private static double OUTPUT_COLUMN_TRANSACTION_LASTNAME_WIDTH       = 16.7142;   /* 117 px */
+    private static double OUTPUT_COLUMN_TRANSACTION_FIRSTNAME_WIDTH      = 16.7142;   /* 117 px */
     private static double OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT_WIDTH   = 16.7142;   /* 117 px */
     private static double OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT_WIDTH  = 16.7142;   /* 117 px */
     private static double OUTPUT_COLUMN_TRANSACTION_TOTAL_WIDTH          = 16.7142;   /* 117 px */
@@ -653,6 +659,8 @@ public class JournalAccumulator {
                 new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT,   styles.accountTitleStyle).createCell("");
                 new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT,  styles.accountTitleStyle).createCell("");
                 new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_TEXT,            styles.accountTitleStyle).createCell("");
+                new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_LASTNAME,        styles.accountTitleStyle).createCell("");
+                new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_FIRSTNAME,       styles.accountTitleStyle).createCell("");
                 new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT,    styles.accountTitleStyle).createCell("");
                 new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT,   styles.accountTitleStyle).createCell("");
                 new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_TOTAL,           styles.accountTitleStyle).createCell("");
@@ -674,6 +682,8 @@ public class JournalAccumulator {
                 new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT,   styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT_STR);
                 new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT,  styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT_STR);
                 new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_TEXT,            styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_TRANSACTION_TEXT_STR);
+                new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_LASTNAME,        styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_TRANSACTION_LASTNAME_STR);
+                new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_FIRSTNAME,       styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_TRANSACTION_FIRSTNAME_STR);
                 new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT,    styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT_STR);
                 new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT,   styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT_STR);
                 new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_TOTAL,           styles.accountHeaderStyle).createCell(OUTPUT_COLUMN_TRANSACTION_TOTAL_STR);
@@ -694,6 +704,8 @@ public class JournalAccumulator {
                     new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT,   styles.normalStyle).createCell(transaction.getDebit().getNumber());
                     new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT,  styles.normalStyle).createCell(transaction.getCredit().getNumber());
                     new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_TEXT,            styles.normalStyle).createCell(transaction.getText());
+                    new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_LASTNAME,        styles.normalStyle).createCell(transaction.getLastname());
+                    new CellCreator(row, OUTPUT_COLUMN_TRANSACTION_FIRSTNAME,       styles.normalStyle).createCell(transaction.getFirstname());
 
                     /* This transaction is a debit ...*/
                     if (account.getNumber() == transaction.getDebit().getNumber()) {
@@ -752,6 +764,8 @@ public class JournalAccumulator {
         sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT,    OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT_WIDTH);
         sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT,   OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT_WIDTH);
         sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_TRANSACTION_TEXT,             OUTPUT_COLUMN_TRANSACTION_TEXT_WIDTH);
+        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_TRANSACTION_LASTNAME,         OUTPUT_COLUMN_TRANSACTION_LASTNAME_WIDTH);
+        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_TRANSACTION_FIRSTNAME,        OUTPUT_COLUMN_TRANSACTION_FIRSTNAME_WIDTH);
         sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT,     OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT_WIDTH);
         sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT,    OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT_WIDTH);
         sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_TRANSACTION_TOTAL,            OUTPUT_COLUMN_TRANSACTION_TOTAL_WIDTH);
@@ -761,6 +775,8 @@ public class JournalAccumulator {
         sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_TRANSACTION_DEBIT_ACCOUNT, true);
         sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_TRANSACTION_CREDIT_ACCOUNT,true);
         sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_TRANSACTION_TEXT,          true);
+        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_TRANSACTION_LASTNAME,      true);
+        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_TRANSACTION_FIRSTNAME,     true);
         sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_TRANSACTION_DEBIT_AMOUNT,  true);
         sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_TRANSACTION_CREDIT_AMOUNT, true);
         sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_TRANSACTION_TOTAL,         true);
