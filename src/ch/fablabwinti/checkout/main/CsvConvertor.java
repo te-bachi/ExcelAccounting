@@ -212,16 +212,25 @@ public class CsvConvertor {
             } else if (item.getPosition().equals("Mitgliederbeitrag")) {
                 habenStr = "Mitgliederbeitrag";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_MEMBERSHIP_FEE;
+            } else if (item.getPosition().equals("Elektronikbauteile")) {
+                habenStr = "Materialverkauf";
+                positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
+            } else if (item.getPosition().equals("FabLab Kit")) {
+                habenStr = "FabLab-Kits Einnahmen";
+                positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
+            } else if (item.getPosition().equals("Diverses")) {
+                habenStr = "-";
+                positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
             } else {
                 positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
             }
 
             /* Only for "Kasse" */
 
-            if ((positionIdx < OUTPUT_COLUMN_JOURNAL_OTHER || positionIdx > OUTPUT_COLUMN_JOURNAL_OTHER) && positionIdx < OUTPUT_COLUMN_JOURNAL_PURCHASE) {
+            //if ((positionIdx < OUTPUT_COLUMN_JOURNAL_OTHER || positionIdx > OUTPUT_COLUMN_JOURNAL_OTHER) && positionIdx < OUTPUT_COLUMN_JOURNAL_PURCHASE) {
                 row.createCell(OUTPUT_COLUMN_JOURNAL_SOLL).setCellValue("Kasse");
                 row.createCell(OUTPUT_COLUMN_JOURNAL_HABEN).setCellValue(habenStr);
-            }
+            //}
 
             cell = row.createCell(positionIdx);
             if (item.getAmount() != null) {
