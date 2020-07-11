@@ -118,33 +118,37 @@ public class AccountPlanExport {
 
                     if (depth <= level) {
 
+
+                        if (parent != null) {
+                            /* Get depth of parent */
+                            parentDepth = Integer.valueOf(parent.getNumber()).toString().length();
+
+                            /**
+                             * The actual depth is lower than the parent depth.
+                             * ex.
+                             * parent:    1234  AccountText1 => parentDepth = 4
+                             * current:   32    AccountText1 => depth       = 2
+                             * depthDiff: 4 - 2 + 1 = 3
+                             *
+                             * We have to go up 3 levels to get a depth-1 TitleAccount
+                             **/
+                            if (depth <= parentDepth) {
+                                depthDiff = parentDepth - depth + 1;
+                                do {
+                                    if (parent != null) {
+                                        parent = parent.getParent();
+                                    }
+                                    depthDiff--;
+                                } while (depthDiff > 0);
+                            }
+                        }
+
                         /* Check if Account Type is empty/blank => It's a TitleAccount and there are children */
                         /*                                                ============                        */
                         if ((cell == null || cell.getCellType() == CellType.BLANK)) {
 
                             /* Is there a parent? */
                             if (parent != null) {
-                                /* Get depth of parent */
-                                parentDepth = Integer.valueOf(parent.getNumber()).toString().length();
-
-                                /**
-                                 * The actual depth is lower than the parent depth.
-                                 * ex.
-                                 * parent:    1234  AccountText1 => parentDepth = 4
-                                 * current:   32    AccountText1 => depth       = 2
-                                 * depthDiff: 4 - 2 + 1 = 3
-                                 *
-                                 * We have to go up 3 levels to get a depth-1 TitleAccount
-                                 **/
-                                if (depth <= parentDepth) {
-                                    depthDiff = parentDepth - depth + 1;
-                                    do {
-                                        if (parent != null) {
-                                            parent = parent.getParent();
-                                        }
-                                        depthDiff--;
-                                    } while (depthDiff > 0);
-                                }
 
                                 /* If there is a parent, use parent to create a new TitleAccount... */
                                 if (parent != null) {

@@ -44,13 +44,16 @@ public class JournalAccumulator {
     private static int[] ACCOUNT_INITIAL                                   = { 99, 9999 };
 
     /* */                                                                /* Assets,  Liabilities */
-    private static int[] OUTPUT_COLUMN_BALANCE                           = { 0,      5 }; /* offset */
+    private static int[] OUTPUT_COLUMN_BALANCE                           = { 0,      8 }; /* offset */
 
     private static int OUTPUT_COLUMN_BALANCE_TITLE_NR                    = 0;
-    private static int OUTPUT_COLUMN_BALANCE_ACCOUNT_NR                  = 1;
-    private static int OUTPUT_COLUMN_BALANCE_ACCOUNT                     = 2;
-    private static int OUTPUT_COLUMN_BALANCE_AMOUNT                      = 3;
-    private static int OUTPUT_COLUMN_BALANCE_TOTAL                       = 4;
+    private static int OUTPUT_COLUMN_BALANCE_SUBTITLE_NR                 = 1;
+    private static int OUTPUT_COLUMN_BALANCE_ACCOUNT_NR                  = 2;
+    private static int OUTPUT_COLUMN_BALANCE_SUBACCOUNT_NR               = 3;
+    private static int OUTPUT_COLUMN_BALANCE_ACCOUNT_NAME                = 4;
+    private static int OUTPUT_COLUMN_BALANCE_SUBAMOUNT                   = 5;
+    private static int OUTPUT_COLUMN_BALANCE_AMOUNT                      = 6;
+    private static int OUTPUT_COLUMN_BALANCE_TOTAL                       = 7;
 
     private static int OUTPUT_COLUMN_TRANSACTION_NR                      = 0;
     private static int OUTPUT_COLUMN_TRANSACTION_DATE                    = 1;
@@ -75,11 +78,14 @@ public class JournalAccumulator {
     private static String OUTPUT_COLUMN_TRANSACTION_TOTAL_STR            = "Total";
 
     /* 7 px per point */
-    private static double OUTPUT_COLUMN_BALANCE_TITLE_NR_WIDTH           = 4.7142;    /* 33 px */
-    private static double OUTPUT_COLUMN_BALANCE_ACCOUNT_NR_WIDTH         = 9.2857;    /* 65 px */
+    private static double OUTPUT_COLUMN_BALANCE_TITLE_NR_WIDTH           = 2.8557;    /* 20 px */
+    private static double OUTPUT_COLUMN_BALANCE_SUBTITLE_NR_WIDTH        = 4.2856;    /* 30 px */
+    private static double OUTPUT_COLUMN_BALANCE_ACCOUNT_NR_WIDTH         = 7.1428;    /* 50 px */
+    private static double OUTPUT_COLUMN_BALANCE_SUBACCOUNT_NR_WIDTH      = 8.5713;    /* 65 px */
     private static double OUTPUT_COLUMN_BALANCE_ACCOUNT_WIDTH            = 40.7142;   /* 285 px */
-    private static double OUTPUT_COLUMN_BALANCE_AMOUNT_WIDTH             = 16.7142;   /* 117 px */
-    private static double OUTPUT_COLUMN_BALANCE_TOTAL_WIDTH              = 16.7142;   /* 117 px */
+    private static double OUTPUT_COLUMN_BALANCE_SUBAMOUNT_WIDTH          = 12.8571;   /* 90 px */
+    private static double OUTPUT_COLUMN_BALANCE_AMOUNT_WIDTH             = 12.8571;   /* 90 px */
+    private static double OUTPUT_COLUMN_BALANCE_TOTAL_WIDTH              = 12.8571;   /* 90 px */
 
     private static double OUTPUT_COLUMN_TRANSACTION_NR_WIDTH             = 9.2857;    /* 65 px */
     private static double OUTPUT_COLUMN_TRANSACTION_DATE_WIDTH           = 11.4285;   /* 80 px */
@@ -525,14 +531,29 @@ public class JournalAccumulator {
             } else {
                 row = sheet.getRow(rowIdx);
             }
+
+            int depth = Integer.valueOf(account.getNumber()).toString().length();
             /* Check if the account is a TitleAccount ... */
             if (account instanceof TitleAccount) {
 
                 /*** Write to sheet */
-                /* Account Nr. */
-                new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_TITLE_NR,      styles.boldStyle).createCell(account.getNumber());
-                /* Account Name */
-                new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR,    styles.boldStyle).createCell(account.getName());
+                switch (depth) {
+                    case 1:
+                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_TITLE_NR,      styles.boldStyle).createCell(account.getNumber());
+                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBTITLE_NR,   styles.boldStyle).createCell(account.getName());
+                        break;
+
+                    case 2:
+                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBTITLE_NR,   styles.boldStyle).createCell(account.getNumber());
+                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR,    styles.boldStyle).createCell(account.getName());
+                        break;
+
+                    case 4:
+                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR,    styles.boldStyle).createCell(account.getNumber());
+                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBACCOUNT_NR, styles.boldStyle).createCell(account.getName());
+                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_AMOUNT,        styles.numberStyle).createCell(neg * account.getTotal().doubleValue());
+                        break;
+                }
 
                 total = account.getTotal().doubleValue();
 
@@ -540,20 +561,26 @@ public class JournalAccumulator {
             } else {
 
                 /*** Write to sheet */
-                /* Account Nr. */
-                new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR,    styles.normalStyle).createCell(account.getNumber());
+                switch (depth) {
+                    case 4:
+                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR,    styles.normalStyle).createCell(account.getNumber());
+                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBACCOUNT_NR, styles.normalStyle).createCell(account.getName());
+                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_AMOUNT,        styles.numberStyle).createCell(neg * account.getTotal().doubleValue());
+                        break;
 
-                /* Account Name */
-                new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT,       styles.normalStyle).createCell(account.getName());
+                    case 6:
+                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBACCOUNT_NR, styles.normalStyle).createCell(account.getNumber());
+                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NAME,  styles.normalStyle).createCell(account.getName());
+                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBAMOUNT,     styles.numberStyle).createCell(neg * account.getTotal().doubleValue());
+                        break;
+                }
 
-                /* Account Total (Calculated in TODO)*/
-                new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_AMOUNT,        styles.numberStyle).createCell(neg * account.getTotal().doubleValue());
-
-                /* Current account is NOT the last in the list ... */
+                 /* Current account is NOT the last in the list ... */
                 if ((rowIdx + 1) < childrenList.size()) {
                     /* peek next account and check if it's a TitleAccount... */
                     account = childrenList.get(rowIdx + 1);
-                    if (account instanceof TitleAccount) {
+                    depth = Integer.valueOf(account.getNumber()).toString().length();
+                    if (account instanceof TitleAccount && depth == 2) {
                         writeTotal = true;
                     }
 
@@ -588,7 +615,9 @@ public class JournalAccumulator {
 
         new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_TITLE_NR, styles.balanceStyle);
         new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR, styles.balanceStyle);
-        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT, styles.balanceStyle);
+        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBACCOUNT_NR, styles.balanceStyle);
+        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NAME, styles.balanceStyle);
+        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBAMOUNT, styles.balanceStyle);
         new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_AMOUNT, styles.balanceStyle);
         new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_TOTAL, styles.balanceStyle).createCell(neg * total);
     }
@@ -745,17 +774,23 @@ public class JournalAccumulator {
     }
 
     private static void setColumnWidthForBalanceProfitAndLoss(XSSFSheet sheet, int idx) {
-        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_TITLE_NR,   OUTPUT_COLUMN_BALANCE_TITLE_NR_WIDTH);
-        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR, OUTPUT_COLUMN_BALANCE_ACCOUNT_NR_WIDTH);
-        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_ACCOUNT,    OUTPUT_COLUMN_BALANCE_ACCOUNT_WIDTH);
-        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_AMOUNT,     OUTPUT_COLUMN_BALANCE_AMOUNT_WIDTH);
-        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_TOTAL,      OUTPUT_COLUMN_BALANCE_TOTAL_WIDTH);
+        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_TITLE_NR,        OUTPUT_COLUMN_BALANCE_TITLE_NR_WIDTH);
+        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_SUBTITLE_NR,     OUTPUT_COLUMN_BALANCE_SUBTITLE_NR_WIDTH);
+        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR,      OUTPUT_COLUMN_BALANCE_ACCOUNT_NR_WIDTH);
+        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_SUBACCOUNT_NR,   OUTPUT_COLUMN_BALANCE_SUBACCOUNT_NR_WIDTH);
+        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NAME,    OUTPUT_COLUMN_BALANCE_ACCOUNT_WIDTH);
+        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_SUBAMOUNT,       OUTPUT_COLUMN_BALANCE_SUBAMOUNT_WIDTH);
+        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_AMOUNT,          OUTPUT_COLUMN_BALANCE_AMOUNT_WIDTH);
+        sheet.getColumnHelper().setColWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_TOTAL,           OUTPUT_COLUMN_BALANCE_TOTAL_WIDTH);
 
-        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_TITLE_NR,   true);
-        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR, true);
-        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_ACCOUNT,    true);
-        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_AMOUNT,     true);
-        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_TOTAL,      true);
+        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_TITLE_NR,         true);
+        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_SUBTITLE_NR,      true);
+        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR,       true);
+        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_SUBACCOUNT_NR,    true);
+        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NAME,     true);
+        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_SUBAMOUNT,        true);
+        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_AMOUNT,           true);
+        sheet.getColumnHelper().setCustomWidth(OUTPUT_COLUMN_BALANCE[idx] + OUTPUT_COLUMN_BALANCE_TOTAL,            true);
     }
 
     private static void setColumnWidthForAccountTransactions(XSSFSheet sheet) {

@@ -147,4 +147,9 @@ public abstract class Account {
             subtractTotal(transaction.getAmount());
         }
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
