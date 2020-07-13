@@ -22,7 +22,9 @@ public class AccountPlanExport {
 
     public static int INPUT_COLUMN_ACCOUNT_TYPE         = 1;
     public static int INPUT_COLUMN_ACCOUNT_NR           = 2;
-    public static int INPUT_COLUMN_ACCOUNT_TEXT         = 3;
+    public static int INPUT_COLUMN_ACCOUNT_SUBNR        = 3;
+    public static int INPUT_COLUMN_ACCOUNT_TEXT         = 4;
+    public static int INPUT_COLUMN_ACCOUNT_SUBTEXT      = 5;
 
     public static int[] OUTPUT_COLUMN_ACCOUNT_TEXT      = {  0, 3 };
     public static int[] OUTPUT_COLUMN_ACCOUNT_NR        = {  1, 2 };
@@ -37,6 +39,8 @@ public class AccountPlanExport {
     public static String ACCOUNT_TYPE_LIABILITY         = "Passivkonto";
     public static String ACCOUNT_TYPE_INCOME            = "Ertragskonto";
     public static String ACCOUNT_TYPE_EXPENSE           = "Aufwandskonto";
+
+    public static int ACCOUNT_NR_DEPTH[]                = {1, 2, 4, 6, 0};
 
     private List<Account>   rootList;
     private List<Account>   accountList;
@@ -67,6 +71,7 @@ public class AccountPlanExport {
         Cell                cell;
         CellValue           cellValue;
         String              accountText;
+        String              accountNumberStr;
         int                 accountNumber;
         Account             account;
         Account             parent;
@@ -84,7 +89,7 @@ public class AccountPlanExport {
         while (rowIterator.hasNext()) {
             row  = (XSSFRow) rowIterator.next();
 
-            /* First column: Account Text */
+            /* Account Text */
             cell = row.getCell(INPUT_COLUMN_ACCOUNT_TEXT);
 
             /* Only go further if the cell is NOT blank => otherwise skip row */
@@ -95,17 +100,38 @@ public class AccountPlanExport {
                 }
                 accountText = cell.getStringCellValue();
 
-                /* Second column: Account Nr */
+                /* Account Sub-Text */
+                cell = row.getCell(INPUT_COLUMN_ACCOUNT_SUBTEXT);
+                if (cell != null && cell.getCellType() != CellType.BLANK) {
+                    if (cell.getCellType() != CellType.STRING) {
+                        System.out.println(row.getRowNum() + "/" + cell.getColumnIndex() + " is not of type string but " + cell.getCellType() + "!");
+                        continue;
+                    }
+                    accountText += " " + cell.getStringCellValue();
+                }
+
+                /* Account Nr */
                 cell = row.getCell(INPUT_COLUMN_ACCOUNT_NR);
-                if (cell == null || cell.getCellType() == CellType.BLANK || cell.getCellType() != CellType.NUMERIC) {
-                    System.out.println(row.getRowNum() + "/" + cell.getColumnIndex() + " is not of type number but " + cell.getCellType() + "!");
+                if (cell == null || cell.getCellType() == CellType.BLANK || cell.getCellType() != CellType.STRING) {
+                    System.out.println(row.getRowNum() + "/" + cell.getColumnIndex() + " is not of type string but " + cell.getCellType() + "!");
                     continue;
                 }
-                accountNumber = Double.valueOf(cell.getNumericCellValue()).intValue();
+                accountNumberStr = cell.getStringCellValue();
+
+                /* Account Sub-Nr */
+                cell = row.getCell(INPUT_COLUMN_ACCOUNT_SUBNR);
+                if (cell != null && cell.getCellType() != CellType.BLANK) {
+                    if (cell.getCellType() != CellType.STRING) {
+                        System.out.println(row.getRowNum() + "/" + cell.getColumnIndex() + " is not of type string but " + cell.getCellType() + "!");
+                        continue;
+                    }
+                    accountNumberStr += cell.getStringCellValue();
+                }
+
+                accountNumber = Double.valueOf(accountNumberStr).intValue();
 
                 /* Third column: Account Type (String of empty [TitleAccount]) */
                 cell = row.getCell(INPUT_COLUMN_ACCOUNT_TYPE);
-
 
                 try {
                     /**
@@ -120,26 +146,38 @@ public class AccountPlanExport {
 
 
                         if (parent != null) {
-                            /* Get depth of parent */
                             parentDepth = Integer.valueOf(parent.getNumber()).toString().length();
 
-                            /**
-                             * The actual depth is lower than the parent depth.
-                             * ex.
-                             * parent:    1234  AccountText1 => parentDepth = 4
-                             * current:   32    AccountText1 => depth       = 2
-                             * depthDiff: 4 - 2 + 1 = 3
-                             *
-                             * We have to go up 3 levels to get a depth-1 TitleAccount
-                             **/
                             if (depth <= parentDepth) {
-                                depthDiff = parentDepth - depth + 1;
+                                /* find account index */
+                                int idx;
+                                for (idx = 0; idx < ACCOUNT_NR_DEPTH.length; idx++) {
+                                    if (ACCOUNT_NR_DEPTH[idx] == depth) {
+                                        break;
+                                    }
+                                }
+                                if (idx == ACCOUNT_NR_DEPTH.length) {
+                                    System.out.println("name=\"" + accountText + "\": can't find new parent!");
+                                }
+
+                                int idxParent;
+                                for (idxParent = 0; idxParent < ACCOUNT_NR_DEPTH.length; idxParent++) {
+                                    if (ACCOUNT_NR_DEPTH[idxParent] == parentDepth) {
+                                        break;
+                                    }
+                                }
+                                if (idxParent == ACCOUNT_NR_DEPTH.length) {
+                                    System.out.println("parent=\"" + parent.getName() + "\": can't find new parent!");
+                                }
+
+                                int idxDiff = idxParent - idx + 1;
                                 do {
                                     if (parent != null) {
                                         parent = parent.getParent();
                                     }
-                                    depthDiff--;
-                                } while (depthDiff > 0);
+                                    idxDiff--;
+                                } while (idxDiff > 0);
+
                             }
                         }
 

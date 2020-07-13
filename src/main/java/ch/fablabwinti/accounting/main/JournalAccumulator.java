@@ -530,29 +530,37 @@ public class JournalAccumulator {
                 row = sheet.createRow(rowIdx);
             } else {
                 row = sheet.getRow(rowIdx);
+                if (row == null) {
+                    System.out.println("Can't fetch row. Create new row " + rowIdx + " (max. " + balanceMaxIdx + ") for " + account.getNumber() + " \"" + account.getName());
+                    row = sheet.createRow(rowIdx);
+                }
             }
 
             int depth = Integer.valueOf(account.getNumber()).toString().length();
             /* Check if the account is a TitleAccount ... */
             if (account instanceof TitleAccount) {
 
-                /*** Write to sheet */
-                switch (depth) {
-                    case 1:
-                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_TITLE_NR,      styles.boldStyle).createCell(account.getNumber());
-                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBTITLE_NR,   styles.boldStyle).createCell(account.getName());
-                        break;
+                if (row != null) {
+                    /*** Write to sheet */
+                    switch (depth) {
+                        case 1:
+                            new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_TITLE_NR, styles.boldStyle).createCell(account.getNumber());
+                            new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBTITLE_NR, styles.boldStyle).createCell(account.getName());
+                            break;
 
-                    case 2:
-                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBTITLE_NR,   styles.boldStyle).createCell(account.getNumber());
-                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR,    styles.boldStyle).createCell(account.getName());
-                        break;
+                        case 2:
+                            new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBTITLE_NR, styles.boldStyle).createCell(account.getNumber());
+                            new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR, styles.boldStyle).createCell(account.getName());
+                            break;
 
-                    case 4:
-                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR,    styles.boldStyle).createCell(account.getNumber());
-                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBACCOUNT_NR, styles.boldStyle).createCell(account.getName());
-                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_AMOUNT,        styles.numberStyle).createCell(neg * account.getTotal().doubleValue());
-                        break;
+                        case 4:
+                            new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR, styles.boldStyle).createCell(account.getNumber());
+                            new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBACCOUNT_NR, styles.boldStyle).createCell(account.getName());
+                            new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_AMOUNT, styles.numberStyle).createCell(neg * account.getTotal().doubleValue());
+                            break;
+                    }
+                } else {
+                    System.out.println("TitleAccount row doesn't exists! Should not happen");
                 }
 
                 total = account.getTotal().doubleValue();
@@ -561,18 +569,22 @@ public class JournalAccumulator {
             } else {
 
                 /*** Write to sheet */
-                switch (depth) {
-                    case 4:
-                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR,    styles.normalStyle).createCell(account.getNumber());
-                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBACCOUNT_NR, styles.normalStyle).createCell(account.getName());
-                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_AMOUNT,        styles.numberStyle).createCell(neg * account.getTotal().doubleValue());
-                        break;
+                if (row != null) {
+                    switch (depth) {
+                        case 4:
+                            new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR, styles.normalStyle).createCell(account.getNumber());
+                            new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBACCOUNT_NR, styles.normalStyle).createCell(account.getName());
+                            new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_AMOUNT, styles.numberStyle).createCell(neg * account.getTotal().doubleValue());
+                            break;
 
-                    case 6:
-                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBACCOUNT_NR, styles.normalStyle).createCell(account.getNumber());
-                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NAME,  styles.normalStyle).createCell(account.getName());
-                        new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBAMOUNT,     styles.numberStyle).createCell(neg * account.getTotal().doubleValue());
-                        break;
+                        case 6:
+                            new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBACCOUNT_NR, styles.normalStyle).createCell(account.getNumber());
+                            new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NAME, styles.normalStyle).createCell(account.getName());
+                            new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBAMOUNT, styles.numberStyle).createCell(neg * account.getTotal().doubleValue());
+                            break;
+                    }
+                } else {
+                    System.out.println("Account row doesn't exists! Should not happen");
                 }
 
                  /* Current account is NOT the last in the list ... */
