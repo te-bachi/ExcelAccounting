@@ -29,6 +29,9 @@ public class Item {
     @CsvBindByPosition(position = 5)
     private BigDecimal  amount;
 
+    @CsvBindByPosition(position = 6)
+    private String      paymentMethod;
+
     public Date getDate() {
         return date;
     }
@@ -75,5 +78,13 @@ public class Item {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 }

@@ -191,26 +191,31 @@ public class CsvConvertor {
             }
 
             sollStr = "Kasse";
+
+            if (item.getPaymentMethod().equals("SumUp")) {
+                sollStr = "SumUp";
+            }
+
             if (item.getPosition() == null) {
                 positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
             } else if (item.getPosition().equals("Lasercutter")) {
-                habenStr = "Lasercutter";
+                habenStr = "Maschinenstundenertrag Lasercutter LaserSaur";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_MACHINE_LASER;
 
             } else if (item.getPosition().equals("3D Drucker")) {
-                habenStr = "3D Drucker";
+                habenStr = "Maschinenstundenertrag 3D Drucker";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_MACHINE_3D;
 
             } else if (item.getPosition().equals("Fräsmaschine")) {
-                habenStr = "Fräsmaschine";
+                habenStr = "Maschinenstundenertrag Fräsmaschine";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
 
             } else if (item.getPosition().equals("Drehbank")) {
-                habenStr = "Drehbank";
+                habenStr = "Maschinenstundenertrag Drehbank";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_MACHINE_LATHE;
 
             } else if (item.getPosition().equals("Getränke/Food")) {
-                habenStr = "Getränkeertrag";
+                habenStr = "Getränke Verkauf";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_DRINKS;
 
             } else if (item.getPosition().equals("Mitgliederbeitrag")) {
@@ -218,11 +223,11 @@ public class CsvConvertor {
                 positionIdx = OUTPUT_COLUMN_JOURNAL_MEMBERSHIP_FEE;
 
             } else if (item.getPosition().equals("Elektronikbauteile")) {
-                habenStr = "Materialverkauf";
+                habenStr = "Elektronikbauteil Verkauf";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
 
             } else if (item.getPosition().equals("FabLab Kit")) {
-                habenStr = "FabLab-Kits Einnahmen";
+                habenStr = "FabLab-Kits Verkauf";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
 
             } else if (item.getPosition().equals("Spende")) {
@@ -237,14 +242,14 @@ public class CsvConvertor {
                 positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
 
             } else if (item.getPosition().equals("Kursgebühren")) {
-                habenStr = "Workshopertrag";
+                habenStr = "Workshop EggBot Einnahmen";
                 if (item.getText() == null || item.getText().isEmpty()) {
                     item.setText("Workshop");
                 }
                 positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
 
             } else if (item.getPosition().equals("Plattenmaterial")) {
-                habenStr = "Materialverkauf";
+                habenStr = "Plattenmaterial Verkauf";
                 if (item.getText() == null || item.getText().isEmpty()) {
                     item.setText("Plattenmaterial");
                 }
