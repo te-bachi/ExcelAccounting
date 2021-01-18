@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="bc46d67a-d76f-4b57-b7dc-2b7ad72e2c6f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/checkout/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/checkout/Item.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/checkout/main/CsvConvertor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/checkout/main/CsvConvertor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -26,7 +25,7 @@
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
   </component>
-  <component name="RunManager" selected="Application.CsvConvert 2020">
+  <component name="RunManager" selected="Application.JournalAccumulator 2020">
     <configuration name="AccountExport 2016" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.AccountPlanExport" />
       <module name="ExcelAccounting" />
@@ -79,7 +78,7 @@
     <configuration name="CsvConvert 2020" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.checkout.main.CsvConvertor" />
       <module name="ExcelAccounting" />
-      <option name="PROGRAM_PARAMETERS" value="&quot;C:\Users\andreas\Documents\FabLab\Buchhaltung\2020\2020_09_12" />
+      <option name="PROGRAM_PARAMETERS" value="&quot;C:\Users\andreas\Documents\FabLab\Buchhaltung\2020\2020_11_14" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -308,10 +307,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1105" y="432" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1599911403842">
+    <state x="1105" y="432" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605543055694">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state x="1105" y="432" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2194.1194@0.0.2194.1194" timestamp="1599911403842" />
+    <state x="1105" y="432" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2194.1194@0.0.2194.1194" timestamp="1605543055694" />
     <state x="956" y="154" key="#com.intellij.ide.macro.MacrosDialog" timestamp="1597065831068">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
@@ -320,50 +319,42 @@
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
     <state x="903" y="281" key="#com.intellij.ide.util.MemberChooser/0.0.2194.1194@0.0.2194.1194" timestamp="1599918374381" />
-    <state x="827" y="387" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1593888597522">
-      <screen x="0" y="0" width="2194" height="1194" />
-    </state>
-    <state x="827" y="387" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.2194.1194@0.0.2194.1194" timestamp="1593888597522" />
     <state x="956" y="204" key="FileChooserDialogImpl" timestamp="1597065840729">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
     <state x="956" y="204" key="FileChooserDialogImpl/0.0.2194.1194@0.0.2194.1194" timestamp="1597065840729" />
-    <state width="2151" height="409" key="GridCell.Tab.0.bottom" timestamp="1599919527575">
+    <state width="2151" height="333" key="GridCell.Tab.0.bottom" timestamp="1605596719466">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="2151" height="409" key="GridCell.Tab.0.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1599919527575" />
-    <state width="2151" height="409" key="GridCell.Tab.0.center" timestamp="1599919527575">
+    <state width="2151" height="333" key="GridCell.Tab.0.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1605596719466" />
+    <state width="2151" height="333" key="GridCell.Tab.0.center" timestamp="1605596719466">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="2151" height="409" key="GridCell.Tab.0.center/0.0.2194.1194@0.0.2194.1194" timestamp="1599919527575" />
-    <state width="2151" height="409" key="GridCell.Tab.0.left" timestamp="1599919527575">
+    <state width="2151" height="333" key="GridCell.Tab.0.center/0.0.2194.1194@0.0.2194.1194" timestamp="1605596719466" />
+    <state width="2151" height="333" key="GridCell.Tab.0.left" timestamp="1605596719466">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="2151" height="409" key="GridCell.Tab.0.left/0.0.2194.1194@0.0.2194.1194" timestamp="1599919527575" />
-    <state width="2151" height="409" key="GridCell.Tab.0.right" timestamp="1599919527575">
+    <state width="2151" height="333" key="GridCell.Tab.0.left/0.0.2194.1194@0.0.2194.1194" timestamp="1605596719466" />
+    <state width="2151" height="333" key="GridCell.Tab.0.right" timestamp="1605596719466">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="2151" height="409" key="GridCell.Tab.0.right/0.0.2194.1194@0.0.2194.1194" timestamp="1599919527575" />
-    <state width="2151" height="409" key="GridCell.Tab.1.bottom" timestamp="1599919527575">
+    <state width="2151" height="333" key="GridCell.Tab.0.right/0.0.2194.1194@0.0.2194.1194" timestamp="1605596719466" />
+    <state width="2151" height="268" key="GridCell.Tab.1.bottom" timestamp="1605596719443">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="2151" height="409" key="GridCell.Tab.1.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1599919527575" />
-    <state width="2151" height="409" key="GridCell.Tab.1.center" timestamp="1599919527575">
+    <state width="2151" height="268" key="GridCell.Tab.1.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1605596719443" />
+    <state width="2151" height="268" key="GridCell.Tab.1.center" timestamp="1605596719443">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="2151" height="409" key="GridCell.Tab.1.center/0.0.2194.1194@0.0.2194.1194" timestamp="1599919527575" />
-    <state width="2151" height="409" key="GridCell.Tab.1.left" timestamp="1599919527575">
+    <state width="2151" height="268" key="GridCell.Tab.1.center/0.0.2194.1194@0.0.2194.1194" timestamp="1605596719443" />
+    <state width="2151" height="268" key="GridCell.Tab.1.left" timestamp="1605596719443">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="2151" height="409" key="GridCell.Tab.1.left/0.0.2194.1194@0.0.2194.1194" timestamp="1599919527575" />
-    <state width="2151" height="409" key="GridCell.Tab.1.right" timestamp="1599919527575">
+    <state width="2151" height="268" key="GridCell.Tab.1.left/0.0.2194.1194@0.0.2194.1194" timestamp="1605596719443" />
+    <state width="2151" height="268" key="GridCell.Tab.1.right" timestamp="1605596719443">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="2151" height="409" key="GridCell.Tab.1.right/0.0.2194.1194@0.0.2194.1194" timestamp="1599919527575" />
-    <state x="578" y="172" key="SettingsEditor" timestamp="1593885854444">
-      <screen x="0" y="0" width="2194" height="1194" />
-    </state>
-    <state x="578" y="172" key="SettingsEditor/0.0.2194.1194@0.0.2194.1194" timestamp="1593885854444" />
+    <state width="2151" height="268" key="GridCell.Tab.1.right/0.0.2194.1194@0.0.2194.1194" timestamp="1605596719443" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -380,8 +371,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ch/fablabwinti/checkout/main/CsvConvertor.java</url>
-          <line>194</line>
-          <option name="timeStamp" value="4" />
+          <line>114</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

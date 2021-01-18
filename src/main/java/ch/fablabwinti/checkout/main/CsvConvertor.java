@@ -12,10 +12,14 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
+import java.text.ParseException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -60,14 +64,26 @@ public class CsvConvertor {
 
     private List<Item>      list;
 
+    // debug
+    private Date            debugDate;
+
     public CsvConvertor() {
         list = new ArrayList<Item>();
+
+        // debug
+        try {
+            debugDate = new SimpleDateFormat("dd.MM.yyyy").parse("08.10.2020");
+        } catch (ParseException e) {
+            System.out.println("ParseException on SimpleDateFormat");
+            System.exit(-1);
+        }
     }
 
     private void parseInput(File folder) throws IOException {
         char            cvsSplitBy  = ';';
         Class           klass       = Item.class;
         CsvToBeanFilter filter      = new EmptyFilter();
+        List<Item>      sublist;
 
         /* iterate over the folder */
         for (File file : folder.listFiles()) {
@@ -86,13 +102,21 @@ public class CsvConvertor {
 
             /* parse CSV file */
             try {
-                list.addAll(new CsvToBeanBuilder(new InputStreamReader(new FileInputStream(file), "Cp1252"))
+                sublist = new CsvToBeanBuilder(new InputStreamReader(new FileInputStream(file), "Cp1252"))
                         .withSeparator(cvsSplitBy)
                         .withIgnoreQuotations(true)
                         .withType(klass)
                         .withFilter(filter)
                         .build()
-                        .parse());
+                        .parse();
+
+                for (Item item : sublist) {
+                    if (item.getDate().compareTo(debugDate) == 0) {
+                        System.out.println("break");
+                    }
+                }
+
+                list.addAll(sublist);
             } catch (Exception e) {
                 System.err.println("=== Exception in file " + file.getName());
                 throw e;
