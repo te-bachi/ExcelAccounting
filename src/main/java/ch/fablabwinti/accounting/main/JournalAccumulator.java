@@ -9,10 +9,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Uses classes AccountPlanExport and JournalExport!
@@ -500,8 +497,8 @@ public class JournalAccumulator {
      *
      * @param sheet
      * @param styles
-     * @param childrenList
-     * @param columnOffset
+     * @param childrenList Flat account list (no tree structure)
+     * @param columnOffset 0 = expense, 1 = income
      * @param balanceMaxIdx
      */
     private void writeCellsForBalanceProfitAndLoss(XSSFSheet sheet, JournalStyles styles, List<Account> childrenList, int columnOffset, int balanceMaxIdx, double neg) {
@@ -515,6 +512,8 @@ public class JournalAccumulator {
 
         total           = 0.0;
         writeTotal      = false;
+        Account          totalAccount;
+        Stack<Account>   accountStack = new Stack<>();
 
         /* Iterate over the whole children list (list of accounts) */
         for (rowIdx = 0; rowIdx < childrenList.size(); rowIdx++) {
@@ -524,6 +523,13 @@ public class JournalAccumulator {
             if (checkArray(ACCOUNT_INITIAL, account.getNumber())) {
                 continue;
             }
+
+            /*
+            // Debug
+            if (account.getNumber() == 341502 || account.getNumber() == 361304) {
+                System.out.println("/");
+            }
+             */
 
             /* create or re-use row */
             if (rowIdx >= balanceMaxIdx) {
@@ -544,11 +550,13 @@ public class JournalAccumulator {
                     /*** Write to sheet */
                     switch (depth) {
                         case 1:
+                            accountStack.push(account);
                             new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_TITLE_NR, styles.boldStyle).createCell(account.getNumber());
                             new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBTITLE_NR, styles.boldStyle).createCell(account.getName());
                             break;
 
                         case 2:
+                            accountStack.push(account);
                             new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBTITLE_NR, styles.boldStyle).createCell(account.getNumber());
                             new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR, styles.boldStyle).createCell(account.getName());
                             break;
@@ -562,8 +570,6 @@ public class JournalAccumulator {
                 } else {
                     System.out.println("TitleAccount row doesn't exists! Should not happen");
                 }
-
-                total = account.getTotal().doubleValue();
 
             /* ... or NOT a TitleAccount account */
             } else {
@@ -592,7 +598,7 @@ public class JournalAccumulator {
                     /* peek next account and check if it's a TitleAccount... */
                     account = childrenList.get(rowIdx + 1);
                     depth = Integer.valueOf(account.getNumber()).toString().length();
-                    if (account instanceof TitleAccount && depth == 2) {
+                    if (account instanceof TitleAccount && depth <= 2) {
                         writeTotal = true;
                     }
 
@@ -604,6 +610,8 @@ public class JournalAccumulator {
                 /* Write total to sheet */
                 if (writeTotal) {
                     writeTotal = false;
+                    totalAccount = accountStack.pop();
+                    total = totalAccount.getTotal().doubleValue();
                     new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_TOTAL,     styles.totalStyle).createCell(neg * total);
                 }
             }
