@@ -32,6 +32,18 @@ public class CustomCell {
         return Double.valueOf(cell.getNumericCellValue()).intValue();
     }
 
+    public String getDoubleString() {
+        return String.valueOf(cell.getNumericCellValue());
+    }
+    public String getBigDecimalString() {
+        return new BigDecimal(cell.getNumericCellValue()).toString();
+    }
+
+    public Cell getCell() {
+        return cell;
+    }
+
+
     public Date getDate() {
         return cell.getDateCellValue();
     }

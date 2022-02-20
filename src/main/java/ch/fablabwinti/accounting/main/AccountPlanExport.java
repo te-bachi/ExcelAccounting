@@ -112,11 +112,16 @@ public class AccountPlanExport {
 
                 /* Account Nr */
                 cell = row.getCell(INPUT_COLUMN_ACCOUNT_NR);
-                if (cell == null || cell.getCellType() == CellType.BLANK || cell.getCellType() != CellType.STRING) {
+                if (cell == null || cell.getCellType() == CellType.BLANK || (cell.getCellType() != CellType.STRING && cell.getCellType() != CellType.NUMERIC)) {
                     System.out.println(row.getRowNum() + "/" + cell.getColumnIndex() + " is not of type string but " + cell.getCellType() + "!");
                     continue;
                 }
-                accountNumberStr = cell.getStringCellValue();
+                accountNumberStr = "";
+                if (cell.getCellType() == CellType.STRING) {
+                    accountNumberStr = cell.getStringCellValue();
+                } else if (cell.getCellType() == CellType.NUMERIC) {
+                    accountNumberStr = Integer.toString((int) cell.getNumericCellValue());
+                }
 
                 /* Account Sub-Nr */
                 cell = row.getCell(INPUT_COLUMN_ACCOUNT_SUBNR);
@@ -357,7 +362,7 @@ public class AccountPlanExport {
             level = 2;
         }
 
-        if (args.length < argOutputIdx) {
+        if (args.length <= argOutputIdx) {
 
             outputFile = new File(argInput.substring(0, argInput.lastIndexOf('.'))  + "_output" + argInput.substring(argInput.lastIndexOf('.'), argInput.length()));
         } else {

@@ -546,11 +546,13 @@ public class JournalAccumulator {
                         case 1:
                             new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_TITLE_NR, styles.boldStyle).createCell(account.getNumber());
                             new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBTITLE_NR, styles.boldStyle).createCell(account.getName());
+                            total = account.getTotal().doubleValue();
                             break;
 
                         case 2:
                             new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBTITLE_NR, styles.boldStyle).createCell(account.getNumber());
                             new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR, styles.boldStyle).createCell(account.getName());
+                            total = account.getTotal().doubleValue();
                             break;
 
                         case 4:
@@ -562,8 +564,6 @@ public class JournalAccumulator {
                 } else {
                     System.out.println("TitleAccount row doesn't exists! Should not happen");
                 }
-
-                total = account.getTotal().doubleValue();
 
             /* ... or NOT a TitleAccount account */
             } else {
@@ -592,7 +592,7 @@ public class JournalAccumulator {
                     /* peek next account and check if it's a TitleAccount... */
                     account = childrenList.get(rowIdx + 1);
                     depth = Integer.valueOf(account.getNumber()).toString().length();
-                    if (account instanceof TitleAccount && depth == 2) {
+                    if (account instanceof TitleAccount && depth <= 2) {
                         writeTotal = true;
                     }
 

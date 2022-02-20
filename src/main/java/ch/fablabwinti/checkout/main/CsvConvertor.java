@@ -110,41 +110,51 @@ public class CsvConvertor {
     public void exportOutput(File outputFile) throws IOException {
         FileOutputStream    out;
         XSSFWorkbook        workbook;
-        XSSFSheet           spreadsheet;
+        XSSFSheet           spreadsheetCash;
+        XSSFSheet           spreadsheetCredit;
+        XSSFSheet           spreadsheetSumUp;
+        XSSFSheet           spreadsheetTwint;
         XSSFRow             row;
         Cell                cell;
         CellStyle           dateStyle;
         CreationHelper      createHelper;
         Item                item;
         int                 k;
+        int                 kCash;
+        int                 kCredit;
+        int                 kSumUp;
+        int                 kTwint;
         int                 positionIdx;
         String              sollStr = null;
         String              habenStr = null;
 
-        workbook        = new XSSFWorkbook();
-        spreadsheet     = workbook.createSheet("cash");
-        dateStyle       = workbook.createCellStyle();
-        createHelper    = workbook.getCreationHelper();
+        workbook            = new XSSFWorkbook();
+        spreadsheetCash     = workbook.createSheet("cash");
+        spreadsheetCredit   = workbook.createSheet("credit");
+        spreadsheetSumUp    = workbook.createSheet("sumup");
+        spreadsheetTwint    = workbook.createSheet("twint");
+        dateStyle           = workbook.createCellStyle();
+        createHelper        = workbook.getCreationHelper();
         dateStyle.setDataFormat(createHelper.createDataFormat().getFormat("DD.MM.YYYY"));
 
-        spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_NR,            COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_NR_WIDTH);
-        spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_DATE,          COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_DATE_WIDTH);
-        spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_SOLL,          COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_SOLL_WIDTH);
-        spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_HABEN,         COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_HABEN_WIDTH);
-        spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_TEXT,          COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_TEXT_WIDTH);
-        spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_FIRSTNAME,     COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_FIRSTNAME_WIDTH);
-        spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_LASTNAME,      COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_LASTNAME_WIDTH);
-        spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_MACHINE_3D,    COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_MACHINE_3D_WIDTH);
-        spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_MACHINE_LATHE, COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_MACHINE_LATHE_WIDTH);
-        spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_MACHINE_LASER, COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_MACHINE_LASER_WIDTH);
-        spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_DRINKS,        COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_DRINKS_WIDTH);
-        spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_OTHER,         COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_OTHER_WIDTH);
-        spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_WORKSHOP,      COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_WORKSHOP_WIDTH);
-        spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_MEMBERSHIP_FEE,COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_MEMBERSHIP_FEE_WIDTH);
-        spreadsheet.setColumnWidth(OUTPUT_COLUMN_JOURNAL_PURCHASE,      COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_PURCHASE_WIDTH);
+        spreadsheetCash.setColumnWidth(OUTPUT_COLUMN_JOURNAL_NR,            COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_NR_WIDTH);
+        spreadsheetCash.setColumnWidth(OUTPUT_COLUMN_JOURNAL_DATE,          COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_DATE_WIDTH);
+        spreadsheetCash.setColumnWidth(OUTPUT_COLUMN_JOURNAL_SOLL,          COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_SOLL_WIDTH);
+        spreadsheetCash.setColumnWidth(OUTPUT_COLUMN_JOURNAL_HABEN,         COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_HABEN_WIDTH);
+        spreadsheetCash.setColumnWidth(OUTPUT_COLUMN_JOURNAL_TEXT,          COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_TEXT_WIDTH);
+        spreadsheetCash.setColumnWidth(OUTPUT_COLUMN_JOURNAL_FIRSTNAME,     COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_FIRSTNAME_WIDTH);
+        spreadsheetCash.setColumnWidth(OUTPUT_COLUMN_JOURNAL_LASTNAME,      COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_LASTNAME_WIDTH);
+        spreadsheetCash.setColumnWidth(OUTPUT_COLUMN_JOURNAL_MACHINE_3D,    COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_MACHINE_3D_WIDTH);
+        spreadsheetCash.setColumnWidth(OUTPUT_COLUMN_JOURNAL_MACHINE_LATHE, COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_MACHINE_LATHE_WIDTH);
+        spreadsheetCash.setColumnWidth(OUTPUT_COLUMN_JOURNAL_MACHINE_LASER, COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_MACHINE_LASER_WIDTH);
+        spreadsheetCash.setColumnWidth(OUTPUT_COLUMN_JOURNAL_DRINKS,        COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_DRINKS_WIDTH);
+        spreadsheetCash.setColumnWidth(OUTPUT_COLUMN_JOURNAL_OTHER,         COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_OTHER_WIDTH);
+        spreadsheetCash.setColumnWidth(OUTPUT_COLUMN_JOURNAL_WORKSHOP,      COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_WORKSHOP_WIDTH);
+        spreadsheetCash.setColumnWidth(OUTPUT_COLUMN_JOURNAL_MEMBERSHIP_FEE,COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_MEMBERSHIP_FEE_WIDTH);
+        spreadsheetCash.setColumnWidth(OUTPUT_COLUMN_JOURNAL_PURCHASE,      COLUMN_WIDTH_RATIO * OUTPUT_COLUMN_JOURNAL_PURCHASE_WIDTH);
 
         /* header */
-        row = spreadsheet.createRow(0);
+        row = spreadsheetCash.createRow(0);
         row.createCell(OUTPUT_COLUMN_JOURNAL_NR).setCellValue("nr");
         row.createCell(OUTPUT_COLUMN_JOURNAL_DATE).setCellValue("date");
         row.createCell(OUTPUT_COLUMN_JOURNAL_SOLL).setCellValue("soll");
@@ -161,9 +171,27 @@ public class CsvConvertor {
         row.createCell(OUTPUT_COLUMN_JOURNAL_MEMBERSHIP_FEE).setCellValue("mitglied");
         row.createCell(OUTPUT_COLUMN_JOURNAL_PURCHASE).setCellValue("kauf");
 
+        kCash   = 0;
+        kCredit = 0;
+        kSumUp  = 0;
+        kTwint  = 0;
         for (k = 0; k < list.size(); k++) {
             item = list.get(k);
-            row = spreadsheet.createRow(k + OUTPUT_ROW_OFFSET);
+            if (item.getPaymentMethod().equalsIgnoreCase("Bar")) {
+                row = spreadsheetCash.createRow(kCash + OUTPUT_ROW_OFFSET);
+                kCash++;
+            } else if (item.getPaymentMethod().equalsIgnoreCase("Guthaben")) {
+                row = spreadsheetCredit.createRow(kCredit + OUTPUT_ROW_OFFSET);
+                kCredit++;
+            } else if (item.getPaymentMethod().equalsIgnoreCase("SumUp")) {
+                row = spreadsheetSumUp.createRow(kSumUp + OUTPUT_ROW_OFFSET);
+                kSumUp += 2;
+            } else if (item.getPaymentMethod().equalsIgnoreCase("Twint")) {
+                row = spreadsheetTwint.createRow(kTwint + OUTPUT_ROW_OFFSET);
+                kTwint += 2;
+            } else {
+                System.out.println("Unknow payment method: \"" + item.getPaymentMethod() + "\"");
+            }
 
             cell = row.createCell(OUTPUT_COLUMN_JOURNAL_NR);
             cell.setCellValue(0);

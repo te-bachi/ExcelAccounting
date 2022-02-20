@@ -23,16 +23,16 @@ public class JournalExport {
 
     private static int COLUMN_WIDTH_RATIO                    = 260;
 
-    /* [0]=Post [1]=Kasse [2]=SumUp [3]=Restkonto [4]=Guthaben */
-                                                            /* [0] [1] [2] [3] [4] */
-    private static int[] INPUT_COLUMN_JOURNAL_NR                = {  0,  0,  0,  0,  0};
-    private static int[] INPUT_COLUMN_JOURNAL_DATE              = {  1,  3,  1,  1,  3};
-    private static int[] INPUT_COLUMN_JOURNAL_DEBIT_NR          = {  5,  5,  5,  5,  4};
-    private static int[] INPUT_COLUMN_JOURNAL_CREDIT_NR         = {  6,  6,  6,  6,  5};
-    private static int[] INPUT_COLUMN_JOURNAL_VALUE             = { 17, 24, 12, 13, 23};
-    private static int[] INPUT_COLUMN_JOURNAL_TEXT              = {  9, 11,  9,  9, 10};
-    private static int[] INPUT_COLUMN_JOURNAL_LASTNAME          = { 11, 13, 10, 11, 12};
-    private static int[] INPUT_COLUMN_JOURNAL_FIRSTNAME         = { 12, 12, 11, 12, 11};
+    /* [0]=Post [1]=Miete [2]=Rückstellungen [3]=Budget [4]=Kasse [5]=SumUp [6]=Twint [7]=Guthaben */
+                                                                 /* [0] [1] [2] [3] [4] [5] [6] [7]*/
+    private static int[] INPUT_COLUMN_JOURNAL_NR                = {  0,  0,  0,  0,  0,  0,  0,  0};
+    private static int[] INPUT_COLUMN_JOURNAL_DATE              = {  1,  1,  1,  1,  3,  1,  1,  3};
+    private static int[] INPUT_COLUMN_JOURNAL_DEBIT_NR          = {  5,  5,  5,  5,  5,  5,  5,  4};
+    private static int[] INPUT_COLUMN_JOURNAL_CREDIT_NR         = {  6,  6,  6,  6,  6,  6,  6,  5};
+    private static int[] INPUT_COLUMN_JOURNAL_VALUE             = { 17, 13, 13, 13, 24, 12, 12, 23};
+    private static int[] INPUT_COLUMN_JOURNAL_TEXT              = {  9,  9,  9,  9, 11,  9,  9, 10};
+    private static int[] INPUT_COLUMN_JOURNAL_LASTNAME          = { 11, 11, 11, 11, 13, 10, 10, 12};
+    private static int[] INPUT_COLUMN_JOURNAL_FIRSTNAME         = { 12, 12, 12, 12, 12, 11, 11, 11};
 
     private static int OUTPUT_COLUMN_JOURNAL_NR                 = 0;
     private static int OUTPUT_COLUMN_JOURNAL_DATE               = 1;
@@ -101,9 +101,9 @@ public class JournalExport {
         in          = new FileInputStream(inputFile);
         workbook    = new XSSFWorkbook(in);
         evaluator   = workbook.getCreationHelper().createFormulaEvaluator();
-        for (i = 0; i < 5; i++) {
+        for (i = 0; i < INPUT_COLUMN_JOURNAL_NR.length; i++) {
             spreadsheet = workbook.getSheetAt(i);
-            System.out.println("Parsing sheet " + i);
+            System.out.println("Parsing sheet " + i + ": " + spreadsheet.getSheetName());
             rowIterator = spreadsheet.iterator();
             while (rowIterator.hasNext()) {
                 row = (XSSFRow) rowIterator.next();
