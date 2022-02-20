@@ -510,10 +510,11 @@ public class JournalAccumulator {
         boolean             writeTotal;
         int                 rowIdx;
 
+        Account             totalAccount;
+        Stack<Account>      accountStack = new Stack<>();
+
         total           = 0.0;
         writeTotal      = false;
-        Account          totalAccount;
-        Stack<Account>   accountStack = new Stack<>();
 
         /* Iterate over the whole children list (list of accounts) */
         for (rowIdx = 0; rowIdx < childrenList.size(); rowIdx++) {
@@ -553,14 +554,12 @@ public class JournalAccumulator {
                             accountStack.push(account);
                             new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_TITLE_NR, styles.boldStyle).createCell(account.getNumber());
                             new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBTITLE_NR, styles.boldStyle).createCell(account.getName());
-                            total = account.getTotal().doubleValue();
                             break;
 
                         case 2:
                             accountStack.push(account);
                             new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_SUBTITLE_NR, styles.boldStyle).createCell(account.getNumber());
                             new CellCreator(row, OUTPUT_COLUMN_BALANCE[columnOffset] + OUTPUT_COLUMN_BALANCE_ACCOUNT_NR, styles.boldStyle).createCell(account.getName());
-                            total = account.getTotal().doubleValue();
                             break;
 
                         case 4:
@@ -572,6 +571,8 @@ public class JournalAccumulator {
                 } else {
                     System.out.println("TitleAccount row doesn't exists! Should not happen");
                 }
+
+                total = account.getTotal().doubleValue();
 
             /* ... or NOT a TitleAccount account */
             } else {
