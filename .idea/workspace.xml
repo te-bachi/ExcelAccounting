@@ -100,7 +100,8 @@
     <configuration name="AccountExport" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.AccountPlanExport" />
       <module name="ExcelAccounting" />
-      <option name="PROGRAM_PARAMETERS" value="D:\FabLab\Buchhaltung\Kontenplan\20151231_kontenplan_e.xlsx" />
+      <option name="PROGRAM_PARAMETERS" value="compact &quot;C:\Users\andreas\Google Drive\FabLabWinti\01_Vorstand\Administration\Finanzen\Buchhaltung\2020\2020_12_31_kontenplan_a.xlsx&quot;" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Google Drive/FabLabWinti/01_Vorstand/Administration/Finanzen/Buchhaltung/2020" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>

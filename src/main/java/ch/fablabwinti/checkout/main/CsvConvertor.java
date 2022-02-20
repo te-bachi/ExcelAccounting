@@ -12,10 +12,14 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
+import java.text.ParseException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -60,14 +64,26 @@ public class CsvConvertor {
 
     private List<Item>      list;
 
+    // debug
+    private Date            debugDate;
+
     public CsvConvertor() {
         list = new ArrayList<Item>();
+
+        // debug
+        try {
+            debugDate = new SimpleDateFormat("dd.MM.yyyy").parse("08.10.2020");
+        } catch (ParseException e) {
+            System.out.println("ParseException on SimpleDateFormat");
+            System.exit(-1);
+        }
     }
 
     private void parseInput(File folder) throws IOException {
         char            cvsSplitBy  = ';';
         Class           klass       = Item.class;
         CsvToBeanFilter filter      = new EmptyFilter();
+        List<Item>      sublist;
 
         /* iterate over the folder */
         for (File file : folder.listFiles()) {
@@ -86,13 +102,21 @@ public class CsvConvertor {
 
             /* parse CSV file */
             try {
-                list.addAll(new CsvToBeanBuilder(new InputStreamReader(new FileInputStream(file), "Cp1252"))
+                sublist = new CsvToBeanBuilder(new InputStreamReader(new FileInputStream(file), "Cp1252"))
                         .withSeparator(cvsSplitBy)
                         .withIgnoreQuotations(true)
                         .withType(klass)
                         .withFilter(filter)
                         .build()
-                        .parse());
+                        .parse();
+
+                for (Item item : sublist) {
+                    if (item.getDate().compareTo(debugDate) == 0) {
+                        System.out.println("break");
+                    }
+                }
+
+                list.addAll(sublist);
             } catch (Exception e) {
                 System.err.println("=== Exception in file " + file.getName());
                 throw e;
@@ -219,26 +243,31 @@ public class CsvConvertor {
             }
 
             sollStr = "Kasse";
+
+            if (item.getPaymentMethod().equals("SumUp")) {
+                sollStr = "SumUp";
+            }
+
             if (item.getPosition() == null) {
                 positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
             } else if (item.getPosition().equals("Lasercutter")) {
-                habenStr = "Lasercutter";
+                habenStr = "Maschinenstundenertrag Lasercutter LaserSaur";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_MACHINE_LASER;
 
             } else if (item.getPosition().equals("3D Drucker")) {
-                habenStr = "3D Drucker";
+                habenStr = "Maschinenstundenertrag 3D Drucker";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_MACHINE_3D;
 
             } else if (item.getPosition().equals("Fräsmaschine")) {
-                habenStr = "Fräsmaschine";
+                habenStr = "Maschinenstundenertrag Fräsmaschine";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
 
             } else if (item.getPosition().equals("Drehbank")) {
-                habenStr = "Drehbank";
+                habenStr = "Maschinenstundenertrag Drehbank";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_MACHINE_LATHE;
 
             } else if (item.getPosition().equals("Getränke/Food")) {
-                habenStr = "Getränkeertrag";
+                habenStr = "Getränke Verkauf";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_DRINKS;
 
             } else if (item.getPosition().equals("Mitgliederbeitrag")) {
@@ -246,11 +275,11 @@ public class CsvConvertor {
                 positionIdx = OUTPUT_COLUMN_JOURNAL_MEMBERSHIP_FEE;
 
             } else if (item.getPosition().equals("Elektronikbauteile")) {
-                habenStr = "Materialverkauf";
+                habenStr = "Elektronikbauteil Verkauf";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
 
             } else if (item.getPosition().equals("FabLab Kit")) {
-                habenStr = "FabLab-Kits Einnahmen";
+                habenStr = "FabLab-Kits Verkauf";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
 
             } else if (item.getPosition().equals("Spende")) {
@@ -265,14 +294,14 @@ public class CsvConvertor {
                 positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
 
             } else if (item.getPosition().equals("Kursgebühren")) {
-                habenStr = "Workshopertrag";
+                habenStr = "Workshop EggBot Einnahmen";
                 if (item.getText() == null || item.getText().isEmpty()) {
                     item.setText("Workshop");
                 }
                 positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
 
             } else if (item.getPosition().equals("Plattenmaterial")) {
-                habenStr = "Materialverkauf";
+                habenStr = "Plattenmaterial Verkauf";
                 if (item.getText() == null || item.getText().isEmpty()) {
                     item.setText("Plattenmaterial");
                 }

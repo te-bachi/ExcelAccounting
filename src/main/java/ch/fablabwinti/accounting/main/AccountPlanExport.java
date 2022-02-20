@@ -359,7 +359,7 @@ public class AccountPlanExport {
             argLevel = args[argLevelIdx];
             level  = Integer.valueOf(argLevel).intValue();
         } else {
-            level = 2;
+            level = 6;
         }
 
         if (args.length <= argOutputIdx) {
