@@ -1,10 +1,7 @@
 package ch.fablabwinti.accounting.main;
 
 import ch.fablabwinti.accounting.*;
-import ch.fablabwinti.accounting.cell.CustomCell;
-import ch.fablabwinti.accounting.cell.CustomCellException;
-import ch.fablabwinti.accounting.cell.CustomIntCell;
-import ch.fablabwinti.accounting.cell.CustomStringCell;
+import ch.fablabwinti.accounting.cell.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -89,6 +86,7 @@ public class AccountConverterPostFinance {
         int                     startIndex;
         int                     i;
         String                  text;
+        String                  regex = "[A-Za-z0-9]{8}-[A-Za-z0-9]{8}-[A-Za-z0-9]{10,14}";
 
         in          = new FileInputStream(inputFile);
         workbook    = new XSSFWorkbook(in);
@@ -125,7 +123,13 @@ public class AccountConverterPostFinance {
                         /* Last row */
                         if (i == (transaction.indexDiff() - 1)) {
                             /* Amount in first cell */
-                            if  (text.endsWith("+") || text.endsWith("-")) {
+                            if (!text.matches(regex) && (text.contains("+") || text.contains("-"))) {
+                                if (text.contains("+")) {
+                                    text = text.substring(0, text.indexOf("+") + 1);
+                                } else if (text.contains("-")) {
+                                    text = text.substring(0, text.indexOf("-") + 1);
+                                }
+
                                 transaction.textCount = transaction.indexDiff();
 
                                 transaction.debit  = text.endsWith("+");
@@ -144,10 +148,20 @@ public class AccountConverterPostFinance {
                                 transaction.textCount   = transaction.indexDiff() + 1;
                                 transaction.text[i + 1] = text;
 
-                                customCell = new CustomStringCell(spreadsheet.getRow(startIndex + 1 + i), 1);
-                                text = customCell.getString();
+                                try {
+                                    customCell = new CustomStringCell(spreadsheet.getRow(startIndex + 1 + i), 1);
+                                    text = customCell.getString();
+                                } catch (CustomCellException e) {
+                                    customCell = new CustomDateCell(spreadsheet.getRow(startIndex + 1 + i), 1);
+                                    text = customCell.getDate().toString();
+                                }
 
-                                if  (text.endsWith("+") || text.endsWith("-")) {
+                                if  (text.contains("+") || text.contains("-")) {
+                                    if (text.contains("+")) {
+                                        text = text.substring(0, text.indexOf("+") + 1);
+                                    } else if (text.contains("-")) {
+                                        text = text.substring(0, text.indexOf("-") + 1);
+                                    }
 
                                     transaction.debit  = text.endsWith("+");
                                     transaction.credit = text.endsWith("-");
