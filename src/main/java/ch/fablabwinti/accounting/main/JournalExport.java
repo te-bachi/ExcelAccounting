@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.*;
 
 /**
@@ -163,6 +165,19 @@ public class JournalExport {
                                 if (debit.getNumber() == credit.getNumber()) {
                                     System.out.println(row.getRowNum() + ": debit and credit are the same, skipping");
                                     continue;
+                                }
+
+                                /* automatic depreciation (Abschreibung) */
+                                if (Arrays.asList(6720, 6721, 6722).contains(journalDebitNr)) {
+                                    journalText += " auf " + new DecimalFormat("#,###.##", new DecimalFormatSymbols(Locale.forLanguageTag("de-CH"))).format(credit.getTotal());
+                                    journalValue = credit.getTotal().multiply(new BigDecimal(0.3));
+                                    /*
+                                    switch (journalDebitNr) {
+                                        case 6720: journalText = "Abschreibungen Maschinen 30% auf " + credit.getTotal(); break;
+                                        case 6721: journalText = "Abschreibungen Mobiliar 30% auf " + credit.getTotal(); break;
+                                        case 6722: journalText = "Abschreibungen Maschinen 30% auf " + credit.getTotal(); break;
+                                    }
+                                    */
                                 }
 
                                 /* with two account objects */
