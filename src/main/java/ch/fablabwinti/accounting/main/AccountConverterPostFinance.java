@@ -73,6 +73,43 @@ public class AccountConverterPostFinance {
         dateFormat = new SimpleDateFormat("dd.MM.yyyy");
     }
 
+    private void parseAmount(XSSFSheet spreadsheet, int startRowIndex, int i, int startColumnIndex, PostFinanceTransaction transaction) throws CustomCellException {
+        CustomCell              customCell;
+        String                  text;
+        /* amount positive? */
+        customCell = new CustomStringCell(spreadsheet.getRow(startRowIndex + i), startColumnIndex);
+        text = customCell.getString();
+        if (text != "" && text.contains("+")) {
+            text = text.substring(0, text.indexOf("+") + 1);
+
+            /* amount negative */
+        } else {
+            customCell = new CustomStringCell(spreadsheet.getRow(startRowIndex + i), startColumnIndex + 1);
+            text = customCell.getString();
+            if (text != "" && text.contains("-")) {
+                text = text.substring(0, text.indexOf("-") + 1);
+            }
+        }
+
+        if (text != "") {
+
+            transaction.debit = text.endsWith("+");
+            transaction.credit = text.endsWith("-");
+
+            text = text.replaceAll("[+-]+", "");
+            text = text.replaceAll("\'", "");
+
+            try {
+                transaction.amount = new BigDecimal(text);
+            } catch (NumberFormatException e) {
+                System.out.println("Amount can't be parsed on cell " + (customCell.getCell().getRowIndex() + 1) + "/" + (customCell.getCell().getColumnIndex() + 1));
+            }
+        } else {
+            System.out.println("Amount in cell can't be parsed " + (customCell.getCell().getRowIndex() + 1) + "/" + (customCell.getCell().getColumnIndex() + 1));
+        }
+    }
+
+
     public void parseInput(File inputFile) throws Exception {
         FileInputStream         in;
         XSSFWorkbook            workbook;
@@ -86,7 +123,6 @@ public class AccountConverterPostFinance {
         int                     startIndex;
         int                     i;
         String                  text;
-        String                  regex = "[A-Za-z0-9]{8}-[A-Za-z0-9]{8}-[A-Za-z0-9]{10,14}";
 
         in          = new FileInputStream(inputFile);
         workbook    = new XSSFWorkbook(in);
@@ -97,10 +133,30 @@ public class AccountConverterPostFinance {
 
         /* Prefetch next "Details" */
         while (rowIterator.hasNext()) {
-            row  = (XSSFRow) rowIterator.next();
 
+            row  = (XSSFRow) rowIterator.next();
             /* Account Text */
             cell = row.getCell(0);
+
+            /* Debug */
+            if (startIndex >= 24 && startIndex <= 26) {
+                System.out.print("debug ("+ (cell.getRowIndex() + 1) + "/" + (cell.getColumnIndex() + 1) + "): ");
+                switch (cell.getCellType()) {
+                    case STRING:
+                        System.out.println(cell.getStringCellValue());
+                        break;
+
+                    case NUMERIC:
+                        System.out.println(cell.getNumericCellValue());
+                        break;
+
+                    default:
+                        System.out.println("<unknow>");
+                        break;
+                }
+
+                System.out.print("");
+            }
 
             /* Only go further if the cell is "Details" */
             if (cell != null && cell.getCellType() == CellType.STRING && cell.getStringCellValue().equalsIgnoreCase("Details")) {
@@ -109,84 +165,51 @@ public class AccountConverterPostFinance {
                 transaction.stopIndex   = cell.getRowIndex();
 
                 /* Date */
-                customCell              = new CustomIntCell(spreadsheet.getRow(startIndex), 0);
-                transaction.date = customCell.getDate();
+                try {
+                    customCell = new CustomIntCell(spreadsheet.getRow(startIndex), 0);
+                    transaction.date = customCell.getDate();
 
-                /* Text */
-                customCell              = new CustomStringCell(spreadsheet.getRow(startIndex), 1);
-                transaction.text[0]     = customCell.getString();
+                    /* Text */
+                    customCell              = new CustomStringCell(spreadsheet.getRow(startIndex), 1);
+                    transaction.text[0]     = customCell.getString();
+                } catch (CustomCellException e2) {
+                    customCell = new CustomIntCell(spreadsheet.getRow(startIndex), 1);
+                    transaction.date = customCell.getDate();
 
-                for (i = 0; i < transaction.indexDiff(); i++) {
-                    try {
-                        customCell = new CustomStringCell(spreadsheet.getRow(startIndex + 1 + i), 0);
-                        text = customCell.getString();
-                        /* Last row */
-                        if (i == (transaction.indexDiff() - 1)) {
-                            /* Amount in first cell */
-                            if (!text.matches(regex) && (text.contains("+") || text.contains("-"))) {
-                                if (text.contains("+")) {
-                                    text = text.substring(0, text.indexOf("+") + 1);
-                                } else if (text.contains("-")) {
-                                    text = text.substring(0, text.indexOf("-") + 1);
-                                }
+                    /* Text */
+                    customCell              = new CustomStringCell(spreadsheet.getRow(startIndex), 2);
+                    transaction.text[0]     = customCell.getString();
+                }
 
-                                transaction.textCount = transaction.indexDiff();
+                /* multi-liner */
+                if (transaction.indexDiff() > 0) {
+                    for (i = 0; i < transaction.indexDiff(); i++) {
+                        try {
+                            customCell = new CustomStringCell(spreadsheet.getRow(startIndex + 1 + i), 0);
+                            text = customCell.getString();
+                            /* Last row */
+                            if (i == (transaction.indexDiff() - 1)) {
 
-                                transaction.debit  = text.endsWith("+");
-                                transaction.credit = text.endsWith("-");
-
-                                text = text.replaceAll("[+-]+", "");
-                                text = text.replaceAll("\'", "");
-
-                                try {
-                                    transaction.amount = new BigDecimal(text);
-                                } catch (NumberFormatException e) {
-                                    System.out.println("Amount can't be parsed on cell " + (customCell.getCell().getRowIndex() + 1) + "/" + (customCell.getCell().getColumnIndex() + 1));
-                                }
-                            /* Amount in second cell */
-                            } else {
-                                transaction.textCount   = transaction.indexDiff() + 1;
+                                /* end text */
+                                transaction.textCount = transaction.indexDiff() + 1;
                                 transaction.text[i + 1] = text;
 
-                                try {
-                                    customCell = new CustomStringCell(spreadsheet.getRow(startIndex + 1 + i), 1);
-                                    text = customCell.getString();
-                                } catch (CustomCellException e) {
-                                    customCell = new CustomDateCell(spreadsheet.getRow(startIndex + 1 + i), 1);
-                                    text = customCell.getDate().toString();
-                                }
+                                parseAmount(spreadsheet, startIndex + 1, i, 1, transaction);
 
-                                if  (text.contains("+") || text.contains("-")) {
-                                    if (text.contains("+")) {
-                                        text = text.substring(0, text.indexOf("+") + 1);
-                                    } else if (text.contains("-")) {
-                                        text = text.substring(0, text.indexOf("-") + 1);
-                                    }
-
-                                    transaction.debit  = text.endsWith("+");
-                                    transaction.credit = text.endsWith("-");
-
-                                    text = text.replaceAll("[+-]+", "");
-                                    text = text.replaceAll("\'", "");
-
-                                    try {
-                                        transaction.amount = new BigDecimal(text);
-                                    } catch (NumberFormatException e) {
-                                        System.out.println("Amount can't be parsed on cell " + (customCell.getCell().getRowIndex() + 1) + "/" + (customCell.getCell().getColumnIndex() + 1));
-                                    }
-                                } else {
-                                    System.out.println("Amount in second cell can't be parsed " + (customCell.getCell().getRowIndex() + 1) + "/" + (customCell.getCell().getColumnIndex() + 1));
-                                }
+                            /* NOT last row */
+                            } else {
+                                transaction.text[i + 1] = text;
                             }
-                        /* NOT last row */
-                        } else {
-                            transaction.text[i + 1] = text;
-                        }
 
-                    } catch (CustomCellException e) {
-                        customCell = new CustomIntCell(spreadsheet.getRow(startIndex + 1 + i), 0);
-                        transaction.text[i + 1] = customCell.getBigDecimalString();
+                        } catch (CustomCellException e) {
+                            customCell = new CustomIntCell(spreadsheet.getRow(startIndex + 1 + i), 0);
+                            transaction.text[i + 1] = customCell.getBigDecimalString();
+                        }
                     }
+                /* one-liner */
+                } else {
+                    parseAmount(spreadsheet, startIndex, 0, 2, transaction);
+                    transaction.textCount = 1;
                 }
 
                 transactions.add(transaction);
