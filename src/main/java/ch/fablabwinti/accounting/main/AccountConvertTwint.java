@@ -31,8 +31,8 @@ public class AccountConvertTwint {
     private static int COLUMN_WIDTH_RATIO               = 260;
 
     private static int OUTPUT_COLUMN_DATE               = 0;
-    private static int OUTPUT_COLUMN_CREDIT             = 1;
-    private static int OUTPUT_COLUMN_DEBIT              = 2;
+    private static int OUTPUT_COLUMN_DEBIT              = 1;
+    private static int OUTPUT_COLUMN_CREDIT             = 2;
     private static int OUTPUT_COLUMN_AMOUNT             = 3;
 
     private static int OUTPUT_COLUMN_DATE_WIDTH         = 14;
