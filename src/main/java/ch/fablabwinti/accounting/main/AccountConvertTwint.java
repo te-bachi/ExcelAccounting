@@ -24,9 +24,12 @@ import java.util.Iterator;
 
 public class AccountConvertTwint {
 
-    private static int INPUT_COLUMN_TWINT_DATE          = 0;
-    private static int INPUT_COLUMN_TWINT_AMOUNT_TOTAL  = 1;
-    private static int INPUT_COLUMN_TWINT_AMOUNT_FEE    = 5;
+    private static int INPUT_COLUMN_TWINT_DATE          = 1;
+    private static int INPUT_COLUMN_TWINT_STATUS        = 3;
+    private static int INPUT_COLUMN_TWINT_AMOUNT_TOTAL  = 4;
+    private static int INPUT_COLUMN_TWINT_AMOUNT_FEE    = 21;
+    private static int INPUT_COLUMN_TWINT_FIRSTNAME     = 30;
+    private static int INPUT_COLUMN_TWINT_LASTNAME      = 31;
 
     private static int COLUMN_WIDTH_RATIO               = 260;
 
@@ -34,6 +37,8 @@ public class AccountConvertTwint {
     private static int OUTPUT_COLUMN_DEBIT              = 1;
     private static int OUTPUT_COLUMN_CREDIT             = 2;
     private static int OUTPUT_COLUMN_AMOUNT             = 3;
+    private static int OUTPUT_COLUMN_LASTNAME           = 4;
+    private static int OUTPUT_COLUMN_FIRSTNAME          = 5;
 
     private static int OUTPUT_COLUMN_DATE_WIDTH         = 14;
     private static int OUTPUT_COLUMN_DEBIT_WIDTH        = 10;
@@ -47,6 +52,10 @@ public class AccountConvertTwint {
         public Date date;
         public BigDecimal amountTotal;
         public BigDecimal amountFee;
+
+        public String firstname;
+
+        public String lastname;
 
         public TwintTransaction() {
             //
@@ -79,6 +88,22 @@ public class AccountConvertTwint {
         public void setAmountFee(BigDecimal amountFee) {
             this.amountFee = amountFee;
         }
+
+        public String getFirstname() {
+            return firstname;
+        }
+
+        public void setFirstname(String firstname) {
+            this.firstname = firstname;
+        }
+
+        public String getLastname() {
+            return lastname;
+        }
+
+        public void setLastname(String lastname) {
+            this.lastname = lastname;
+        }
     }
 
     public AccountConvertTwint() {
@@ -105,22 +130,43 @@ public class AccountConvertTwint {
             if (row.getRowNum() > 0) {
                 try {
 
-                    transaction = new TwintTransaction();
+                    cell = new CustomStringCell(row, INPUT_COLUMN_TWINT_STATUS);
 
-                    /* try to fetch cell as INTEGER or die with exception */
-                    cell = new CustomIntCell(row, INPUT_COLUMN_TWINT_DATE);
-                    transaction.setDate(cell.getDate());
+                    if (cell.getString().equals("succeeded")) {
+                        transaction = new TwintTransaction();
 
-                    /* try to fetch cell as INTEGER or die with exception */
-                    cell = new CustomIntCell(row, INPUT_COLUMN_TWINT_AMOUNT_TOTAL);
-                    transaction.setAmountTotal(cell.getBigDecimal());
+                        /* try to fetch cell as INTEGER or die with exception */
+                        cell = new CustomIntCell(row, INPUT_COLUMN_TWINT_DATE);
+                        transaction.setDate(cell.getDate());
 
-                    /* try to fetch cell as INTEGER or die with exception */
-                    cell = new CustomIntCell(row, INPUT_COLUMN_TWINT_AMOUNT_FEE);
-                    transaction.setAmountFee(cell.getBigDecimal());
+                        /* try to fetch cell as INTEGER or die with exception */
+                        cell = new CustomIntCell(row, INPUT_COLUMN_TWINT_AMOUNT_TOTAL);
+                        transaction.setAmountTotal(cell.getBigDecimal());
 
-                    transactions.add(transaction);
+                        /* try to fetch cell as INTEGER or die with exception */
+                        cell = new CustomIntCell(row, INPUT_COLUMN_TWINT_AMOUNT_FEE);
+                        transaction.setAmountFee(cell.getBigDecimal());
 
+                        /* try to fetch cell as STRING or die with exception */
+                        try {
+                            cell = new CustomStringCell(row, INPUT_COLUMN_TWINT_FIRSTNAME);
+                            transaction.setFirstname(cell.getString());
+                        } catch (CustomCellException e) {
+                            System.out.println("<IGNORED> " + e.getMessage());
+                            transaction.setFirstname("-");
+                        }
+
+                        /* try to fetch cell as STRING or die with exception */
+                        try {
+                            cell = new CustomStringCell(row, INPUT_COLUMN_TWINT_LASTNAME);
+                            transaction.setLastname(cell.getString());
+                        } catch (CustomCellException e) {
+                            System.out.println("<IGNORED> " + e.getMessage());
+                            transaction.setLastname("-");
+                        }
+
+                        transactions.add(transaction);
+                    }
                 } catch (CustomCellException e) {
                     System.out.println(e.getMessage());
                 } catch (IllegalStateException e) {
@@ -161,6 +207,8 @@ public class AccountConvertTwint {
             new CellCreator(row, OUTPUT_COLUMN_DEBIT,       styles.dateStyle)  .createCell("TWINT");
             new CellCreator(row, OUTPUT_COLUMN_CREDIT,      styles.dateStyle)  .createCell("Lasercutter");
             new CellCreator(row, OUTPUT_COLUMN_AMOUNT,      styles.numberStyle).createCell(transaction.amountTotal.doubleValue());
+            new CellCreator(row, OUTPUT_COLUMN_LASTNAME,    styles.normalStyle).createCell(transaction.getLastname());
+            new CellCreator(row, OUTPUT_COLUMN_FIRSTNAME,   styles.normalStyle).createCell(transaction.getFirstname());
 
             k++;
 
@@ -169,6 +217,8 @@ public class AccountConvertTwint {
             new CellCreator(row, OUTPUT_COLUMN_DEBIT,       styles.dateStyle)  .createCell("TWINT Gebühren\n");
             new CellCreator(row, OUTPUT_COLUMN_CREDIT,      styles.dateStyle)  .createCell("TWINT");
             new CellCreator(row, OUTPUT_COLUMN_AMOUNT,      styles.numberStyle).createCell(transaction.amountFee.doubleValue());
+            new CellCreator(row, OUTPUT_COLUMN_LASTNAME,    styles.normalStyle).createCell(transaction.getLastname());
+            new CellCreator(row, OUTPUT_COLUMN_FIRSTNAME,   styles.normalStyle).createCell(transaction.getFirstname());
 
             k++;
 
