@@ -60,7 +60,7 @@ public class AccountConverterPostFinance {
         }
 
         public String toString() {
-            return dateFormat.format(date);
+            return dateFormat.format(date) + " - " + String.format ("%.2f", amount) + " - " +text[0];
         }
 
         public int indexDiff() {
@@ -73,39 +73,29 @@ public class AccountConverterPostFinance {
         dateFormat = new SimpleDateFormat("dd.MM.yyyy");
     }
 
-    private void parseAmount(XSSFSheet spreadsheet, int startRowIndex, int i, int startColumnIndex, PostFinanceTransaction transaction) throws CustomCellException {
-        CustomCell              customCell;
-        String                  text;
-        /* amount positive? */
-        customCell = new CustomStringCell(spreadsheet.getRow(startRowIndex + i), startColumnIndex);
-        text = customCell.getString();
+    private void parseAmount(int row, String text, PostFinanceTransaction transaction) {
+        /* amount positive */
         if (text != "" && text.contains("+")) {
             text = text.substring(0, text.indexOf("+") + 1);
 
-            /* amount negative */
+        /* amount negative */
+        } else if (text != "" && text.contains("-")){
+            text = text.substring(0, text.indexOf("-") + 1);
         } else {
-            customCell = new CustomStringCell(spreadsheet.getRow(startRowIndex + i), startColumnIndex + 1);
-            text = customCell.getString();
-            if (text != "" && text.contains("-")) {
-                text = text.substring(0, text.indexOf("-") + 1);
-            }
+            System.out.println("Amount can't be parsed on row " + row);
+            return;
         }
 
-        if (text != "") {
+        transaction.debit = text.endsWith("+");
+        transaction.credit = text.endsWith("-");
 
-            transaction.debit = text.endsWith("+");
-            transaction.credit = text.endsWith("-");
+        text = text.replaceAll("[+-]+", "");
+        text = text.replaceAll("\'", "");
 
-            text = text.replaceAll("[+-]+", "");
-            text = text.replaceAll("\'", "");
-
-            try {
-                transaction.amount = new BigDecimal(text);
-            } catch (NumberFormatException e) {
-                System.out.println("Amount can't be parsed on cell " + (customCell.getCell().getRowIndex() + 1) + "/" + (customCell.getCell().getColumnIndex() + 1));
-            }
-        } else {
-            System.out.println("Amount in cell can't be parsed " + (customCell.getCell().getRowIndex() + 1) + "/" + (customCell.getCell().getColumnIndex() + 1));
+        try {
+            transaction.amount = new BigDecimal(text);
+        } catch (NumberFormatException e) {
+            System.out.println("Amount can't be parsed on cell " + row);
         }
     }
 
@@ -122,7 +112,9 @@ public class AccountConverterPostFinance {
         PostFinanceTransaction  transaction;
         int                     startIndex;
         int                     i;
+        int                     rowNum;
         String                  text;
+        String                  textArr[];
 
         in          = new FileInputStream(inputFile);
         workbook    = new XSSFWorkbook(in);
@@ -139,7 +131,9 @@ public class AccountConverterPostFinance {
             cell = row.getCell(0);
 
             /* Debug */
-            if (startIndex >= 24 && startIndex <= 26) {
+            //System.out.println(cell.getStringCellValue());
+            /*
+            if (startIndex >= 17 && startIndex <= 28) {
                 System.out.print("debug ("+ (cell.getRowIndex() + 1) + "/" + (cell.getColumnIndex() + 1) + "): ");
                 switch (cell.getCellType()) {
                     case STRING:
@@ -156,7 +150,8 @@ public class AccountConverterPostFinance {
                 }
 
                 System.out.print("");
-            }
+            }*/
+
 
             /* Only go further if the cell is "Details" */
             if (cell != null && cell.getCellType() == CellType.STRING && cell.getStringCellValue().equalsIgnoreCase("Details")) {
@@ -164,55 +159,73 @@ public class AccountConverterPostFinance {
                 transaction.startIndex  = startIndex;
                 transaction.stopIndex   = cell.getRowIndex();
 
-                /* Date */
-                try {
-                    customCell = new CustomIntCell(spreadsheet.getRow(startIndex), 0);
-                    transaction.date = customCell.getDate();
+                //System.out.println("=================================================================================");
 
-                    /* Text */
-                    customCell              = new CustomStringCell(spreadsheet.getRow(startIndex), 1);
-                    transaction.text[0]     = customCell.getString();
-                } catch (CustomCellException e2) {
-                    customCell = new CustomIntCell(spreadsheet.getRow(startIndex), 1);
-                    transaction.date = customCell.getDate();
+                /**
+                 * row = startIndex:
+                 * 1) 29.02.2024\tPREIS FÜR DIE KONTOFÜHRUNG\t\t5.00--5\t29.02.2024\t22'300.93+22300.93
+                 * 2) 21.02.2024\tGUTSCHRIFT
+                 * 3) 21.02.2024\tGUTSCHRIFT
+                 *
+                 * row = endIndex:
+                 * 1) nichts (startIndex = endIndex)
+                 * 2) 240221CH0BE15GG7\t109.00+109\t\t21.02.2024\t
+                 * 3) 240221CH0BE1N5T6\t109.00+109\t\t21.02.2024\t43'450.27+43450.27
+                 */
 
-                    /* Text */
-                    customCell              = new CustomStringCell(spreadsheet.getRow(startIndex), 2);
-                    transaction.text[0]     = customCell.getString();
-                }
+                /* first row: separate date + text */
+                text = new CustomStringCell(spreadsheet.getRow(startIndex), 0).getString();
+                textArr = text.split("\t");
+                transaction.date = dateFormat.parse(textArr[0]);
+                transaction.text[0] = textArr[1];
 
                 /* multi-liner */
                 if (transaction.indexDiff() > 0) {
-                    for (i = 0; i < transaction.indexDiff(); i++) {
-                        try {
-                            customCell = new CustomStringCell(spreadsheet.getRow(startIndex + 1 + i), 0);
-                            text = customCell.getString();
-                            /* Last row */
-                            if (i == (transaction.indexDiff() - 1)) {
+                    try {
 
+                        for (i = 1; i < transaction.indexDiff() + 1; i++) {
+                            /* second to last row */
+                            customCell = new CustomStringCell(spreadsheet.getRow(startIndex + i), 0);
+                            text = customCell.getString();
+
+                            /* Last row */
+                            if (i == (transaction.indexDiff())) {
+
+                                textArr = text.split("\t");
                                 /* end text */
                                 transaction.textCount = transaction.indexDiff() + 1;
-                                transaction.text[i + 1] = text;
+                                transaction.text[i] = textArr[0];
 
-                                parseAmount(spreadsheet, startIndex + 1, i, 1, transaction);
+                                rowNum = row.getRowNum() + i;
+                                if (textArr[1] != "") {
+                                    parseAmount(rowNum, textArr[1], transaction);
+                                } else if (textArr[2] != "") {
+                                    parseAmount(rowNum, textArr[2], transaction);
+                                } else {
+                                    System.out.println("Can't find amount in row " + rowNum);
+                                }
 
                             /* NOT last row */
                             } else {
-                                transaction.text[i + 1] = text;
+                                transaction.text[i] = text;
                             }
-
-                        } catch (CustomCellException e) {
-                            customCell = new CustomIntCell(spreadsheet.getRow(startIndex + 1 + i), 0);
-                            transaction.text[i + 1] = customCell.getBigDecimalString();
                         }
+                    } catch (CustomCellException e) {
+                        //System.out.println("throws CustomCellException (" + (startIndex + 1 + i) + "/" + 0 + ")");
+                        //customCell = new CustomIntCell(spreadsheet.getRow(startIndex + 1 + i), 0);
+                        //text = customCell.getBigDecimalString();
+                        System.out.println("CustomCellException");
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        System.out.println("");
                     }
-                /* one-liner */
+                /* one-liner (KONTOFÜHRUNG, etc.) */
                 } else {
-                    parseAmount(spreadsheet, startIndex, 0, 2, transaction);
+                    parseAmount(row.getRowNum(), textArr[3], transaction);
                     transaction.textCount = 1;
                 }
 
                 transactions.add(transaction);
+                System.out.println(transaction);
 
                 startIndex = cell.getRowIndex() + 1;
             }
