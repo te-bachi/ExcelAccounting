@@ -250,20 +250,25 @@ public class CsvConvertor {
 
             if (item.getPosition() == null) {
                 positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
-            } else if (item.getPosition().equals("Lasercutter")) {
-                habenStr = "Maschinenstundenertrag Lasercutter LaserSaur";
+            } else if (item.getPosition().equals("Lasercutter") || item.getPosition().equals("LaserSaur")) {
+                habenStr = "Lasercutter LaserSaur";
+
+                positionIdx = OUTPUT_COLUMN_JOURNAL_MACHINE_LASER;
+
+            } else if (item.getPosition().equals("Trotec")) {
+                habenStr = "Lasercutter Trotec";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_MACHINE_LASER;
 
             } else if (item.getPosition().equals("3D Drucker")) {
-                habenStr = "Maschinenstundenertrag 3D Drucker";
+                habenStr = "3D Drucker";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_MACHINE_3D;
 
             } else if (item.getPosition().equals("Fräsmaschine")) {
-                habenStr = "Maschinenstundenertrag Fräsmaschine";
+                habenStr = "Fräsmaschine";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
 
             } else if (item.getPosition().equals("Drehbank")) {
-                habenStr = "Maschinenstundenertrag Drehbank";
+                habenStr = "Drehbank";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_MACHINE_LATHE;
 
             } else if (item.getPosition().equals("Getränke/Food")) {

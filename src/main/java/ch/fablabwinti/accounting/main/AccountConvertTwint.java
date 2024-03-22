@@ -30,6 +30,7 @@ public class AccountConvertTwint {
     private static int INPUT_COLUMN_TWINT_AMOUNT_FEE    = 21;
     private static int INPUT_COLUMN_TWINT_FIRSTNAME     = 30;
     private static int INPUT_COLUMN_TWINT_LASTNAME      = 31;
+    private static int INPUT_COLUMN_TWINT_COMMENT       = 43;
 
     private static int COLUMN_WIDTH_RATIO               = 260;
 
@@ -39,6 +40,7 @@ public class AccountConvertTwint {
     private static int OUTPUT_COLUMN_AMOUNT             = 3;
     private static int OUTPUT_COLUMN_LASTNAME           = 4;
     private static int OUTPUT_COLUMN_FIRSTNAME          = 5;
+    private static int OUTPUT_COLUMN_COMMENT            = 6;
 
     private static int OUTPUT_COLUMN_DATE_WIDTH         = 14;
     private static int OUTPUT_COLUMN_DEBIT_WIDTH        = 10;
@@ -56,6 +58,8 @@ public class AccountConvertTwint {
         public String firstname;
 
         public String lastname;
+
+        public String comment;
 
         public TwintTransaction() {
             //
@@ -103,6 +107,14 @@ public class AccountConvertTwint {
 
         public void setLastname(String lastname) {
             this.lastname = lastname;
+        }
+
+        public String getComment() {
+            return comment;
+        }
+
+        public void setComment(String comment) {
+            this.comment = comment;
         }
     }
 
@@ -165,6 +177,15 @@ public class AccountConvertTwint {
                             transaction.setLastname("-");
                         }
 
+                        /* try to fetch cell as STRING or die with exception */
+                        try {
+                            cell = new CustomStringCell(row, INPUT_COLUMN_TWINT_COMMENT);
+                            transaction.setComment(cell.getString());
+                        } catch (CustomCellException e) {
+                            System.out.println("<IGNORED> " + e.getMessage());
+                            transaction.setComment("");
+                        }
+
                         transactions.add(transaction);
                     }
                 } catch (CustomCellException e) {
@@ -209,6 +230,7 @@ public class AccountConvertTwint {
             new CellCreator(row, OUTPUT_COLUMN_AMOUNT,      styles.numberStyle).createCell(transaction.amountTotal.doubleValue());
             new CellCreator(row, OUTPUT_COLUMN_LASTNAME,    styles.normalStyle).createCell(transaction.getLastname());
             new CellCreator(row, OUTPUT_COLUMN_FIRSTNAME,   styles.normalStyle).createCell(transaction.getFirstname());
+            new CellCreator(row, OUTPUT_COLUMN_COMMENT,     styles.normalStyle).createCell(transaction.getComment());
 
             k++;
 

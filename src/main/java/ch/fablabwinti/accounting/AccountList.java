@@ -82,7 +82,7 @@ public class AccountList implements Iterable<Account> {
                 depth       = Integer.valueOf(accountNr).toString().length();
                 firstDepth  = depth;
                 do {
-                    reducedAccountNr = accountNr / new Double(Math.pow(10, firstDepth - depth)).intValue();
+                    reducedAccountNr = accountNr /  Double.valueOf(Math.pow(10, firstDepth - depth)).intValue();
                     for (Account account : accountList) {
                         if (account.getNumber() == reducedAccountNr) {
                             match = account;
