@@ -1,8 +1,13 @@
 package ch.fablabwinti.accounting.rest;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Map;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RestObject {
+
+    private int id;
     private String type;
     private boolean readonly;
 
@@ -13,6 +18,14 @@ public class RestObject {
     private Map<String, int[]> links;
 
     private int[] parents;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getType() {
         return type;

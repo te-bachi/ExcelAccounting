@@ -36,7 +36,7 @@ public class CustomCell {
         return String.valueOf(cell.getNumericCellValue());
     }
     public String getBigDecimalString() {
-        return new BigDecimal(cell.getNumericCellValue()).toString();
+        return new BigDecimal(cell.getNumericCellValue()).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString();
     }
 
     public Cell getCell() {
@@ -56,6 +56,6 @@ public class CustomCell {
     }
 
     public BigDecimal getBigDecimal() {
-        return new BigDecimal(cell.getNumericCellValue());
+        return new BigDecimal(cell.getNumericCellValue()).setScale(2, BigDecimal.ROUND_HALF_EVEN);
     }
 }
