@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -123,6 +124,7 @@ public class AccountConverterPostFinance {
         int                     startIndex;
         int                     i;
         String                  text;
+        SimpleDateFormat        formatter;
 
         in          = new FileInputStream(inputFile);
         workbook    = new XSSFWorkbook(in);
@@ -130,6 +132,7 @@ public class AccountConverterPostFinance {
         evaluator   = workbook.getCreationHelper().createFormulaEvaluator();
         rowIterator = spreadsheet.iterator();
         startIndex  = 0;
+        formatter   = new SimpleDateFormat("dd.MM.yyyy");
 
         /* Prefetch next "Details" */
         while (rowIterator.hasNext()) {
@@ -139,6 +142,7 @@ public class AccountConverterPostFinance {
             cell = row.getCell(0);
 
             /* Debug */
+            /*
             if (startIndex >= 24 && startIndex <= 26) {
                 System.out.print("debug ("+ (cell.getRowIndex() + 1) + "/" + (cell.getColumnIndex() + 1) + "): ");
                 switch (cell.getCellType()) {
@@ -157,6 +161,7 @@ public class AccountConverterPostFinance {
 
                 System.out.print("");
             }
+            */
 
             /* Only go further if the cell is "Details" */
             if (cell != null && cell.getCellType() == CellType.STRING && cell.getStringCellValue().equalsIgnoreCase("Details")) {
@@ -166,15 +171,23 @@ public class AccountConverterPostFinance {
 
                 /* Date */
                 try {
-                    customCell = new CustomIntCell(spreadsheet.getRow(startIndex), 0);
-                    transaction.date = customCell.getDate();
+                    try {
+                        customCell = new CustomStringCell(spreadsheet.getRow(startIndex), 0);
+                        transaction.date = formatter.parse(customCell.getString());
+                    } catch (ParseException e3) {
+                        //
+                    }
 
                     /* Text */
                     customCell              = new CustomStringCell(spreadsheet.getRow(startIndex), 1);
                     transaction.text[0]     = customCell.getString();
                 } catch (CustomCellException e2) {
-                    customCell = new CustomIntCell(spreadsheet.getRow(startIndex), 1);
-                    transaction.date = customCell.getDate();
+                    try {
+                        customCell = new CustomStringCell(spreadsheet.getRow(startIndex), 1);
+                        transaction.date = formatter.parse(customCell.getString());
+                    } catch (ParseException e3) {
+                        //
+                    }
 
                     /* Text */
                     customCell              = new CustomStringCell(spreadsheet.getRow(startIndex), 2);
