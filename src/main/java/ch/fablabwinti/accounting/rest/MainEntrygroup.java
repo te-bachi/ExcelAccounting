@@ -1,6 +1,5 @@
 package ch.fablabwinti.accounting.rest;
 
-import ch.fablabwinti.accounting.Account;
 import ch.fablabwinti.accounting.cell.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -9,6 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 
 public class MainEntrygroup {
@@ -31,11 +32,14 @@ public class MainEntrygroup {
     public static int INPUT_COLUMN_SURNAME = 7;
     public static int INPUT_COLUMN_FIRSTNAME = 8;
 
+    private Properties idProperties;
     private RestClient restClient;
     private List<Entrygroup> entrygroupList;
 
 
     public MainEntrygroup() throws IOException {
+        idProperties = new Properties();
+        idProperties.load(new FileInputStream("id.properties"));
         restClient = new RestClient();
         entrygroupList = new ArrayList<>();
     }
@@ -104,11 +108,11 @@ public class MainEntrygroup {
 
                 /* Debit Id */
                 cell = new CustomIntCell(row, MainEntrygroup.INPUT_COLUMN_DEBIT_ID);
-                entrygroup.debitId = cell.getInt();
+                entrygroup.debitId = Integer.valueOf(idProperties.getProperty(String.valueOf(cell.getInt()))).intValue();
 
                 /* Credit Id */
                 cell = new CustomIntCell(row, MainEntrygroup.INPUT_COLUMN_CREDIT_ID);
-                entrygroup.creditId = cell.getInt();
+                entrygroup.creditId = Integer.valueOf(idProperties.getProperty(String.valueOf(cell.getInt()))).intValue();
 
                 /* Description */
                 cell = new CustomStringCell(row, MainEntrygroup.INPUT_COLUMN_DESCRIPTION);
