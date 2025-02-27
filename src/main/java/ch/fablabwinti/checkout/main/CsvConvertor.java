@@ -321,6 +321,7 @@ public class CsvConvertor {
                 habenStr = "-";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
             } else {
+                System.out.println("Konto \"" + item.getPosition() + "\" nicht gefunden");
                 habenStr = "-";
                 positionIdx = OUTPUT_COLUMN_JOURNAL_OTHER;
             }

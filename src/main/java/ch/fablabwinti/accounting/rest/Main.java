@@ -1,6 +1,5 @@
 package ch.fablabwinti.accounting.rest;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
@@ -47,7 +46,7 @@ public class Main {
             restPeriodList.add(restPeriod);
             System.out.println("  --- Entry Group List -----------------------------");
             for (int entryGroupId : restPeriod.getChildren().get("entrygroup")) {
-                RestEntryGroup restEntryGroup = restClient.syncJackson(new URI("https://fablabwinti.webling.ch/api/1/entrygroup/" + entryGroupId), RestEntryGroup.class);
+                RestEntrygroup restEntryGroup = restClient.syncJackson(new URI("https://fablabwinti.webling.ch/api/1/entrygroup/" + entryGroupId), RestEntrygroup.class);
                 restEntryGroup.setId(entryGroupId);
                 restPeriod.getEntryGroupList().add(restEntryGroup);
             }
@@ -72,7 +71,7 @@ public class Main {
         for (RestPeriod period : restPeriodList) {
             System.out.println("==> " + period.getId() + ": " + period.getProperties().get("title"));
             System.out.println("  --> entrygroup");
-            for (RestEntryGroup entryGroup : period.getEntryGroupList()) {
+            for (RestEntrygroup entryGroup : period.getEntryGroupList()) {
                 System.out.println("  --> " + entryGroup.getId() + ": " + entryGroup.getProperties().get("title"));
             }
             System.out.println("  --> accountgroup");

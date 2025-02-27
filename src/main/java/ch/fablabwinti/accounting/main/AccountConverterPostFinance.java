@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -77,6 +79,8 @@ public class AccountConverterPostFinance {
     private void parseAmount(XSSFSheet spreadsheet, int startRowIndex, int i, int startColumnIndex, PostFinanceTransaction transaction) throws CustomCellException {
         CustomCell              customCell;
         String                  text;
+        final String dash = new String(new byte[] {0x12, 0x22}, StandardCharsets.UTF_16LE);
+
         /* amount positive? */
         customCell = new CustomStringCell(spreadsheet.getRow(startRowIndex + i), startColumnIndex);
         text = customCell.getString();
@@ -87,9 +91,13 @@ public class AccountConverterPostFinance {
         } else {
             customCell = new CustomStringCell(spreadsheet.getRow(startRowIndex + i), startColumnIndex + 1);
             text = customCell.getString();
+            if (text != "" && text.contains(dash) ){
+                text = text.replace(dash, "");
+            }
             if (text != "" && text.contains("-")) {
                 text = text.substring(0, text.indexOf("-") + 1);
             }
+
         }
 
         if (text != "") {
@@ -172,7 +180,12 @@ public class AccountConverterPostFinance {
                 /* Date */
                 try {
                     try {
-                        customCell = new CustomStringCell(spreadsheet.getRow(startIndex), 0);
+                        XSSFRow tmpRow = spreadsheet.getRow(startIndex);
+                        if (tmpRow == null) {
+                            System.out.println("Row is null?! startIndex=" + startIndex);
+                            continue;
+                        }
+                        customCell = new CustomStringCell(tmpRow, 0);
                         transaction.date = formatter.parse(customCell.getString());
                     } catch (ParseException e3) {
                         //

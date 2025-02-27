@@ -16,6 +16,9 @@ public class RestClient {
     private HttpClient client;
     private String apikey;
 
+    private int count;
+    private static final int MAX_COUNT = 900;
+
     public RestClient() throws IOException {
         this.client = HttpClient.newBuilder().build();
 
@@ -32,7 +35,12 @@ public class RestClient {
                 .GET()
                 .build();
 
+        if (count > MAX_COUNT) {
+            this.client = HttpClient.newBuilder().build();
+            this.count = 0;
+        }
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        count++;
 
         //String body = "{\"result\":" + response.body() + "}";
         String body = response.body();
@@ -48,9 +56,15 @@ public class RestClient {
                 .uri(uri)
                 .header("apikey", this.apikey)
                 .POST(HttpRequest.BodyPublishers.ofString(jsonString))
+
                 .build();
 
+        if (count > MAX_COUNT) {
+            this.client = HttpClient.newBuilder().build();
+            this.count = 0;
+        }
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        count++;
 
         System.out.println("statusCode=" + response.statusCode());
         String body = response.body();

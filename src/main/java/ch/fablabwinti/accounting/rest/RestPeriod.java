@@ -7,7 +7,7 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RestPeriod extends RestObject {
-    private List<RestEntryGroup> entryGroupList;
+    private List<RestEntrygroup> entryGroupList;
     private List<RestAccountGroup> accountGroupList;
     private List<RestCostcenter> costcenterList;
 
@@ -17,11 +17,11 @@ public class RestPeriod extends RestObject {
         this.costcenterList = new ArrayList<>();
     }
 
-    public List<RestEntryGroup> getEntryGroupList() {
+    public List<RestEntrygroup> getEntryGroupList() {
         return entryGroupList;
     }
 
-    public void setEntryGroupList(List<RestEntryGroup> entryGroupList) {
+    public void setEntryGroupList(List<RestEntrygroup> entryGroupList) {
         this.entryGroupList = entryGroupList;
     }
 

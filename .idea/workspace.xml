@@ -36,11 +36,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bc46d67a-d76f-4b57-b7dc-2b7ad72e2c6f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/MainEntrygroupDownload.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/Account.java" afterDir="false" />
@@ -61,15 +61,33 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/cell/CustomCellException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/cell/CustomCellException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/cell/CustomDateCell.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/cell/CustomDateCell.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/cell/CustomIntCell.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/cell/CustomIntCell.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/cell/CustomIntOrStringCell.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/cell/CustomIntOrStringCell.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/cell/CustomStringCell.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/cell/CustomStringCell.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountConvertTwint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountConvertTwint.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountConverterPostFinance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountConverterPostFinance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountConvertorPostFinanceCsvTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountConvertorPostFinanceCsvTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountPlanExport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountPlanExport.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountSummaryExport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountSummaryExport.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/CellCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/CellCreator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/JournalAccumulator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/JournalAccumulator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/JournalExport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/JournalExport.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/JournalStyles.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/JournalStyles.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/JsonResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/JsonResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/MainEntrygroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/MainEntrygroupUpload.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/Pair.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/Pair.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestAccount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestAccountGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestAccountGroup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestAccountgrouptemplate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestAccountgrouptemplate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestCostcenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestCostcenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestEntryGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestEntrygroup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestObjectList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestObjectList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestPeriod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestPeriod.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestPeriodchain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestPeriodchain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestPeriodgroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestPeriodgroup.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/test/Readsheet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/test/Readsheet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/test/ReadsheetPost.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/test/ReadsheetPost.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/test/Test1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/test/Test1.java" afterDir="false" />
@@ -107,6 +125,7 @@
   </component>
   <component name="ProjectId" id="1eEMEJ6zhUjN9bQ0TM0dB4WkFN9" />
   <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
     <option name="flattenPackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
@@ -116,19 +135,24 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/andreas/Documents/GitHub/ExcelAccounting&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="ch.fablabwinti.accounting.rest" />
+    </key>
+  </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="mvn clean" />
       <command value="mvn compile" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.AccountConverterPostFinance">
+  <component name="RunManager" selected="Application.AccountConvertTwint2">
     <configuration name="AccountConvertTwint" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.AccountConvertTwint" />
       <module name="ExcelAccounting" />
@@ -140,7 +164,7 @@
     <configuration name="AccountConvertTwint2" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.AccountConvertTwint" />
       <module name="ExcelAccounting" />
-      <option name="PROGRAM_PARAMETERS" value="&quot;G:\.shortcut-targets-by-id\0B58beepLgotQd2phNTdpaW8xMDA\FabLabWinti\01_Vorstand\Administration\Finanzen\Buchhaltung\2023\Twint\RaiseNow-Transaktionen 2023-08-08.xlsx&quot;" />
+      <option name="PROGRAM_PARAMETERS" value="&quot;G:\.shortcut-targets-by-id\0B58beepLgotQd2phNTdpaW8xMDA\FabLabWinti\01_Vorstand\Administration\Finanzen\2024\Twint\RaiseNow_2024.xlsx&quot; &quot;C:\Users\andreas\Documents\FabLab\CSV\2024&quot;" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -174,6 +198,22 @@
       <module name="ExcelAccounting" />
       <option name="PROGRAM_PARAMETERS" value="compact &quot;C:\Users\andreas\Google Drive\FabLabWinti\01_Vorstand\Administration\Finanzen\Buchhaltung\2020\2020_12_31_kontenplan_a.xlsx&quot;" />
       <option name="WORKING_DIRECTORY" value="$USER_HOME$/Google Drive/FabLabWinti/01_Vorstand/Administration/Finanzen/Buchhaltung/2020" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AccountPlanExport 2023" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.AccountPlanExport" />
+      <module name="ExcelAccounting" />
+      <option name="PROGRAM_PARAMETERS" value="full &quot;G:\.shortcut-targets-by-id\0B58beepLgotQd2phNTdpaW8xMDA\FabLabWinti\01_Vorstand\Administration\Finanzen\Buchhaltung\2023\2023_12_31_kontenplan_a.xlsx&quot;" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AccountPlanExport 2024" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.AccountPlanExport" />
+      <module name="ExcelAccounting" />
+      <option name="PROGRAM_PARAMETERS" value="full &quot;G:\.shortcut-targets-by-id\0B58beepLgotQd2phNTdpaW8xMDA\FabLabWinti\01_Vorstand\Administration\Finanzen\Buchhaltung\2024\2024_12_31_kontenplan_a.xlsx&quot;" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -238,6 +278,14 @@
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.checkout.main.CsvConvertor" />
       <module name="ExcelAccounting" />
       <option name="PROGRAM_PARAMETERS" value="&quot;C:\Users\andreas\Documents\FabLab\CSV\2023&quot;" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CsvConvert 2024" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.checkout.main.CsvConvertor" />
+      <module name="ExcelAccounting" />
+      <option name="PROGRAM_PARAMETERS" value="&quot;C:\Users\andreas\Documents\FabLab\CSV\2024&quot;" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -424,6 +472,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="REST Main Entrygroup Download" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.rest.MainEntrygroupDownload" />
+      <module name="ExcelAccounting" />
+      <option name="PROGRAM_PARAMETERS" value="G:\.shortcut-targets-by-id\0B58beepLgotQd2phNTdpaW8xMDA\FabLabWinti\01_Vorstand\Administration\Finanzen\Kontenauszug\webling_post_download.xlsx" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="REST Main Entrygroup Upload" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.rest.MainEntrygroupUpload" />
+      <module name="ExcelAccounting" />
+      <option name="PROGRAM_PARAMETERS" value="G:\.shortcut-targets-by-id\0B58beepLgotQd2phNTdpaW8xMDA\FabLabWinti\01_Vorstand\Administration\Finanzen\Kontenauszug\webling_post_rueckstellungen_2024_12_31.xlsx" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="REST Main" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.rest.Main" />
       <module name="ExcelAccounting" />
@@ -477,6 +541,8 @@
       <item itemvalue="Application.AccountConverterPostFinance" />
       <item itemvalue="Application.Unnamed" />
       <item itemvalue="Application.REST Main" />
+      <item itemvalue="Application.REST Main Entrygroup Upload" />
+      <item itemvalue="Application.REST Main Entrygroup Download" />
       <item itemvalue="Application.AccountConvertTwint2" />
       <item itemvalue="Application.AccountExport 2016" />
       <item itemvalue="Application.AccountExport 2021" />
@@ -489,6 +555,7 @@
       <item itemvalue="Application.CsvConvert 2021" />
       <item itemvalue="Application.CsvConvert 2022" />
       <item itemvalue="Application.CsvConvert 2023" />
+      <item itemvalue="Application.CsvConvert 2024" />
       <item itemvalue="Application.JournalAccumulator 2014" />
       <item itemvalue="Application.JournalAccumulator 2015" />
       <item itemvalue="Application.JournalAccumulator 2016" />
@@ -498,6 +565,8 @@
       <item itemvalue="Application.JournalAccumulator 2021" />
       <item itemvalue="Application.JournalAccumulator 2022" />
       <item itemvalue="Application.JournalAccumulator 2023" />
+      <item itemvalue="Application.AccountPlanExport 2023" />
+      <item itemvalue="Application.AccountPlanExport 2024" />
       <item itemvalue="Application.JournalAccumulator Test" />
       <item itemvalue="Application.JournalExport 2014 Post" />
       <item itemvalue="Application.JournalExport 2022" />
@@ -580,17 +649,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountConvertTwint.java</url>
-          <line>284</line>
+          <line>426</line>
           <option name="timeStamp" value="45" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountConverterPostFinance.java</url>
-          <line>232</line>
-          <option name="timeStamp" value="75" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountConverterPostFinance.java</url>
-          <line>280</line>
+          <line>306</line>
           <option name="timeStamp" value="76" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
@@ -605,16 +669,42 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountConverterPostFinance.java</url>
-          <line>207</line>
+          <line>233</line>
           <option name="timeStamp" value="98" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountPlanExport.java</url>
+          <line>385</line>
+          <option name="timeStamp" value="99" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/MainEntrygroupDownload.java</url>
+          <line>163</line>
+          <option name="timeStamp" value="101" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountConverterPostFinance.java</url>
+          <line>289</line>
+          <option name="timeStamp" value="102" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountConverterPostFinance.java</url>
+          <line>184</line>
+          <option name="timeStamp" value="110" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo />
+        <PinnedItemInfo parentTag="java.lang.String" memberName="value" />
         <PinnedItemInfo parentTag="ch.fablabwinti.accounting.main.AccountConverterPostFinance$PostFinanceTransaction" memberName="text" />
       </pinned-members>
     </pin-to-top-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="RestClient.class.getResource(&quot;/ch/fablabwinti/accounting/rest/apikey.properties&quot;)" language="JAVA" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

@@ -29,7 +29,7 @@ public class AccountPlanExport {
     public static int[] OUTPUT_COLUMN_ACCOUNT_TEXT      = {  0, 3 };
     public static int[] OUTPUT_COLUMN_ACCOUNT_NR        = {  1, 2 };
     public static int[] OUTPUT_COLUMN_ACCOUNT_TYPE      = {  2, 0 };
-    public static int[] OUTPUT_COLUMN_ACCOUNT_TITLE     = { -1, 1 };
+    public static int[] OUTPUT_COLUMN_ACCOUNT_TITLE     = {  0, 1 };
 
     public static int OUTPUT_COLUMN_ACCOUNT_TEXT_WIDTH  = 50;
     public static int OUTPUT_COLUMN_ACCOUNT_NR_WIDTH    = 9;
@@ -272,17 +272,17 @@ public class AccountPlanExport {
                 account = accountList.get(k);
 
                 if (account instanceof TitleAccount) {
-                    if (i > 0) {
+                    //if (i > 0) {
                         row = spreadsheet[i].createRow(m++);
 
                         cell = row.createCell(OUTPUT_COLUMN_ACCOUNT_TITLE[i]);
                         cell.setCellValue(account.getNumber() + " " + account.getName());
-                    }
+                   // }
                 } else {
                     row = spreadsheet[i].createRow(m++);
 
                     cell = row.createCell(OUTPUT_COLUMN_ACCOUNT_TEXT[i]);
-                    cell.setCellValue(account.getName());
+                    cell.setCellValue(account.getNumber() + " " + account.getName());
 
                     cell = row.createCell(OUTPUT_COLUMN_ACCOUNT_NR[i]);
                     cell.setCellValue(Integer.valueOf(account.getNumber()));
