@@ -36,7 +36,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bc46d67a-d76f-4b57-b7dc-2b7ad72e2c6f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/MainEntrygroupDownload.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountConvertSumUp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
@@ -74,7 +74,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/JournalStyles.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/JournalStyles.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/JsonResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/JsonResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/MainEntrygroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/MainEntrygroupUpload.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/MainEntrygroupUpload.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/MainEntrygroupUpload.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/Pair.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/Pair.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestAccount.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestAccountGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestAccountGroup.java" afterDir="false" />
@@ -82,7 +82,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestCostcenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestCostcenter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestEntry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestEntryGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestEntrygroup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestEntrygroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestEntrygroup.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestObject.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestObjectList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestObjectList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestPeriod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/rest/RestPeriod.java" afterDir="false" />
@@ -129,19 +129,22 @@
     <option name="flattenPackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/andreas/Documents/GitHub/ExcelAccounting&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "last_opened_file_path": "C:/Users/andreas/Documents/GitHub/ExcelAccounting",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "File.Encoding"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\andreas\Documents\GitHub\ExcelAccounting" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="ch.fablabwinti.accounting.rest" />
     </key>
@@ -152,7 +155,15 @@
       <command value="mvn compile" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.AccountConvertTwint2">
+  <component name="RunManager" selected="Application.AccountConvertSumUp">
+    <configuration name="AccountConvertSumUp" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.AccountConvertSumUp" />
+      <module name="ExcelAccounting" />
+      <option name="PROGRAM_PARAMETERS" value="&quot;G:\.shortcut-targets-by-id\0B58beepLgotQd2phNTdpaW8xMDA\FabLabWinti\01_Vorstand\Administration\Finanzen\2025\SumUp\20250101-20251207-MDDYVZD9-transactions-report.xlsx&quot; &quot;G:\.shortcut-targets-by-id\0B58beepLgotQd2phNTdpaW8xMDA\FabLabWinti\01_Vorstand\Administration\Finanzen\2025\CSV&quot;" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="AccountConvertTwint" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.AccountConvertTwint" />
       <module name="ExcelAccounting" />
@@ -164,7 +175,7 @@
     <configuration name="AccountConvertTwint2" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.main.AccountConvertTwint" />
       <module name="ExcelAccounting" />
-      <option name="PROGRAM_PARAMETERS" value="&quot;G:\.shortcut-targets-by-id\0B58beepLgotQd2phNTdpaW8xMDA\FabLabWinti\01_Vorstand\Administration\Finanzen\2024\Twint\RaiseNow_2024.xlsx&quot; &quot;C:\Users\andreas\Documents\FabLab\CSV\2024&quot;" />
+      <option name="PROGRAM_PARAMETERS" value="&quot;G:\.shortcut-targets-by-id\0B58beepLgotQd2phNTdpaW8xMDA\FabLabWinti\01_Vorstand\Administration\Finanzen\2025\Twint\RaiseNow-Transaktionen FabLab Winti 2025-12-06 16-58-55c.xlsx&quot; &quot;G:\.shortcut-targets-by-id\0B58beepLgotQd2phNTdpaW8xMDA\FabLabWinti\01_Vorstand\Administration\Finanzen\2025\CSV&quot;" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -475,7 +486,7 @@
     <configuration name="REST Main Entrygroup Download" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.rest.MainEntrygroupDownload" />
       <module name="ExcelAccounting" />
-      <option name="PROGRAM_PARAMETERS" value="G:\.shortcut-targets-by-id\0B58beepLgotQd2phNTdpaW8xMDA\FabLabWinti\01_Vorstand\Administration\Finanzen\Kontenauszug\webling_post_download.xlsx" />
+      <option name="PROGRAM_PARAMETERS" value="G:\.shortcut-targets-by-id\0B58beepLgotQd2phNTdpaW8xMDA\FabLabWinti\01_Vorstand\Administration\Finanzen\Kontenauszug\webling_post_download_2025_03_03.xlsx" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -483,7 +494,7 @@
     <configuration name="REST Main Entrygroup Upload" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.fablabwinti.accounting.rest.MainEntrygroupUpload" />
       <module name="ExcelAccounting" />
-      <option name="PROGRAM_PARAMETERS" value="G:\.shortcut-targets-by-id\0B58beepLgotQd2phNTdpaW8xMDA\FabLabWinti\01_Vorstand\Administration\Finanzen\Kontenauszug\webling_post_rueckstellungen_2024_12_31.xlsx" />
+      <option name="PROGRAM_PARAMETERS" value="G:\.shortcut-targets-by-id\0B58beepLgotQd2phNTdpaW8xMDA\FabLabWinti\01_Vorstand\Administration\Finanzen\Kontenauszug\webling_post_all_2025_12_31_d.xlsx" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -544,6 +555,7 @@
       <item itemvalue="Application.REST Main Entrygroup Upload" />
       <item itemvalue="Application.REST Main Entrygroup Download" />
       <item itemvalue="Application.AccountConvertTwint2" />
+      <item itemvalue="Application.AccountConvertSumUp" />
       <item itemvalue="Application.AccountExport 2016" />
       <item itemvalue="Application.AccountExport 2021" />
       <item itemvalue="Application.AccountExport" />
@@ -648,23 +660,18 @@
           <option name="timeStamp" value="43" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountConvertTwint.java</url>
-          <line>426</line>
-          <option name="timeStamp" value="45" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountConverterPostFinance.java</url>
           <line>306</line>
           <option name="timeStamp" value="76" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountConvertTwint.java</url>
-          <line>164</line>
+          <line>165</line>
           <option name="timeStamp" value="87" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountConvertTwint.java</url>
-          <line>173</line>
+          <line>174</line>
           <option name="timeStamp" value="88" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -692,6 +699,11 @@
           <line>184</line>
           <option name="timeStamp" value="110" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ch/fablabwinti/accounting/main/AccountConvertTwint.java</url>
+          <line>145</line>
+          <option name="timeStamp" value="112" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>
@@ -704,7 +716,13 @@
     <watches-manager>
       <configuration name="Application">
         <watch expression="RestClient.class.getResource(&quot;/ch/fablabwinti/accounting/rest/apikey.properties&quot;)" language="JAVA" />
+        <watch expression="cell" />
+        <watch expression="cell.getString()" language="JAVA" />
       </configuration>
     </watches-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

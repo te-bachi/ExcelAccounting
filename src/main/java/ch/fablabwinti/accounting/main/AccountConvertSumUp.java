@@ -1,6 +1,5 @@
 package ch.fablabwinti.accounting.main;
 
-import ch.fablabwinti.accounting.Transaction;
 import ch.fablabwinti.accounting.cell.CustomCell;
 import ch.fablabwinti.accounting.cell.CustomCellException;
 import ch.fablabwinti.accounting.cell.CustomIntCell;
@@ -9,7 +8,8 @@ import ch.fablabwinti.checkout.EmptyFilter;
 import ch.fablabwinti.checkout.Item;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.CsvToBeanFilter;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -19,15 +19,13 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class AccountConvertTwint {
+public class AccountConvertSumUp {
 
-    private static int INPUT_COLUMN_TWINT_DATE          = 1;
-    private static int INPUT_COLUMN_TWINT_STATUS        = 3;
-    private static int INPUT_COLUMN_TWINT_AMOUNT_TOTAL  = 4;
-    private static int INPUT_COLUMN_TWINT_AMOUNT_FEE    = 21;
-    private static int INPUT_COLUMN_TWINT_FIRSTNAME     = 30;
-    private static int INPUT_COLUMN_TWINT_LASTNAME      = 31;
-    private static int INPUT_COLUMN_TWINT_COMMENT       = 44;
+    private static int INPUT_COLUMN_SUMUP_DATE          = 1;
+    private static int INPUT_COLUMN_SUMUP_STATUS        = 4;
+    private static int INPUT_COLUMN_SUMUP_AMOUNT_TOTAL  = 12;
+    private static int INPUT_COLUMN_SUMUP_AMOUNT_FEE    = 16;
+    private static int INPUT_COLUMN_SUMUP_COMMENT       = 11;
 
     private static int COLUMN_WIDTH_RATIO               = 260;
 
@@ -47,21 +45,17 @@ public class AccountConvertTwint {
     private static int OUTPUT_COLUMN_TYPE_WIDTH         = 10;
 
     private SimpleDateFormat dateFormat;
-    private List<TwintTransaction> twintTransactions;
+    private List<SumUpTransaction> sumUpTransactions;
     private List<Item> checkoutTransactions;
 
-    private class TwintTransaction {
+    private class SumUpTransaction {
         public Date date;
         public BigDecimal amountTotal;
         public BigDecimal amountFee;
 
-        public String firstname;
-
-        public String lastname;
-
         public String comment;
 
-        public TwintTransaction() {
+        public SumUpTransaction() {
             //
         }
 
@@ -93,22 +87,6 @@ public class AccountConvertTwint {
             this.amountFee = amountFee;
         }
 
-        public String getFirstname() {
-            return firstname;
-        }
-
-        public void setFirstname(String firstname) {
-            this.firstname = firstname;
-        }
-
-        public String getLastname() {
-            return lastname;
-        }
-
-        public void setLastname(String lastname) {
-            this.lastname = lastname;
-        }
-
         public String getComment() {
             return comment;
         }
@@ -118,20 +96,21 @@ public class AccountConvertTwint {
         }
     }
 
-    public AccountConvertTwint() {
-        twintTransactions = new ArrayList<>();
+    public AccountConvertSumUp() {
+        sumUpTransactions = new ArrayList<>();
         checkoutTransactions = new ArrayList<>();
         dateFormat = new SimpleDateFormat("dd.MM.yyyy");
     }
 
-    public void parseRaiseNowInput(File inputFile) throws Exception {
-        FileInputStream     in;
-        XSSFWorkbook        workbook;
-        XSSFSheet           spreadsheet;
-        Iterator<Row>       rowIterator;
-        XSSFRow             row;
-        CustomCell          cell;
-        TwintTransaction    transaction;
+    public void parseSumUpInput(File inputFile) throws Exception {
+        FileInputStream in;
+        XSSFWorkbook workbook;
+        XSSFSheet spreadsheet;
+        Iterator<Row> rowIterator;
+        XSSFRow row;
+        CustomCell cell;
+        SumUpTransaction transaction;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
         in          = new FileInputStream(inputFile);
         workbook    = new XSSFWorkbook(in);
@@ -143,51 +122,33 @@ public class AccountConvertTwint {
             if (row.getRowNum() > 0) {
                 try {
 
-                    cell = new CustomStringCell(row, INPUT_COLUMN_TWINT_STATUS);
+                    cell = new CustomStringCell(row, INPUT_COLUMN_SUMUP_STATUS);
 
-                    if (cell.getString().equals("succeeded")) {
-                        transaction = new TwintTransaction();
-
-                        /* try to fetch cell as INTEGER or die with exception */
-                        cell = new CustomIntCell(row, INPUT_COLUMN_TWINT_DATE);
-                        transaction.setDate(cell.getDate());
+                    if (cell.getString().equals("Erfolgreich")) {
+                        transaction = new SumUpTransaction();
 
                         /* try to fetch cell as INTEGER or die with exception */
-                        cell = new CustomIntCell(row, INPUT_COLUMN_TWINT_AMOUNT_TOTAL);
+                        cell = new CustomStringCell(row, INPUT_COLUMN_SUMUP_DATE);
+                        transaction.setDate(format.parse(cell.getString()));
+
+                        /* try to fetch cell as INTEGER or die with exception */
+                        cell = new CustomIntCell(row, INPUT_COLUMN_SUMUP_AMOUNT_TOTAL);
                         transaction.setAmountTotal(cell.getBigDecimal());
 
                         /* try to fetch cell as INTEGER or die with exception */
-                        cell = new CustomIntCell(row, INPUT_COLUMN_TWINT_AMOUNT_FEE);
+                        cell = new CustomIntCell(row, INPUT_COLUMN_SUMUP_AMOUNT_FEE);
                         transaction.setAmountFee(cell.getBigDecimal());
 
                         /* try to fetch cell as STRING or die with exception */
                         try {
-                            cell = new CustomStringCell(row, INPUT_COLUMN_TWINT_FIRSTNAME);
-                            transaction.setFirstname(cell.getString());
-                        } catch (CustomCellException e) {
-                            System.out.println("<IGNORED> " + e.getMessage());
-                            transaction.setFirstname("-");
-                        }
-
-                        /* try to fetch cell as STRING or die with exception */
-                        try {
-                            cell = new CustomStringCell(row, INPUT_COLUMN_TWINT_LASTNAME);
-                            transaction.setLastname(cell.getString());
-                        } catch (CustomCellException e) {
-                            System.out.println("<IGNORED> " + e.getMessage());
-                            transaction.setLastname("-");
-                        }
-
-                        /* try to fetch cell as STRING or die with exception */
-                        try {
-                            cell = new CustomStringCell(row, INPUT_COLUMN_TWINT_COMMENT);
+                            cell = new CustomStringCell(row, INPUT_COLUMN_SUMUP_COMMENT);
                             transaction.setComment(cell.getString());
                         } catch (CustomCellException e) {
                             System.out.println("<IGNORED> " + e.getMessage());
                             transaction.setComment("");
                         }
 
-                        twintTransactions.add(transaction);
+                        sumUpTransactions.add(transaction);
                     }
                 } catch (CustomCellException e) {
                     System.out.println(e.getMessage());
@@ -196,15 +157,14 @@ public class AccountConvertTwint {
                     throw e;
                 }
             }
-
-            Collections.sort(twintTransactions, new Comparator<TwintTransaction>() {
-                @Override
-                public int compare(TwintTransaction a, TwintTransaction b)
-                {
-                    return a.getDate().compareTo(b.getDate());
-                }
-            });
         }
+        Collections.sort(sumUpTransactions, new Comparator<SumUpTransaction>() {
+            @Override
+            public int compare(SumUpTransaction a, SumUpTransaction b)
+            {
+                return a.getDate().compareTo(b.getDate());
+            }
+        });
     }
 
 
@@ -254,9 +214,17 @@ public class AccountConvertTwint {
             }
         });
     }
+    public String getKeyByValue(Properties props, String valueToCheck) {
+        return props.entrySet().stream()
+                .filter(entry -> valueToCheck.equals(entry.getValue()))
+                .map(Map.Entry::getKey)
+                .map(Object::toString) // Sicherstellen, dass es ein String ist
+                .findFirst()
+                .orElse(null); // Oder eine Exception werfen / Optional zurückgeben
+    }
 
     public void exportOutput(File outputFile) throws Exception {
-        FileOutputStream out;
+        FileOutputStream        out;
         XSSFWorkbook            workbook;
         XSSFSheet               spreadsheet;
         XSSFRow                 row;
@@ -265,7 +233,10 @@ public class AccountConvertTwint {
         int                     i;
         int                     k;
         int                     m;
-        TwintTransaction        transaction;
+        SumUpTransaction        transaction;
+
+        Properties kassenblattProperties = new Properties();
+        kassenblattProperties.load(new FileInputStream("kassenblatt.properties"));
 
         workbook        = new XSSFWorkbook();
         styles          = new JournalStyles(workbook);
@@ -279,36 +250,40 @@ public class AccountConvertTwint {
 
 
         if (checkoutTransactions.size() == 0) {
-            for (i = 0, k = 0; i < twintTransactions.size(); i++) {
-                transaction = twintTransactions.get(i);
+            for (i = 0, k = 0; i < sumUpTransactions.size(); i++) {
+                transaction = sumUpTransactions.get(i);
 
                 row = spreadsheet.createRow(k + 1); // + 1 for header
                 new CellCreator(row, OUTPUT_COLUMN_DATE, styles.dateStyle).createCell(dateFormat.format(transaction.date));
-                new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.dateStyle).createCell("TWINT");
-                new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.dateStyle).createCell("Lasercutter");
+                //new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.dateStyle).createCell("SumUp");
+                //new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.dateStyle).createCell("");
+                new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.normalStyle).createCell(1030);
+                new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.normalStyle).createCell("");
                 new CellCreator(row, OUTPUT_COLUMN_AMOUNT, styles.numberStyle).createCell(transaction.amountTotal.doubleValue());
-                new CellCreator(row, OUTPUT_COLUMN_LASTNAME, styles.normalStyle).createCell(transaction.getLastname());
-                new CellCreator(row, OUTPUT_COLUMN_FIRSTNAME, styles.normalStyle).createCell(transaction.getFirstname());
+                new CellCreator(row, OUTPUT_COLUMN_LASTNAME, styles.normalStyle).createCell("");
+                new CellCreator(row, OUTPUT_COLUMN_FIRSTNAME, styles.normalStyle).createCell("");
                 new CellCreator(row, OUTPUT_COLUMN_COMMENT, styles.normalStyle).createCell(transaction.getComment());
 
                 k++;
 
                 row = spreadsheet.createRow(k + 1);
                 new CellCreator(row, OUTPUT_COLUMN_DATE, styles.dateStyle).createCell(dateFormat.format(transaction.date));
-                new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.dateStyle).createCell("TWINT Gebühren");
-                new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.dateStyle).createCell("TWINT");
+                //new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.dateStyle).createCell("SumUp Gebühren");
+                //new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.dateStyle).createCell("SumUp");
+                new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.normalStyle).createCell(6841);
+                new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.normalStyle).createCell(1030);
                 new CellCreator(row, OUTPUT_COLUMN_AMOUNT, styles.numberStyle).createCell(transaction.amountFee.doubleValue());
-                new CellCreator(row, OUTPUT_COLUMN_LASTNAME, styles.normalStyle).createCell(transaction.getLastname());
-                new CellCreator(row, OUTPUT_COLUMN_FIRSTNAME, styles.normalStyle).createCell(transaction.getFirstname());
+                new CellCreator(row, OUTPUT_COLUMN_LASTNAME, styles.normalStyle).createCell("");
+                new CellCreator(row, OUTPUT_COLUMN_FIRSTNAME, styles.normalStyle).createCell("");
 
                 k++;
             }
         } else {
-            for (i = 0, m = 0, k = 0; i < twintTransactions.size() || m < checkoutTransactions.size();) {
-                TwintTransaction twintTransaction = null;
+            for (i = 0, m = 0, k = 0; i < sumUpTransactions.size() || m < checkoutTransactions.size();) {
+                SumUpTransaction sumUpTransaction = null;
                 Item checkoutTransaction = null;
                 try {
-                    twintTransaction = twintTransactions.get(i);
+                    sumUpTransaction = sumUpTransactions.get(i);
                 } catch (IndexOutOfBoundsException e) {
                     //
                 }
@@ -320,9 +295,9 @@ public class AccountConvertTwint {
                 }
 
                 /* Checkout */
-                if (m < checkoutTransactions.size() && (twintTransaction == null ||  checkoutTransaction.getDate().compareTo(twintTransaction.getDate()) <= 0)) {
+                if (m < checkoutTransactions.size() && (sumUpTransaction == null ||  checkoutTransaction.getDate().compareTo(sumUpTransaction.getDate()) <= 0)) {
 
-                    if (checkoutTransaction.getPaymentMethod().equalsIgnoreCase("TWINT")) {
+                    if (checkoutTransaction.getPaymentMethod().equalsIgnoreCase("SumUp")) {
                         String firstname = "";
                         String lastname = "";
                         if (checkoutTransaction.getMember() != null) {
@@ -342,8 +317,15 @@ public class AccountConvertTwint {
                         }
                         row = spreadsheet.createRow(k + 1); // + 1 for header
                         new CellCreator(row, OUTPUT_COLUMN_DATE, styles.dateStyle).createCell(dateFormat.format(checkoutTransaction.getDate()));
-                        new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.dateStyle).createCell("TWINT");
-                        new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.dateStyle).createCell(checkoutTransaction.getPosition());
+                        //new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.dateStyle).createCell("SumUp");
+                        //new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.dateStyle).createCell(checkoutTransaction.getPosition());
+                        new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.normalStyle).createCell(1030);
+                        //new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.dateStyle).createCell(checkoutTransaction.getPosition());
+                        try {
+                            new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.normalStyle).createCell(Integer.valueOf(kassenblattProperties.getProperty(checkoutTransaction.getPosition())).intValue());
+                        } catch (NumberFormatException e) {
+                            new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.normalStyle).createCell(checkoutTransaction.getPosition());
+                        }
                         new CellCreator(row, OUTPUT_COLUMN_AMOUNT, styles.numberStyle).createCell(Optional.ofNullable(checkoutTransaction.getAmount()).map(c -> c.doubleValue()).orElse(Double.valueOf(0.00)));
                         new CellCreator(row, OUTPUT_COLUMN_LASTNAME, styles.normalStyle).createCell(lastname);
                         new CellCreator(row, OUTPUT_COLUMN_FIRSTNAME, styles.normalStyle).createCell(firstname);
@@ -355,30 +337,34 @@ public class AccountConvertTwint {
 
                     m++;
 
-                /* TWINT */
+                    /* TWINT */
                 } else {
 
                     row = spreadsheet.createRow(k + 1); // + 1 for header
-                    new CellCreator(row, OUTPUT_COLUMN_DATE, styles.dateStyle).createCell(dateFormat.format(twintTransaction.date));
-                    new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.dateStyle).createCell("TWINT");
-                    new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.dateStyle).createCell("");
-                    new CellCreator(row, OUTPUT_COLUMN_AMOUNT, styles.numberStyle).createCell(twintTransaction.amountTotal.doubleValue());
-                    new CellCreator(row, OUTPUT_COLUMN_LASTNAME, styles.normalStyle).createCell(twintTransaction.getLastname());
-                    new CellCreator(row, OUTPUT_COLUMN_FIRSTNAME, styles.normalStyle).createCell(twintTransaction.getFirstname());
-                    new CellCreator(row, OUTPUT_COLUMN_COMMENT, styles.normalStyle).createCell(twintTransaction.getComment());
-                    new CellCreator(row, OUTPUT_COLUMN_TYPE, styles.normalStyle).createCell("TWINT");
+                    new CellCreator(row, OUTPUT_COLUMN_DATE, styles.dateStyle).createCell(dateFormat.format(sumUpTransaction.date));
+                    //new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.dateStyle).createCell("SumUp");
+                    //new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.dateStyle).createCell("");
+                    new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.normalStyle).createCell(1030);
+                    new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.normalStyle).createCell("");
+                    new CellCreator(row, OUTPUT_COLUMN_AMOUNT, styles.numberStyle).createCell(sumUpTransaction.amountTotal.doubleValue());
+                    new CellCreator(row, OUTPUT_COLUMN_LASTNAME, styles.normalStyle).createCell("");
+                    new CellCreator(row, OUTPUT_COLUMN_FIRSTNAME, styles.normalStyle).createCell("");
+                    new CellCreator(row, OUTPUT_COLUMN_COMMENT, styles.normalStyle).createCell(sumUpTransaction.getComment());
+                    new CellCreator(row, OUTPUT_COLUMN_TYPE, styles.normalStyle).createCell("SumUp");
 
                     k++;
 
                     row = spreadsheet.createRow(k + 1);
-                    new CellCreator(row, OUTPUT_COLUMN_DATE, styles.dateStyle).createCell(dateFormat.format(twintTransaction.date));
-                    new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.dateStyle).createCell("TWINT Gebühren");
-                    new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.dateStyle).createCell("TWINT");
-                    new CellCreator(row, OUTPUT_COLUMN_AMOUNT, styles.numberStyle).createCell(twintTransaction.amountFee.doubleValue());
-                    new CellCreator(row, OUTPUT_COLUMN_LASTNAME, styles.normalStyle).createCell(twintTransaction.getLastname());
-                    new CellCreator(row, OUTPUT_COLUMN_FIRSTNAME, styles.normalStyle).createCell(twintTransaction.getFirstname());
+                    new CellCreator(row, OUTPUT_COLUMN_DATE, styles.dateStyle).createCell(dateFormat.format(sumUpTransaction.date));
+                    //new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.dateStyle).createCell("SumUp Gebühren");
+                    //new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.dateStyle).createCell("SumUp");
+                    new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.normalStyle).createCell(6841);
+                    new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.normalStyle).createCell(1030);
+                    new CellCreator(row, OUTPUT_COLUMN_AMOUNT, styles.numberStyle).createCell(sumUpTransaction.amountFee.doubleValue());
+                    new CellCreator(row, OUTPUT_COLUMN_LASTNAME, styles.normalStyle).createCell("");
+                    new CellCreator(row, OUTPUT_COLUMN_FIRSTNAME, styles.normalStyle).createCell("");
                     // OUTPUT_COLUMN_COMMENT
-                    new CellCreator(row, OUTPUT_COLUMN_TYPE, styles.normalStyle).createCell("TWINT");
+                    new CellCreator(row, OUTPUT_COLUMN_TYPE, styles.normalStyle).createCell("SumUp");
 
                     k++;
 
@@ -393,7 +379,7 @@ public class AccountConvertTwint {
     }
 
     public static void main(String[] args) throws Exception {
-        AccountConvertTwint         main;
+        AccountConvertSumUp         main;
         String                      input;
         File                        inputRaiseNowFile;
         File                        inputCheckoutFolder;
@@ -426,20 +412,18 @@ public class AccountConvertTwint {
             inputCheckoutFolder = new File(args[1]);
         }
 
-        main = new AccountConvertTwint();
+        main = new AccountConvertSumUp();
 
-        main.parseRaiseNowInput(inputRaiseNowFile);
+        main.parseSumUpInput(inputRaiseNowFile);
         if (inputCheckoutFolder != null) {
             main.parseCheckoutInput(inputCheckoutFolder);
         }
 
-        if ((main.twintTransactions.size() > 0)) {
+        if ((main.sumUpTransactions.size() > 0)) {
             main.exportOutput(outputFile);
             System.out.println("Done!");
         } else {
             System.out.println("No parsed data found!");
         }
     }
-
 }
-

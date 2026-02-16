@@ -138,9 +138,12 @@ public class MainEntrygroupUpload {
 
     public void process() throws URISyntaxException, Exception {
 
+
         //Entrygroup entrygroup = new Entrygroup("2024-01-24", "Test Andreas XYZ", "50.20", 361, 2298);
         for (Entrygroup entrygroup : entrygroupList) {
-            postEntrygroup(297, entrygroup);
+            // 297: Buchungsperiode 2024
+            // 5470: Buchungsperiode 2025
+            postEntrygroup(5470, entrygroup);
         }
 
     }
