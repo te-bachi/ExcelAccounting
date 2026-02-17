@@ -267,6 +267,9 @@ public class AccountConvertTwint {
         int                     m;
         TwintTransaction        transaction;
 
+        Properties kassenblattProperties = new Properties();
+        kassenblattProperties.load(new FileInputStream("kassenblatt.properties"));
+
         workbook        = new XSSFWorkbook();
         styles          = new JournalStyles(workbook);
         spreadsheet     = workbook.createSheet("output");
@@ -284,8 +287,8 @@ public class AccountConvertTwint {
 
                 row = spreadsheet.createRow(k + 1); // + 1 for header
                 new CellCreator(row, OUTPUT_COLUMN_DATE, styles.dateStyle).createCell(dateFormat.format(transaction.date));
-                new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.dateStyle).createCell("TWINT");
-                new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.dateStyle).createCell("Lasercutter");
+                new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.normalStyle).createCell(1031);
+                new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.normalStyle).createCell(3511);
                 new CellCreator(row, OUTPUT_COLUMN_AMOUNT, styles.numberStyle).createCell(transaction.amountTotal.doubleValue());
                 new CellCreator(row, OUTPUT_COLUMN_LASTNAME, styles.normalStyle).createCell(transaction.getLastname());
                 new CellCreator(row, OUTPUT_COLUMN_FIRSTNAME, styles.normalStyle).createCell(transaction.getFirstname());
@@ -295,8 +298,8 @@ public class AccountConvertTwint {
 
                 row = spreadsheet.createRow(k + 1);
                 new CellCreator(row, OUTPUT_COLUMN_DATE, styles.dateStyle).createCell(dateFormat.format(transaction.date));
-                new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.dateStyle).createCell("TWINT Gebühren");
-                new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.dateStyle).createCell("TWINT");
+                new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.normalStyle).createCell(6842);
+                new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.normalStyle).createCell(1031);
                 new CellCreator(row, OUTPUT_COLUMN_AMOUNT, styles.numberStyle).createCell(transaction.amountFee.doubleValue());
                 new CellCreator(row, OUTPUT_COLUMN_LASTNAME, styles.normalStyle).createCell(transaction.getLastname());
                 new CellCreator(row, OUTPUT_COLUMN_FIRSTNAME, styles.normalStyle).createCell(transaction.getFirstname());
@@ -342,8 +345,12 @@ public class AccountConvertTwint {
                         }
                         row = spreadsheet.createRow(k + 1); // + 1 for header
                         new CellCreator(row, OUTPUT_COLUMN_DATE, styles.dateStyle).createCell(dateFormat.format(checkoutTransaction.getDate()));
-                        new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.dateStyle).createCell("TWINT");
-                        new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.dateStyle).createCell(checkoutTransaction.getPosition());
+                        new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.normalStyle).createCell(1031);
+                        try {
+                            new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.normalStyle).createCell(Integer.valueOf(kassenblattProperties.getProperty(checkoutTransaction.getPosition())).intValue());
+                        } catch (NumberFormatException e) {
+                            new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.normalStyle).createCell(checkoutTransaction.getPosition());
+                        }
                         new CellCreator(row, OUTPUT_COLUMN_AMOUNT, styles.numberStyle).createCell(Optional.ofNullable(checkoutTransaction.getAmount()).map(c -> c.doubleValue()).orElse(Double.valueOf(0.00)));
                         new CellCreator(row, OUTPUT_COLUMN_LASTNAME, styles.normalStyle).createCell(lastname);
                         new CellCreator(row, OUTPUT_COLUMN_FIRSTNAME, styles.normalStyle).createCell(firstname);
@@ -360,8 +367,8 @@ public class AccountConvertTwint {
 
                     row = spreadsheet.createRow(k + 1); // + 1 for header
                     new CellCreator(row, OUTPUT_COLUMN_DATE, styles.dateStyle).createCell(dateFormat.format(twintTransaction.date));
-                    new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.dateStyle).createCell("TWINT");
-                    new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.dateStyle).createCell("");
+                    new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.normalStyle).createCell(1031);
+                    new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.normalStyle).createCell("");
                     new CellCreator(row, OUTPUT_COLUMN_AMOUNT, styles.numberStyle).createCell(twintTransaction.amountTotal.doubleValue());
                     new CellCreator(row, OUTPUT_COLUMN_LASTNAME, styles.normalStyle).createCell(twintTransaction.getLastname());
                     new CellCreator(row, OUTPUT_COLUMN_FIRSTNAME, styles.normalStyle).createCell(twintTransaction.getFirstname());
@@ -372,8 +379,8 @@ public class AccountConvertTwint {
 
                     row = spreadsheet.createRow(k + 1);
                     new CellCreator(row, OUTPUT_COLUMN_DATE, styles.dateStyle).createCell(dateFormat.format(twintTransaction.date));
-                    new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.dateStyle).createCell("TWINT Gebühren");
-                    new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.dateStyle).createCell("TWINT");
+                    new CellCreator(row, OUTPUT_COLUMN_DEBIT, styles.normalStyle).createCell(6842);
+                    new CellCreator(row, OUTPUT_COLUMN_CREDIT, styles.normalStyle).createCell(1031);
                     new CellCreator(row, OUTPUT_COLUMN_AMOUNT, styles.numberStyle).createCell(twintTransaction.amountFee.doubleValue());
                     new CellCreator(row, OUTPUT_COLUMN_LASTNAME, styles.normalStyle).createCell(twintTransaction.getLastname());
                     new CellCreator(row, OUTPUT_COLUMN_FIRSTNAME, styles.normalStyle).createCell(twintTransaction.getFirstname());
