@@ -17,7 +17,7 @@ public class RestClient {
     private String apikey;
 
     private int count;
-    private static final int MAX_COUNT = 900;
+    private static final int MAX_COUNT = 99;
 
     public RestClient() throws IOException {
         this.client = HttpClient.newBuilder().build();
@@ -56,7 +56,6 @@ public class RestClient {
                 .uri(uri)
                 .header("apikey", this.apikey)
                 .POST(HttpRequest.BodyPublishers.ofString(jsonString))
-
                 .build();
 
         if (count > MAX_COUNT) {

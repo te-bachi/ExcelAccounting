@@ -17,7 +17,7 @@ public class Main {
         RestClient restClient = new RestClient();
 
 
-        System.out.println("=== Periodgroup ====================================");
+        System.out.println("=== Periodgroup (Buchhaltung) ===================================================");
         RestObjectList restPeriodgroupObjectList = restClient.syncJackson(new URI("https://fablabwinti.webling.ch/api/1/periodgroup"), RestObjectList.class);
         List<RestPeriodgroup> restPeriodgroupList = new ArrayList<>();
         try {
@@ -29,7 +29,7 @@ public class Main {
             System.out.println("error: " + restPeriodgroupObjectList.getError());
         }
 
-        System.out.println("=== Periodchain ====================================");
+        System.out.println("=== Periodchain (Buchhaltungskette: 2024 - 2025 mit AccoutGroupTemplates) =======");
         RestObjectList restPeriodchainObjectList = restClient.syncJackson(new URI("https://fablabwinti.webling.ch/api/1/periodchain"), RestObjectList.class);
         List<RestPeriodchain> restPeriodchainList = new ArrayList<>();
         for (int periodchainId : restPeriodchainObjectList.getObjects()) {
@@ -37,29 +37,44 @@ public class Main {
             restPeriodchainList.add(restPeriodchain);
         }
 
-        System.out.println("=== Period List ====================================");
+        System.out.println("=== Period List (Liste von Perioden: 2024, 2025, etc.) ==========================");
         RestObjectList restPeriodObjectList = restClient.syncJackson(new URI("https://fablabwinti.webling.ch/api/1/period"), RestObjectList.class);
         List<RestPeriod> restPeriodList = new ArrayList<>();
         for (int periodId : restPeriodObjectList.getObjects()) {
             RestPeriod restPeriod = restClient.syncJackson(new URI("https://fablabwinti.webling.ch/api/1/period/" + periodId), RestPeriod.class);
+            /* nur 2025 ohne 2024, sonst spuckt der REST Client null zurück */
+            if (restPeriod.getProperties().get("title").equals("Buchungsperiode 2024")) {
+                System.out.println("<skipping Buchungsperiode 2024>");
+                continue;
+            } else if (restPeriod.getProperties().get("title").equals("Buchungsperiode 2025")) {
+                System.out.println("<go-on with Buchungsperiode 2025>");
+            } else {
+                System.out.println("<skipping unknow Buchungsperiode " + restPeriod.getProperties().get("title") +  ">");
+            }
             restPeriod.setId(periodId);
             restPeriodList.add(restPeriod);
-            System.out.println("  --- Entry Group List -----------------------------");
+            /* keine Buchungen suchen, sonst spuckt der REST Client null zurück
+            System.out.println("  --- Entry Group List (Buchungen) -----------------------------");
             for (int entryGroupId : restPeriod.getChildren().get("entrygroup")) {
                 RestEntrygroup restEntryGroup = restClient.syncJackson(new URI("https://fablabwinti.webling.ch/api/1/entrygroup/" + entryGroupId), RestEntrygroup.class);
                 restEntryGroup.setId(entryGroupId);
                 restPeriod.getEntryGroupList().add(restEntryGroup);
             }
-            System.out.println("  --- Account Group List ---------------------------");
+            */
+            System.out.println("  --- Account Group List (Kontengruppe) ---------------------------");
             for (int accountGroupId : restPeriod.getChildren().get("accountgroup")) {
                 RestAccountGroup restAccountGroup = restClient.syncJackson(new URI("https://fablabwinti.webling.ch/api/1/accountgroup/" + accountGroupId), RestAccountGroup.class);
                 restAccountGroup.setId(accountGroupId);
                 restPeriod.getAccountGroupList().add(restAccountGroup);
-                System.out.println("    --- Account List -------------------------------");
-                for (int accountId : restAccountGroup.getChildren().get("account")) {
-                    RestAccount restAccount = restClient.syncJackson(new URI("https://fablabwinti.webling.ch/api/1/account/" + accountId), RestAccount.class);
-                    restAccount.setId(accountId);
-                    restAccountGroup.getAccountList().add(restAccount);
+                System.out.println("    --- Account List (Konto) -------------------------------");
+                try {
+                    for (int accountId : restAccountGroup.getChildren().get("account")) {
+                        RestAccount restAccount = restClient.syncJackson(new URI("https://fablabwinti.webling.ch/api/1/account/" + accountId), RestAccount.class);
+                        restAccount.setId(accountId);
+                        restAccountGroup.getAccountList().add(restAccount);
+                    }
+                } catch (NullPointerException e) {
+                    System.out.println("<skipping>");
                 }
             }
 
@@ -70,10 +85,12 @@ public class Main {
 
         for (RestPeriod period : restPeriodList) {
             System.out.println("==> " + period.getId() + ": " + period.getProperties().get("title"));
+            /* keine Buchungen printed, sonst spuckt der REST Client null zurück
             System.out.println("  --> entrygroup");
             for (RestEntrygroup entryGroup : period.getEntryGroupList()) {
                 System.out.println("  --> " + entryGroup.getId() + ": " + entryGroup.getProperties().get("title"));
             }
+            */
             System.out.println("  --> accountgroup");
             for (RestAccountGroup accountGroup : period.getAccountGroupList()) {
                 System.out.println("  --> " + accountGroup.getId() + ": " + accountGroup.getProperties().get("title"));
